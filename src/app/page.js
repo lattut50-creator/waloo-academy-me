@@ -1,6 +1,7 @@
  "use client";
 import { useState, useEffect } from 'react';
 import { SignInButton, SignUpButton, UserButton, useAuth } from '@clerk/nextjs';
+import Link from 'next/link';
 
 // Place your image in 'public/' folder named 'profile.png'
 const profileImageUrl = "/profile.png"; 
@@ -12,7 +13,7 @@ const structuredData = {
   "name": "Waloo Academy",
   "url": "https://waloo-academy.vercel.app",
   "logo": "https://waloo-academy.vercel.app/profile.png",
-  "description": "Expert-led courses in Economics, Data Analysis, Programming, Digital Marketing & Graphic Design in Ethiopia",
+  "description": "Expert-led courses in Macro Economics, Micro Economics, and Civic Education in Ethiopia",
   "address": {
     "@type": "PostalAddress",
     "addressCountry": "Ethiopia"
@@ -33,8 +34,8 @@ const structuredData = {
     "itemListElement": [
       {
         "@type": "Course",
-        "name": "Economics (Grade 9-10)",
-        "description": "Basic economics for beginners",
+        "name": "Macro Economics",
+        "description": "Learn Macro Economics",
         "provider": {
           "@type": "Organization",
           "name": "Waloo Academy"
@@ -42,8 +43,8 @@ const structuredData = {
       },
       {
         "@type": "Course",
-        "name": "Economics (Grade 11-12)",
-        "description": "Advanced economics",
+        "name": "Micro Economics",
+        "description": "Learn Micro Economics",
         "provider": {
           "@type": "Organization",
           "name": "Waloo Academy"
@@ -51,35 +52,8 @@ const structuredData = {
       },
       {
         "@type": "Course",
-        "name": "Data Analysis",
-        "description": "Learn Excel & Power BI",
-        "provider": {
-          "@type": "Organization",
-          "name": "Waloo Academy"
-        }
-      },
-      {
-        "@type": "Course",
-        "name": "Programming",
-        "description": "Learn JavaScript & Next.js",
-        "provider": {
-          "@type": "Organization",
-          "name": "Waloo Academy"
-        }
-      },
-      {
-        "@type": "Course",
-        "name": "Digital Marketing",
-        "description": "Learn SEO & Social Media",
-        "provider": {
-          "@type": "Organization",
-          "name": "Waloo Academy"
-        }
-      },
-      {
-        "@type": "Course",
-        "name": "Graphic Design",
-        "description": "Learn Photoshop & Illustrator",
+        "name": "Civic Education",
+        "description": "Learn Civic Education",
         "provider": {
           "@type": "Organization",
           "name": "Waloo Academy"
@@ -98,55 +72,34 @@ export default function Home() {
   const [showTopBtn, setShowTopBtn] = useState(false);
   const { isSignedIn } = useAuth();
 
-  // Course Data - 6 Courses
+  // Course Data - 3 Courses with PDF files
   const courses = [
     { 
       id: 1, 
-      title: "Economics (Grade 9-10)", 
-      desc: "Basic economics for beginners.", 
-      detail: "Introduction to economics, supply and demand, market structures, and Ethiopian economic fundamentals for grades 9-10.",
+      title: "Macro Economics", 
+      desc: "Learn Macro Economics.", 
+      detail: "Macroeconomics is the branch of economics that studies the behavior and performance of an economy as a whole. It focuses on aggregate changes such as unemployment, growth rate, GDP, and inflation.",
       teacher: "Rorisa (AAU Student)",
-      price: "Free"
+      price: "Free",
+      fileLink: "/uploads/macro.pdf"
     },
     { 
       id: 2, 
-      title: "Economics (Grade 11-12)", 
-      desc: "Advanced economics.", 
-      detail: "Microeconomics, Macroeconomics, international trade, economic policies, and Ethiopia's economic development for grades 11-12.",
+      title: "Micro Economics", 
+      desc: "Learn Micro Economics.", 
+      detail: "Microeconomics is the study of decisions made by individuals and businesses regarding the allocation of resources and prices of goods and services.",
       teacher: "Rorisa (AAU Student)",
-      price: "500 ETB"
+      price: "Free",
+      fileLink: "/uploads/micro.pdf"
     },
     { 
       id: 3, 
-      title: "Data Analysis", 
-      desc: "Learn Excel & Power BI.", 
-      detail: "Learn how to clean data, perform analysis, and create beautiful dashboards.",
-      teacher: "Waloo Tech Team",
-      price: "1000 ETB"
-    },
-    { 
-      id: 4, 
-      title: "Programming", 
-      desc: "Learn JavaScript & Next.js.", 
-      detail: "Full-stack web development from start to finish using Next.js and Tailwind CSS.",
-      teacher: "Waloo Tech Team",
-      price: "1500 ETB"
-    },
-    { 
-      id: 5, 
-      title: "Digital Marketing", 
-      desc: "Learn SEO & Social Media.", 
-      detail: "Master SEO, social media marketing, content strategy, and grow any business online.",
-      teacher: "Marketing Expert",
-      price: "1200 ETB"
-    },
-    { 
-      id: 6, 
-      title: "Graphic Design", 
-      desc: "Learn Photoshop & Illustrator.", 
-      detail: "Learn design principles, logo creation, branding, and professional design tools.",
-      teacher: "Design Pro",
-      price: "1300 ETB"
+      title: "Civic Education", 
+      desc: "Learn Civic Education.", 
+      detail: "Civic education is the study of the theoretical, political and practical aspects of citizenship, as well as its rights and duties.",
+      teacher: "Rorisa (AAU Student)",
+      price: "Free",
+      fileLink: "/uploads/civic.pdf"
     }
   ];
 
@@ -215,7 +168,7 @@ export default function Home() {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             background-color: ${darkMode ? '#2d2d2d' : 'white'};
             padding: 25px; border-radius: 15px; width: 280px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: left; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: left;
             will-change: transform;
           }
           .course-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border: 1px solid ${mainColor}; }
@@ -274,6 +227,13 @@ export default function Home() {
             will-change: transform;
           }
           .event-register-btn:hover {
+            transform: scale(1.05);
+          }
+          
+          .download-btn {
+            transition: all 0.3s ease;
+          }
+          .download-btn:hover {
             transform: scale(1.05);
           }
           
@@ -339,6 +299,13 @@ export default function Home() {
             <a href="#events" style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold' }}>Events</a>
             <a href="#about" style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold' }}>About Us</a>
             <a href="#contact" style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold' }}>Contact Us</a>
+            
+            {/* Dashboard Link - Only show when signed in */}
+            {isSignedIn && (
+              <Link href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold' }}>
+                📊 My Dashboard
+              </Link>
+            )}
             
             {/* Authentication Buttons */}
             {!isSignedIn ? (
@@ -454,10 +421,35 @@ export default function Home() {
             <h2 style={{ color: mainColor, marginBottom: '40px', fontSize: '2.2rem' }}>Our Courses</h2>
             <div style={{ display: 'flex', gap: '30px', flexWrap: 'wrap', justifyContent: 'center', maxWidth: '1200px' }}>
               {filteredCourses.map(course => (
-                <div key={course.id} className="course-card" onClick={() => setSelectedCourse(course)}>
+                <div key={course.id} className="course-card" style={{ cursor: 'default' }}>
                   <h3>{course.title}</h3>
                   <p>{course.desc}</p>
-                  <span style={{ color: mainColor, fontWeight: 'bold', fontSize: '0.8rem' }}>View details →</span>
+                  
+                  {/* Download PDF Button */}
+                  <a href={course.fileLink} download target="_blank" style={{ textDecoration: 'none' }}>
+                    <button className="download-btn" style={{
+                      backgroundColor: mainColor,
+                      color: 'white',
+                      border: 'none',
+                      padding: '10px 15px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      marginTop: '15px',
+                      marginBottom: '10px',
+                      fontSize: '0.85rem',
+                      fontWeight: 'bold',
+                      width: '100%'
+                    }}>
+                      📥 Download PDF
+                    </button>
+                  </a>
+                  
+                  <span 
+                    style={{ color: mainColor, fontWeight: 'bold', fontSize: '0.8rem', cursor: 'pointer', display: 'block', textAlign: 'center' }}
+                    onClick={() => setSelectedCourse(course)}
+                  >
+                    View details →
+                  </span>
                 </div>
               ))}
             </div>
@@ -481,14 +473,42 @@ export default function Home() {
                   <p><strong>Instructor:</strong> {selectedCourse.teacher}</p>
                   <p><strong>Price:</strong> {selectedCourse.price}</p>
                 </div>
-                <button style={{ width: '100%', marginTop: '20px', padding: '12px', backgroundColor: mainColor, 
+                
+                {/* Download PDF Button in Modal */}
+                <a href={selectedCourse.fileLink} download target="_blank" style={{ textDecoration: 'none' }}>
+                  <button style={{ width: '100%', marginTop: '15px', padding: '12px', backgroundColor: '#4caf50', 
+                                   color: 'white', border: 'none', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer' }}>
+                    📥 Download PDF
+                  </button>
+                </a>
+                
+                <button style={{ width: '100%', marginTop: '15px', padding: '12px', backgroundColor: mainColor, 
                                 color: 'white', border: 'none', borderRadius: '10px', fontWeight: 'bold', cursor: 'pointer' }}
                         onClick={() => { 
                           if (!isSignedIn) {
                             alert('Please sign in first to enroll!');
                             return;
                           }
-                          alert(`Enrollment started for ${selectedCourse.title}! We'll contact you.`); 
+                          
+                          const userId = 'user_' + Date.now();
+                          const savedEnrollments = localStorage.getItem(`enrollments_${userId}`);
+                          let enrollments = savedEnrollments ? JSON.parse(savedEnrollments) : [];
+                          
+                          const alreadyEnrolled = enrollments.some(c => c.id === selectedCourse.id);
+                          if (!alreadyEnrolled) {
+                            enrollments.push({
+                              id: selectedCourse.id,
+                              title: selectedCourse.title,
+                              desc: selectedCourse.desc,
+                              teacher: selectedCourse.teacher,
+                              enrolledDate: new Date().toLocaleDateString()
+                            });
+                            localStorage.setItem(`enrollments_${userId}`, JSON.stringify(enrollments));
+                            alert(`Successfully enrolled in ${selectedCourse.title}! Check your dashboard.`);
+                          } else {
+                            alert(`You are already enrolled in ${selectedCourse.title}!`);
+                          }
+                          
                           setSelectedCourse(null);
                         }}>
                   Enroll Now
