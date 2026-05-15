@@ -8,9 +8,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider
-      unsafe_disableDevelopmentModeConsoleWarning={true}
-    >
+    <ClerkProvider>
       <html lang="en">
         <head>
           <link rel="preconnect" href="https://formspree.io" />
