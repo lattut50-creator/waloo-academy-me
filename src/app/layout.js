@@ -1,20 +1,17 @@
  import "./globals.css";
-import { ClerkProvider } from '@clerk/nextjs';
 
 export const metadata = {
-  title: "Waloo Academy - Learn Economics, Data Analysis & Programming in Ethiopia",
-  description: "Expert-led courses in Economics (Grade 9-12), Data Analysis, Programming, Digital Marketing & Graphic Design.",
+  title: "Waloo Academy - Learn Economics in Ethiopia",
+  description: "Expert-led courses in Macro Economics, Micro Economics, and Civic Education",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <head>
-          <link rel="preconnect" href="https://formspree.io" />
-        </head>
-        <body>{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://formspree.io" />
+      </head>
+      <body>{children}</body>
+    </html>
   );
 }
