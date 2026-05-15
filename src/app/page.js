@@ -1,9 +1,6 @@
  "use client";
 import { useState, useEffect } from 'react';
 
-// Place your image in 'public/' folder named 'profile.png'
-const profileImageUrl = "/profile.png"; 
-
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -11,35 +8,96 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [darkMode, setDarkMode] = useState(false);
   const [showTopBtn, setShowTopBtn] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Course Data - 3 Courses with PDF files
+  // Course Data - 3 PDF Courses + 1 Video Course
   const courses = [
     { 
       id: 1, 
       title: "Macro Economics", 
       desc: "Learn Macro Economics.", 
-      detail: "Macroeconomics is the branch of economics that studies the behavior and performance of an economy as a whole.",
+      detail: "Macroeconomics is the branch of economics that studies the behavior and performance of an economy as a whole. Topics include GDP, inflation, unemployment, and economic growth.",
       teacher: "Rorisa (AAU Student)",
       price: "Free",
-      fileLink: "/uploads/macro.pdf"
+      type: "pdf",
+      contentLink: "/uploads/macro.pdf"
     },
     { 
       id: 2, 
       title: "Micro Economics", 
       desc: "Learn Micro Economics.", 
-      detail: "Microeconomics is the study of decisions made by individuals and businesses regarding the allocation of resources.",
+      detail: "Microeconomics is the study of decisions made by individuals and businesses regarding the allocation of resources and prices of goods and services.",
       teacher: "Rorisa (AAU Student)",
       price: "Free",
-      fileLink: "/uploads/micro.pdf"
+      type: "pdf",
+      contentLink: "/uploads/micro.pdf"
     },
     { 
       id: 3, 
       title: "Civic Education", 
       desc: "Learn Civic Education.", 
-      detail: "Civic education is the study of the theoretical, political and practical aspects of citizenship.",
+      detail: "Civic education is the study of the theoretical, political and practical aspects of citizenship, as well as its rights and duties.",
       teacher: "Rorisa (AAU Student)",
       price: "Free",
-      fileLink: "/uploads/civic.pdf"
+      type: "pdf",
+      contentLink: "/uploads/civic.pdf"
+    },
+    { 
+      id: 4, 
+      title: "Economics Fundamentals", 
+      desc: "Learn economics with video lectures.", 
+      detail: "This comprehensive video covers key economics concepts including supply and demand, market structures, economic indicators, and real-world applications. Perfect for beginners and intermediate learners.",
+      teacher: "Economics Expert",
+      price: "Free",
+      type: "video",
+      contentLink: "https://www.youtube-nocookie.com/embed/nbEOo5ae1bs?modestbranding=1&rel=0&showinfo=0&controls=1&playsinline=1&iv_load_policy=3&color=white"
+    }
+  ];
+
+  // Why Choose Us Data
+  const whyChooseUs = [
+    {
+      id: 1,
+      icon: "🎓",
+      title: "Expert Instructors",
+      description: "Learn from experienced professionals with real-world expertise."
+    },
+    {
+      id: 2,
+      icon: "💻",
+      title: "Hands-on Projects",
+      description: "Learn by doing with real-world projects and exercises."
+    },
+    {
+      id: 3,
+      icon: "📜",
+      title: "Certificate",
+      description: "Earn a certificate upon completion of each course."
+    }
+  ];
+
+  // Testimonials Data
+  const testimonials = [
+    {
+      id: 1,
+      text: "Waloo Academy made learning easy for me. Truly a center of knowledge!",
+      name: "Ayantu G.",
+      role: "Economics Student",
+      rating: "★★★★★"
+    },
+    {
+      id: 2,
+      text: "Programming was hard, but now I write code with confidence!",
+      name: "Abdi K.",
+      role: "Programming Student",
+      rating: "★★★★★"
+    },
+    {
+      id: 3,
+      text: "The Economics course helped me understand Ethiopian market perfectly!",
+      name: "Bethlehem M.",
+      role: "Economics Student",
+      rating: "★★★★★"
     }
   ];
 
@@ -80,6 +138,26 @@ export default function Home() {
     });
   }, []);
 
+  // Handle fullscreen
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
+  // Listen for fullscreen change
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
   // Main color is BLUE (#1a73e8)
   const mainColor = "#1a73e8";
   const mainColorDark = "#1557b0";
@@ -118,15 +196,21 @@ export default function Home() {
         }
         .hero-btn:hover { background-color: ${mainColorDark} !important; transform: scale(1.02); }
         
-        .testimonial-card, .why-card { 
-          background: ${darkMode ? '#1a1a2e' : 'white'}; 
-          padding: 20px;
-          border-radius: 16px;
-          width: 280px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        .why-card, .testimonial-card, .event-card {
           transition: all 0.3s ease;
+          background-color: ${darkMode ? '#1a1a2e' : 'white'};
+          padding: 24px;
+          border-radius: 20px;
+          width: 300px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+          border: 1px solid ${darkMode ? '#2a2a3e' : '#eef2f6'};
+          text-align: center;
         }
-        .testimonial-card:hover, .why-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .why-card:hover, .testimonial-card:hover, .event-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+          border-color: ${mainColor};
+        }
         
         .form-input { 
           width: 100%; padding: 10px 14px; margin-bottom: 12px; border-radius: 10px; 
@@ -138,25 +222,58 @@ export default function Home() {
         
         .modal-overlay { 
           position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-          background: rgba(0,0,0,0.8); display: flex; justify-content: center; 
+          background: rgba(0,0,0,0.85);
+          display: flex; justify-content: center; 
           align-items: center; z-index: 1000; animation: fadeIn 0.2s ease;
         }
         .modal-content { 
           background: ${darkMode ? '#1a1a2e' : 'white'}; 
-          padding: 32px; border-radius: 24px; max-width: 500px; width: 90%; 
-          position: relative; text-align: left; animation: slideUp 0.2s ease;
+          padding: 32px;
+          border-radius: 24px;
+          max-width: 1000px;
+          width: 90%;
+          max-height: 90vh;
+          overflow-y: auto;
+          position: relative;
+          text-align: left;
+          animation: slideUp 0.2s ease;
         }
         
-        .event-card {
-          background: ${darkMode ? '#1a1a2e' : 'white'};
-          padding: 16px;
-          border-radius: 16px;
-          width: 280px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-          border-left: 4px solid ${mainColor};
+        .pdf-viewer {
+          width: 100%;
+          height: 550px;
+          border: 1px solid ${darkMode ? '#333' : '#e0e0e0'};
+          border-radius: 12px;
+          background-color: ${darkMode ? '#1a1a1a' : '#f5f5f5'};
           transition: all 0.3s ease;
         }
-        .event-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        
+        .video-container {
+          position: relative;
+          width: 100%;
+          padding-bottom: 56.25%; /* 16:9 aspect ratio */
+          height: 0;
+          overflow: hidden;
+          border-radius: 12px;
+          background-color: #000;
+        }
+        
+        .video-iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
+        
+        .fullscreen-btn {
+          transition: all 0.2s ease;
+        }
+        .fullscreen-btn:hover {
+          transform: scale(1.05);
+          background-color: ${mainColorDark} !important;
+        }
         
         .social-icon {
           transition: all 0.2s ease;
@@ -181,25 +298,41 @@ export default function Home() {
           transform: scale(1.02);
         }
         
-        .download-btn {
-          transition: all 0.2s;
-        }
-        .download-btn:hover {
-          transform: scale(1.02);
-        }
-        
         .section-title {
-          font-size: 1.6rem;
-          font-weight: 600;
-          margin-bottom: 32px;
+          font-size: 1.8rem;
+          font-weight: 700;
+          margin-bottom: 40px;
           text-align: center;
           color: ${mainColor};
+        }
+        
+        .section-subtitle {
+          font-size: 1rem;
+          text-align: center;
+          color: ${darkMode ? '#aaa' : '#666'};
+          margin-bottom: 40px;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
         }
         
         .slogan-text {
           font-size: 0.9rem;
           opacity: 0.8;
           letter-spacing: 0.5px;
+        }
+        
+        .logo {
+          transition: transform 0.2s ease;
+        }
+        .logo:hover {
+          transform: scale(1.05);
+        }
+        
+        .rating-stars {
+          color: #fbbf24;
+          font-size: 0.9rem;
+          margin-bottom: 12px;
         }
         
         img {
@@ -216,9 +349,10 @@ export default function Home() {
           .menu-icon { display: block !important; }
           .side-by-side-container { flex-direction: column !important; align-items: center !important; }
           .side-box { width: 95% !important; min-width: unset !important; }
-          .events-container { flex-direction: column !important; align-items: center !important; }
-          .why-testimonial-container { flex-direction: column !important; align-items: center !important; }
-          .courses-container { justify-content: center !important; }
+          .row-container { flex-direction: column !important; align-items: center !important; }
+          .why-card, .testimonial-card, .event-card { width: 90% !important; }
+          .pdf-viewer { height: 300px; }
+          .modal-content { padding: 20px; }
         }
         
         @media (prefers-reduced-motion: reduce) {
@@ -229,17 +363,27 @@ export default function Home() {
         }
       `}</style>
 
-      {/* 1. Nav Bar */}
+      {/* Nav Bar */}
       <nav style={{ 
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
         padding: '12px 40px', backgroundColor: mainColor, color: 'white', 
         position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
       }}>
-        <h2 style={{ margin: 0, cursor: 'pointer', fontSize: '1.4rem', fontWeight: 600 }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          Waloo Academy
-        </h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <img 
+            src="/logo.png" 
+            alt="Waloo Academy Logo" 
+            className="logo"
+            style={{ 
+              width: '40px', 
+              height: '40px', 
+              borderRadius: '10px',
+              objectFit: 'cover'
+            }} 
+          />
+          <h2 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 600 }}>Waloo Academy</h2>
+        </div>
         
-        {/* Dark Mode Toggle Button */}
         <button 
           onClick={() => setDarkMode(!darkMode)}
           style={{
@@ -268,21 +412,21 @@ export default function Home() {
         <div className="nav-links" style={{ display: 'flex', gap: '20px', alignItems: 'center', fontSize: '0.9rem' }}>
           <a href="#" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Home</a>
           <a href="#courses" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Courses</a>
+          <a href="#whyus" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Why Us</a>
+          <a href="#testimonials" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Reviews</a>
           <a href="#events" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Events</a>
-          <a href="#why-testimonial" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>About</a>
           <a href="#contact" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Contact</a>
         </div>
       </nav>
 
       <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 20px', textAlign: 'center' }}>
         
-        {/* Hero Section with Slogans */}
-        <div style={{ maxWidth: '800px', marginBottom: '40px' }}>
+        {/* Hero Section */}
+        <div style={{ maxWidth: '800px', marginBottom: '60px' }}>
           <h1 style={{ color: mainColor, fontSize: '2.8rem', fontWeight: 700, marginBottom: '12px', letterSpacing: '-0.5px' }}>
             Waloo Academy
           </h1>
           
-          {/* Slogans */}
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px' }}>
             <span className="slogan-text" style={{ background: mainColorLight, padding: '4px 12px', borderRadius: '30px', fontSize: '0.75rem', fontWeight: 500, color: mainColor }}>📚 Learn Anywhere</span>
             <span className="slogan-text" style={{ background: mainColorLight, padding: '4px 12px', borderRadius: '30px', fontSize: '0.75rem', fontWeight: 500, color: mainColor }}>🎓 Expert Instructors</span>
@@ -294,12 +438,12 @@ export default function Home() {
           </p>
           
           <div style={{ marginBottom: '30px' }}>
-            <img src={profileImageUrl} alt="Waloo Academy" 
+            <img src="/profile2.png" alt="Waloo Academy Students" 
                  loading="eager"
                  width="600" 
-                 height="300"
+                 height="350"
                  style={{ width: '100%', maxWidth: '550px', borderRadius: '20px', 
-                          boxShadow: '0 12px 30px rgba(0,0,0,0.1)' }} />
+                          boxShadow: '0 12px 30px rgba(0,0,0,0.1)', objectFit: 'cover' }} />
           </div>
           
           <button className="hero-btn" 
@@ -311,56 +455,36 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Why Choose Us & Testimonials - Side by Side */}
-        <div id="why-testimonial" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
-          <div className="why-testimonial-container" style={{ display: 'flex', gap: '30px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            
-            {/* Why Choose Us Section - Compact */}
-            <div style={{ flex: 1, minWidth: '280px' }}>
-              <h2 className="section-title" style={{ fontSize: '1.4rem', marginBottom: '24px' }}>✨ Why Choose Us</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div className="why-card">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                    <div style={{ fontSize: '1.5rem' }}>🎓</div>
-                    <h4 style={{ color: mainColor, margin: 0, fontSize: '1rem' }}>Expert Instructors</h4>
-                  </div>
-                  <p style={{ fontSize: '0.8rem', color: darkMode ? '#bbb' : '#666', margin: 0, lineHeight: 1.4 }}>Learn from experienced professionals with real-world expertise.</p>
-                </div>
-                <div className="why-card">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                    <div style={{ fontSize: '1.5rem' }}>💻</div>
-                    <h4 style={{ color: mainColor, margin: 0, fontSize: '1rem' }}>Hands-on Projects</h4>
-                  </div>
-                  <p style={{ fontSize: '0.8rem', color: darkMode ? '#bbb' : '#666', margin: 0, lineHeight: 1.4 }}>Learn by doing with real-world projects and exercises.</p>
-                </div>
-                <div className="why-card">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                    <div style={{ fontSize: '1.5rem' }}>📜</div>
-                    <h4 style={{ color: mainColor, margin: 0, fontSize: '1rem' }}>Certificate</h4>
-                  </div>
-                  <p style={{ fontSize: '0.8rem', color: darkMode ? '#bbb' : '#666', margin: 0, lineHeight: 1.4 }}>Earn a certificate upon completion of each course.</p>
-                </div>
+        {/* Why Choose Us Section */}
+        <div id="whyus" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
+          <h2 className="section-title">✨ Why Choose Waloo Academy</h2>
+          <p className="section-subtitle">We provide quality education with expert instructors and hands-on learning experiences</p>
+          <div className="row-container" style={{ display: 'flex', gap: '30px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            {whyChooseUs.map(item => (
+              <div key={item.id} className="why-card">
+                <div style={{ fontSize: '3rem', marginBottom: '16px' }}>{item.icon}</div>
+                <h3 style={{ color: mainColor, fontSize: '1.2rem', marginBottom: '12px', fontWeight: 600 }}>{item.title}</h3>
+                <p style={{ fontSize: '0.85rem', color: darkMode ? '#bbb' : '#666', lineHeight: 1.5, margin: 0 }}>{item.description}</p>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
 
-            {/* Testimonials Section - Compact */}
-            <div style={{ flex: 1, minWidth: '280px' }}>
-              <h2 className="section-title" style={{ fontSize: '1.4rem', marginBottom: '24px' }}>💬 Student Reviews</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div className="testimonial-card">
-                  <p style={{ fontSize: '0.85rem', color: darkMode ? '#ccc' : '#555', marginBottom: '12px', lineHeight: 1.4, fontStyle: 'italic' }}>"Waloo Academy made learning easy for me. Truly a center of knowledge!"</p>
-                  <h5 style={{ margin: 0, color: mainColor, fontSize: '0.85rem', fontWeight: 600 }}>— Ayantu G.</h5>
-                </div>
-                <div className="testimonial-card">
-                  <p style={{ fontSize: '0.85rem', color: darkMode ? '#ccc' : '#555', marginBottom: '12px', lineHeight: 1.4, fontStyle: 'italic' }}>"Programming was hard, but now I write code with confidence!"</p>
-                  <h5 style={{ margin: 0, color: mainColor, fontSize: '0.85rem', fontWeight: 600 }}>— Abdi K.</h5>
-                </div>
-                <div className="testimonial-card">
-                  <p style={{ fontSize: '0.85rem', color: darkMode ? '#ccc' : '#555', marginBottom: '12px', lineHeight: 1.4, fontStyle: 'italic' }}>"The Economics course helped me understand Ethiopian market perfectly!"</p>
-                  <h5 style={{ margin: 0, color: mainColor, fontSize: '0.85rem', fontWeight: 600 }}>— Bethlehem M.</h5>
+        {/* Testimonials Section */}
+        <div id="testimonials" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
+          <h2 className="section-title">💬 What Our Students Say</h2>
+          <p className="section-subtitle">Join thousands of happy students who transformed their careers with Waloo Academy</p>
+          <div className="row-container" style={{ display: 'flex', gap: '30px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            {testimonials.map(item => (
+              <div key={item.id} className="testimonial-card">
+                <div className="rating-stars">{item.rating}</div>
+                <p style={{ fontSize: '0.9rem', color: darkMode ? '#ccc' : '#555', marginBottom: '20px', lineHeight: 1.5, fontStyle: 'italic' }}>"{item.text}"</p>
+                <div style={{ marginTop: 'auto' }}>
+                  <h4 style={{ color: mainColor, fontSize: '1rem', marginBottom: '4px', fontWeight: 600 }}>{item.name}</h4>
+                  <p style={{ fontSize: '0.7rem', color: darkMode ? '#888' : '#999', margin: 0 }}>{item.role}</p>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -384,39 +508,22 @@ export default function Home() {
           />
         </div>
 
-        {/* Courses Section - Distinct Section */}
+        {/* Courses Section */}
         <div id="courses" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
           <h2 className="section-title">📖 Featured Courses</h2>
+          <p className="section-subtitle">Choose from our selection of expert-led courses and start learning today</p>
           <div className="courses-container" style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: 'center' }}>
             {filteredCourses.map(course => (
               <div key={course.id} className="course-card">
+                <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{course.type === 'video' ? '🎥' : '📄'}</div>
                 <h3 style={{ fontSize: '1.1rem', marginBottom: '6px', color: darkMode ? '#fff' : '#333' }}>{course.title}</h3>
                 <p style={{ fontSize: '0.8rem', color: darkMode ? '#aaa' : '#666', marginBottom: '12px' }}>{course.desc}</p>
                 
-                {/* Download PDF Button */}
-                <a href={course.fileLink} download target="_blank" style={{ textDecoration: 'none' }}>
-                  <button className="download-btn" style={{
-                    backgroundColor: mainColor,
-                    color: 'white',
-                    border: 'none',
-                    padding: '8px 12px',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    marginTop: '12px',
-                    marginBottom: '8px',
-                    fontSize: '0.75rem',
-                    fontWeight: 500,
-                    width: '100%'
-                  }}>
-                    📥 Download PDF
-                  </button>
-                </a>
-                
                 <span 
-                  style={{ color: mainColor, fontWeight: 500, fontSize: '0.7rem', cursor: 'pointer', display: 'block', textAlign: 'center' }}
+                  style={{ color: mainColor, fontWeight: 500, fontSize: '0.7rem', cursor: 'pointer', display: 'block', textAlign: 'center', marginTop: '12px', padding: '8px', borderRadius: '8px', backgroundColor: mainColorLight }}
                   onClick={() => setSelectedCourse(course)}
                 >
-                  View details →
+                  {course.type === 'video' ? '▶ Watch Video →' : 'Open Course →'}
                 </span>
               </div>
             ))}
@@ -426,37 +533,123 @@ export default function Home() {
           )}
         </div>
 
-        {/* Course Modal */}
+        {/* Course Modal - Supports both PDF and Video */}
         {selectedCourse && (
           <div className="modal-overlay" onClick={() => setSelectedCourse(null)}>
             <div className="modal-content" onClick={e => e.stopPropagation()}>
               <button onClick={() => setSelectedCourse(null)} 
-                      style={{ position: 'absolute', top: '16px', right: '20px', border: 'none', 
-                               background: 'none', fontSize: '1.3rem', cursor: 'pointer', color: darkMode ? '#fff' : '#888' }}>
+                      style={{ position: 'absolute', top: '20px', right: '24px', border: 'none', 
+                               background: 'none', fontSize: '1.5rem', cursor: 'pointer', color: darkMode ? '#fff' : '#888', zIndex: 1 }}>
                 ✕
               </button>
-              <h2 style={{ color: mainColor, fontSize: '1.4rem', marginBottom: '12px' }}>{selectedCourse.title}</h2>
-              <p style={{ fontSize: '0.85rem', color: darkMode ? '#ccc' : '#555', marginBottom: '16px', lineHeight: 1.5 }}>{selectedCourse.detail}</p>
-              <div style={{ background: darkMode ? '#0a0a0a' : '#f5f7fa', padding: '12px', borderRadius: '12px', marginBottom: '16px' }}>
-                <p style={{ fontSize: '0.8rem', margin: '4px 0' }}><strong>Instructor:</strong> {selectedCourse.teacher}</p>
-                <p style={{ fontSize: '0.8rem', margin: '4px 0' }}><strong>Price:</strong> {selectedCourse.price}</p>
+              
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', paddingRight: '30px' }}>
+                <div>
+                  <h2 style={{ color: mainColor, fontSize: '1.5rem', marginBottom: '8px', fontWeight: 700 }}>{selectedCourse.title}</h2>
+                  <p style={{ fontSize: '0.85rem', color: darkMode ? '#aaa' : '#666' }}>
+                    <strong>Instructor:</strong> {selectedCourse.teacher} | <strong>Price:</strong> {selectedCourse.price}
+                  </p>
+                </div>
               </div>
               
-              <a href={selectedCourse.fileLink} download target="_blank" style={{ textDecoration: 'none' }}>
-                <button style={{ width: '100%', marginBottom: '12px', padding: '10px', backgroundColor: '#4caf50', 
-                                 color: 'white', border: 'none', borderRadius: '10px', fontWeight: 500, cursor: 'pointer', fontSize: '0.8rem' }}>
-                  📥 Download PDF
-                </button>
-              </a>
+              <p style={{ fontSize: '0.9rem', color: darkMode ? '#ccc' : '#555', marginBottom: '24px', lineHeight: 1.6 }}>
+                {selectedCourse.detail}
+              </p>
               
-              <button style={{ width: '100%', padding: '10px', backgroundColor: mainColor, 
-                              color: 'white', border: 'none', borderRadius: '10px', fontWeight: 500, cursor: 'pointer', fontSize: '0.8rem' }}
-                      onClick={() => { 
-                        alert(`Enrollment started for ${selectedCourse.title}! We'll contact you.`); 
-                        setSelectedCourse(null);
-                      }}>
-                Enroll Now
-              </button>
+              {/* Content Based on Type */}
+              {selectedCourse.type === 'video' ? (
+                <>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h3 style={{ fontSize: '1rem', color: mainColor, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      🎬 Video Lecture
+                    </h3>
+                    <button
+                      onClick={toggleFullscreen}
+                      className="fullscreen-btn"
+                      style={{
+                        backgroundColor: mainColor,
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        fontWeight: 500,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      {isFullscreen ? '⛶ Exit Fullscreen' : '🖥️ Fullscreen'}
+                    </button>
+                  </div>
+                  <div className="video-container">
+                    <iframe
+                      className="video-iframe"
+                      src={selectedCourse.contentLink}
+                      title={selectedCourse.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h3 style={{ fontSize: '1rem', color: mainColor, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      📖 Course Materials
+                    </h3>
+                    <button
+                      onClick={toggleFullscreen}
+                      className="fullscreen-btn"
+                      style={{
+                        backgroundColor: mainColor,
+                        color: 'white',
+                        border: 'none',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        fontWeight: 500,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      {isFullscreen ? '⛶ Exit Fullscreen' : '🖥️ Fullscreen'}
+                    </button>
+                  </div>
+                  <iframe
+                    src={`${selectedCourse.contentLink}#toolbar=0&navpanes=0&statusbar=0&messages=0`}
+                    className="pdf-viewer"
+                    title={`${selectedCourse.title} - Course Content`}
+                    style={{
+                      width: '100%',
+                      height: isFullscreen ? 'calc(100vh - 200px)' : '550px',
+                      border: `1px solid ${darkMode ? '#333' : '#e0e0e0'}`,
+                      borderRadius: '12px',
+                      backgroundColor: darkMode ? '#1a1a1a' : '#f5f5f5'
+                    }}
+                  />
+                </>
+              )}
+              
+              {/* Enroll Button */}
+              <div style={{ marginTop: '24px' }}>
+                <button style={{ width: '100%', padding: '14px', backgroundColor: mainColor, 
+                                color: 'white', border: 'none', borderRadius: '12px', fontWeight: 600, 
+                                cursor: 'pointer', fontSize: '0.9rem' }}
+                        onClick={() => { 
+                          alert(`✅ You have successfully enrolled in ${selectedCourse.title}! Start learning now.`); 
+                          setSelectedCourse(null);
+                        }}>
+                  Enroll Now - Start Learning
+                </button>
+                <p style={{ fontSize: '0.7rem', color: darkMode ? '#888' : '#999', marginTop: '12px', textAlign: 'center' }}>
+                  Enroll to track your progress and get certified
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -464,23 +657,23 @@ export default function Home() {
         {/* Event Registration Modal */}
         {selectedEvent && (
           <div className="modal-overlay" onClick={() => setSelectedEvent(null)}>
-            <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <div className="modal-content" style={{ maxWidth: '500px' }} onClick={e => e.stopPropagation()}>
               <button onClick={() => setSelectedEvent(null)} 
                       style={{ position: 'absolute', top: '16px', right: '20px', border: 'none', 
                                background: 'none', fontSize: '1.3rem', cursor: 'pointer', color: darkMode ? '#fff' : '#888' }}>
                 ✕
               </button>
               <h2 style={{ color: mainColor, fontSize: '1.3rem', marginBottom: '12px' }}>Register for {selectedEvent.title}</h2>
-              <p style={{ fontSize: '0.85rem', marginBottom: '16px' }}>
+              <p style={{ fontSize: '0.85rem', marginBottom: '20px' }}>
                 📅 {selectedEvent.date} | ⏰ {selectedEvent.time}
               </p>
               <form action="https://formspree.io/f/xnjwyyvn" method="POST">
                 <input type="hidden" name="event" value={selectedEvent.title} />
                 <input type="hidden" name="event_date" value={selectedEvent.date} />
-                <input type="text" name="name" placeholder="Your Full Name" className="form-input" style={{ fontSize: '0.8rem' }} required />
-                <input type="email" name="email" placeholder="Your Email Address" className="form-input" style={{ fontSize: '0.8rem' }} required />
-                <input type="tel" name="phone" placeholder="Your Phone Number (optional)" className="form-input" style={{ fontSize: '0.8rem' }} />
-                <button type="submit" style={{ width: '100%', marginTop: '8px', padding: '10px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '10px', fontWeight: 500, cursor: 'pointer', fontSize: '0.8rem' }}>
+                <input type="text" name="name" placeholder="Your Full Name" className="form-input" style={{ fontSize: '0.85rem' }} required />
+                <input type="email" name="email" placeholder="Your Email Address" className="form-input" style={{ fontSize: '0.85rem' }} required />
+                <input type="tel" name="phone" placeholder="Your Phone Number (optional)" className="form-input" style={{ fontSize: '0.85rem' }} />
+                <button type="submit" style={{ width: '100%', marginTop: '16px', padding: '12px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '12px', fontWeight: 600, cursor: 'pointer', fontSize: '0.85rem' }}>
                   Confirm Registration
                 </button>
               </form>
@@ -491,16 +684,17 @@ export default function Home() {
         {/* Upcoming Events Section */}
         <div id="events" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
           <h2 className="section-title">📅 Upcoming Events</h2>
-          <div className="events-container" style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <p className="section-subtitle">Join our free webinars and workshops to enhance your skills</p>
+          <div className="events-container" style={{ display: 'flex', gap: '30px', justifyContent: 'center', flexWrap: 'wrap' }}>
             {events.map(event => (
               <div key={event.id} className="event-card">
-                <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>📌</div>
-                <h3 style={{ color: mainColor, marginBottom: '8px', fontSize: '1rem' }}>{event.title}</h3>
-                <p style={{ fontSize: '0.75rem', color: darkMode ? '#aaa' : '#666', marginBottom: '6px' }}>
+                <div style={{ fontSize: '2rem', marginBottom: '12px' }}>📌</div>
+                <h3 style={{ color: mainColor, marginBottom: '10px', fontSize: '1.1rem', fontWeight: 600 }}>{event.title}</h3>
+                <p style={{ fontSize: '0.8rem', color: darkMode ? '#aaa' : '#666', marginBottom: '8px' }}>
                   📅 {event.date} | ⏰ {event.time}
                 </p>
-                <p style={{ fontSize: '0.75rem', color: darkMode ? '#888' : '#777', marginBottom: '12px' }}>{event.description}</p>
-                <button className="event-register-btn" style={{ width: '100%', padding: '8px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 500 }} onClick={() => setSelectedEvent(event)}>
+                <p style={{ fontSize: '0.8rem', color: darkMode ? '#888' : '#777', marginBottom: '16px', lineHeight: 1.4 }}>{event.description}</p>
+                <button className="event-register-btn" style={{ width: '100%', padding: '10px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: 500 }} onClick={() => setSelectedEvent(event)}>
                   Register Now →
                 </button>
               </div>
@@ -509,35 +703,33 @@ export default function Home() {
         </div>
 
         {/* Newsletter & Contact Section */}
-        <div id="contact" className="side-by-side-container" style={{ display: 'flex', gap: '24px', justifyContent: 'center', width: '100%', maxWidth: '900px', marginBottom: '60px', padding: '0 16px' }}>
+        <div id="contact" className="side-by-side-container" style={{ display: 'flex', gap: '30px', justifyContent: 'center', width: '100%', maxWidth: '900px', marginBottom: '60px', padding: '0 16px' }}>
           
-          {/* Newsletter Box */}
-          <div className="side-box" style={{ flex: 1, backgroundColor: '#1e293b', color: 'white', padding: '20px', borderRadius: '20px', minWidth: '260px' }}>
-            <h3 style={{ color: mainColor, marginBottom: '8px', fontSize: '1.1rem' }}>📧 Get Updates</h3>
-            <p style={{ fontSize: '0.7rem', opacity: 0.8, marginBottom: '16px' }}>Subscribe for new courses and offers.</p>
+          <div className="side-box" style={{ flex: 1, backgroundColor: '#1e293b', color: 'white', padding: '28px', borderRadius: '20px', minWidth: '260px' }}>
+            <h3 style={{ color: mainColor, marginBottom: '12px', fontSize: '1.2rem' }}>📧 Get Updates</h3>
+            <p style={{ fontSize: '0.75rem', opacity: 0.8, marginBottom: '20px' }}>Subscribe for new courses and special offers</p>
             <form action="https://formspree.io/f/mojrzzqb" method="POST">
               <input 
                 type="email" 
                 name="email"
-                placeholder="Your email" 
-                style={{ width: '100%', padding: '10px', borderRadius: '30px', border: 'none', marginBottom: '12px', outline: 'none', fontSize: '0.8rem' }} 
+                placeholder="Your email address" 
+                style={{ width: '100%', padding: '12px', borderRadius: '30px', border: 'none', marginBottom: '15px', outline: 'none', fontSize: '0.85rem' }} 
                 required
               />
               <button type="submit" 
-                      style={{ width: '100%', padding: '10px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', fontWeight: 500, cursor: 'pointer', fontSize: '0.8rem' }}>
-                Subscribe
+                      style={{ width: '100%', padding: '12px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', fontWeight: 600, cursor: 'pointer', fontSize: '0.85rem' }}>
+                Subscribe Now
               </button>
             </form>
           </div>
           
-          {/* Contact Form Box */}
-          <div className="side-box" style={{ flex: 1, backgroundColor: darkMode ? '#1a1a2e' : mainColorLight, padding: '20px', borderRadius: '20px', minWidth: '260px' }}>
-            <h3 style={{ color: mainColor, marginBottom: '8px', fontSize: '1.1rem' }}>📩 Contact Us</h3>
+          <div className="side-box" style={{ flex: 1, backgroundColor: darkMode ? '#1a1a2e' : mainColorLight, padding: '28px', borderRadius: '20px', minWidth: '260px' }}>
+            <h3 style={{ color: mainColor, marginBottom: '12px', fontSize: '1.2rem' }}>📩 Contact Us</h3>
             <form action="https://formspree.io/f/mojrzzqb" method="POST">
-              <input type="text" name="name" placeholder="Your Name" className="form-input" style={{ fontSize: '0.8rem', marginBottom: '8px' }} required />
-              <input type="email" name="_replyto" placeholder="Your Email" className="form-input" style={{ fontSize: '0.8rem', marginBottom: '8px' }} required />
-              <textarea name="message" placeholder="Your Message..." className="form-input" style={{ fontSize: '0.8rem', minHeight: '50px', borderRadius: '12px', marginBottom: '8px' }} required></textarea>
-              <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', fontWeight: 500, cursor: 'pointer', fontSize: '0.8rem' }}>Send Message</button>
+              <input type="text" name="name" placeholder="Your Name" className="form-input" style={{ fontSize: '0.85rem', marginBottom: '12px' }} required />
+              <input type="email" name="_replyto" placeholder="Your Email" className="form-input" style={{ fontSize: '0.85rem', marginBottom: '12px' }} required />
+              <textarea name="message" placeholder="Your Message..." className="form-input" style={{ fontSize: '0.85rem', minHeight: '80px', borderRadius: '12px', marginBottom: '12px' }} required></textarea>
+              <button type="submit" style={{ width: '100%', padding: '12px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', fontWeight: 600, cursor: 'pointer', fontSize: '0.85rem' }}>Send Message</button>
             </form>
           </div>
         </div>
@@ -553,33 +745,45 @@ export default function Home() {
         }}>↑</button>
       )}
 
-      {/* Footer with Social Media - Reduced Size */}
-      <footer style={{ backgroundColor: '#0f172a', color: 'white', padding: '30px 20px', textAlign: 'center' }}>
-        <h3 style={{ marginBottom: '8px', fontSize: '1.1rem' }}>Waloo Academy</h3>
-        <p style={{ fontSize: '0.7rem', marginBottom: '16px', opacity: 0.7 }}>© 2025 Waloo Academy. Where Knowledge Meets Innovation!</p>
+      {/* Footer */}
+      <footer style={{ backgroundColor: '#0f172a', color: 'white', padding: '40px 20px', textAlign: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '16px' }}>
+          <img 
+            src="/logo.png" 
+            alt="Waloo Academy Logo" 
+            style={{ 
+              width: '36px', 
+              height: '36px', 
+              borderRadius: '8px',
+              objectFit: 'cover'
+            }} 
+          />
+          <h3 style={{ margin: 0, fontSize: '1.2rem' }}>Waloo Academy</h3>
+        </div>
+        <p style={{ fontSize: '0.75rem', marginBottom: '20px', opacity: 0.7 }}>© 2025 Waloo Academy. Where Knowledge Meets Innovation!</p>
         
-        {/* Social Media Links - Reduced Size */}
-        <div style={{ marginBottom: '20px', display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <a href="https://t.me/walooacademy" target="_blank" rel="noopener noreferrer" className="social-icon" style={{ color: '#0088cc', textDecoration: 'none', fontSize: '0.75rem' }}>
+        <div style={{ marginBottom: '24px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <a href="https://t.me/walooacademy" target="_blank" rel="noopener noreferrer" className="social-icon" style={{ color: '#0088cc', textDecoration: 'none', fontSize: '0.8rem' }}>
             📱 Telegram
           </a>
-          <a href="https://youtube.com/@walooacademy" target="_blank" rel="noopener noreferrer" className="social-icon" style={{ color: '#ff0000', textDecoration: 'none', fontSize: '0.75rem' }}>
+          <a href="https://youtube.com/@walooacademy" target="_blank" rel="noopener noreferrer" className="social-icon" style={{ color: '#ff0000', textDecoration: 'none', fontSize: '0.8rem' }}>
             ▶️ YouTube
           </a>
-          <a href="https://facebook.com/walooacademy" target="_blank" rel="noopener noreferrer" className="social-icon" style={{ color: '#1877f2', textDecoration: 'none', fontSize: '0.75rem' }}>
+          <a href="https://facebook.com/walooacademy" target="_blank" rel="noopener noreferrer" className="social-icon" style={{ color: '#1877f2', textDecoration: 'none', fontSize: '0.8rem' }}>
             👍 Facebook
           </a>
         </div>
         
-        <div style={{ marginTop: '16px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', fontSize: '0.7rem' }}>
+        <div style={{ marginTop: '20px', display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap', fontSize: '0.75rem' }}>
           <a href="#" style={{ color: mainColor, textDecoration: 'none' }}>Home</a>
           <a href="#courses" style={{ color: mainColor, textDecoration: 'none' }}>Courses</a>
+          <a href="#whyus" style={{ color: mainColor, textDecoration: 'none' }}>Why Us</a>
+          <a href="#testimonials" style={{ color: mainColor, textDecoration: 'none' }}>Reviews</a>
           <a href="#events" style={{ color: mainColor, textDecoration: 'none' }}>Events</a>
-          <a href="#why-testimonial" style={{ color: mainColor, textDecoration: 'none' }}>About</a>
           <a href="#contact" style={{ color: mainColor, textDecoration: 'none' }}>Contact</a>
         </div>
         
-        <p style={{ marginTop: '16px', fontSize: '0.6rem', opacity: 0.5 }}>Empowering Ethiopian education</p>
+        <p style={{ marginTop: '20px', fontSize: '0.65rem', opacity: 0.5 }}>Empowering Ethiopian education since 2025</p>
       </footer>
     </div>
   );
