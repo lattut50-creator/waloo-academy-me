@@ -190,6 +190,8 @@ export default function Home() {
     }}>
       
       <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
         * {
           margin: 0;
           padding: 0;
@@ -199,8 +201,6 @@ export default function Home() {
         body {
           overflow-x: hidden;
         }
-        
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
         .category-card {
           transition: all 0.3s ease;
@@ -665,7 +665,7 @@ export default function Home() {
         }
       `}</style>
 
-      {/* Nav Bar with Dashboard Link */}
+      {/* FIXED NAVBAR - DOES NOT MOVE */}
       <nav style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
@@ -673,9 +673,11 @@ export default function Home() {
         padding: '12px 20px',
         backgroundColor: mainColor, 
         color: 'white', 
-        position: 'sticky', 
+        position: 'fixed',
         top: 0, 
-        zIndex: 100, 
+        left: 0,
+        right: 0,
+        zIndex: 9999, 
         boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
         flexWrap: 'wrap'
       }}>
@@ -762,7 +764,16 @@ export default function Home() {
         </div>
       </nav>
 
-      <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 20px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+      {/* MAIN CONTENT WITH TOP PADDING FOR FIXED NAVBAR */}
+      <main style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        padding: '80px 20px 40px 20px',
+        maxWidth: '1400px', 
+        margin: '0 auto', 
+        width: '100%' 
+      }}>
         
         {/* Hero Section */}
         <div style={{ width: '100%', maxWidth: '1100px', textAlign: 'left', marginBottom: '30px' }}>
@@ -957,7 +968,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Course Modal */}
+        {/* Course Modal - PDF Viewer */}
         {selectedCourse && selectedCourse.type === 'pdf' && (
           <div className="modal-overlay" onClick={() => setSelectedCourse(null)}>
             <div className="modal-content" onClick={e => e.stopPropagation()}>
@@ -979,6 +990,7 @@ export default function Home() {
           </div>
         )}
 
+        {/* Course Modal - Video */}
         {selectedCourse && selectedCourse.type === 'video' && (
           <div className="modal-overlay" onClick={() => setSelectedCourse(null)}>
             <div className="modal-content" onClick={e => e.stopPropagation()}>
@@ -994,7 +1006,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Courses Section */}
+        {/* Popular Courses Section */}
         <div id="courses" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
           <h2 className="section-title">📖 Popular Courses</h2>
           <div className="categories-grid" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>
