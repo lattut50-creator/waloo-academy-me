@@ -1,5 +1,7 @@
  "use client";
 import { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { SignInButton, SignUpButton, UserButton, useAuth } from '@clerk/nextjs';
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,9 +14,17 @@ export default function Home() {
   const [navbarSearchTerm, setNavbarSearchTerm] = useState("");
   const [language, setLanguage] = useState("EN");
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const pdfContainerRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const { isSignedIn } = useAuth();
 
-  // Admin password (change this to your own password)
+  // Fix hydration issues - only render after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Admin password
   const ADMIN_PASSWORD = "waloo123";
 
   // Categories for Documents
@@ -58,13 +68,18 @@ export default function Home() {
 
   // Load uploaded files from localStorage
   useEffect(() => {
-    const savedFiles = localStorage.getItem('waloo_uploaded_files');
-    if (savedFiles) {
-      setUploadedFiles(JSON.parse(savedFiles));
+    try {
+      const savedFiles = localStorage.getItem('waloo_uploaded_files');
+      if (savedFiles) {
+        setUploadedFiles(JSON.parse(savedFiles));
+      }
+    } catch (error) {
+      console.error("Error loading files:", error);
     }
   }, []);
 
   const handleFileUpload = (file) => {
+    if (!file) return;
     const newFile = {
       name: file.name,
       url: URL.createObjectURL(file),
@@ -111,6 +126,17 @@ export default function Home() {
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target) && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
+
   const getCategoryCourses = (categoryName) => {
     return coursesByCategory[categoryName] || [];
   };
@@ -148,52 +174,14 @@ export default function Home() {
     doc.title.toLowerCase().includes(navbarSearchTerm.toLowerCase())
   );
 
-  // Admin upload authentication effect
-  useEffect(() => {
-    const setupAdminAuth = () => {
-      const passwordInput = document.getElementById('adminPassword');
-      const authStatus = document.getElementById('adminAuthStatus');
-      const uploadLabel = document.getElementById('uploadLabel');
-      const fileInput = document.getElementById('adminFileUpload');
-      
-      if (passwordInput && uploadLabel && fileInput) {
-        const checkPassword = () => {
-          const enteredPassword = passwordInput.value;
-          if (enteredPassword === ADMIN_PASSWORD) {
-            if (authStatus) authStatus.style.display = 'none';
-            uploadLabel.style.backgroundColor = mainColor;
-            uploadLabel.style.color = 'white';
-            uploadLabel.style.cursor = 'pointer';
-            uploadLabel.style.opacity = '1';
-            uploadLabel.innerHTML = '📤 Choose File to Upload';
-            fileInput.disabled = false;
-          } else {
-            if (enteredPassword.length > 0 && authStatus) {
-              authStatus.style.display = 'block';
-              authStatus.innerHTML = '❌ Incorrect password! Access denied.';
-            } else if (authStatus) {
-              authStatus.style.display = 'none';
-            }
-            uploadLabel.style.backgroundColor = '#ccc';
-            uploadLabel.style.color = '#666';
-            uploadLabel.style.cursor = 'not-allowed';
-            uploadLabel.style.opacity = '0.6';
-            uploadLabel.innerHTML = '🔒 Enter correct password first';
-            fileInput.disabled = true;
-          }
-        };
-        
-        passwordInput.addEventListener('input', checkPassword);
-        checkPassword();
-      }
-    };
-    
-    setTimeout(setupAdminAuth, 100);
-  }, [mainColor, ADMIN_PASSWORD]);
+  // Don't render until mounted to avoid hydration issues
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div style={{ 
-      fontFamily: 'Inter, system-ui, -apple-system, sans-serif', 
+      fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', 
       backgroundColor: darkMode ? '#0a0a0a' : '#f5f7fa', 
       minHeight: '100vh', 
       scrollBehavior: 'smooth',
@@ -202,14 +190,24 @@ export default function Home() {
     }}>
       
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          overflow-x: hidden;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
         .category-card {
           transition: all 0.3s ease;
           background-color: ${darkMode ? '#1a1a2e' : 'white'};
-          padding: 24px;
+          padding: 24px 16px;
           border-radius: 20px;
-          min-width: 200px;
+          min-width: 160px;
           text-align: center;
           cursor: pointer;
           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
@@ -226,7 +224,8 @@ export default function Home() {
           background-color: ${darkMode ? '#1a1a2e' : 'white'};
           padding: 20px;
           border-radius: 16px;
-          width: 260px;
+          width: 100%;
+          max-width: 280px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
           text-align: left;
           will-change: transform;
@@ -234,7 +233,11 @@ export default function Home() {
           cursor: pointer;
           position: relative;
         }
-        .course-card:hover, .doc-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); border-color: ${mainColor}; }
+        .course-card:hover, .doc-card:hover { 
+          transform: translateY(-6px); 
+          box-shadow: 0 12px 24px rgba(0,0,0,0.1); 
+          border-color: ${mainColor}; 
+        }
         
         .delete-btn {
           position: absolute;
@@ -259,15 +262,22 @@ export default function Home() {
           transform: scale(1.1);
         }
         
-        .hero-btn { transition: all 0.3s ease; will-change: transform; }
-        .hero-btn:hover { background-color: ${mainColorDark} !important; transform: scale(1.02); }
+        .hero-btn { 
+          transition: all 0.3s ease; 
+          will-change: transform;
+        }
+        .hero-btn:hover { 
+          background-color: ${mainColorDark} !important; 
+          transform: scale(1.02); 
+        }
         
         .event-card {
           transition: all 0.3s ease;
           background-color: ${darkMode ? '#1a1a2e' : 'white'};
           padding: 20px;
           border-radius: 16px;
-          width: 280px;
+          width: 100%;
+          max-width: 300px;
           box-shadow: 0 2px 8px rgba(0,0,0,0.04);
           border: 1px solid ${darkMode ? '#2a2a3e' : '#eef2f6'};
           text-align: center;
@@ -279,22 +289,38 @@ export default function Home() {
         }
         
         .form-input { 
-          width: 100%; padding: 10px 14px; margin-bottom: 12px; border-radius: 10px; 
-          border: 1px solid #ddd; outline: none; font-size: 0.85rem;
+          width: 100%; 
+          padding: 12px 16px; 
+          margin-bottom: 12px; 
+          border-radius: 12px; 
+          border: 1px solid #ddd; 
+          outline: none; 
+          font-size: 0.9rem;
           background: ${darkMode ? '#2a2a2a' : 'white'};
           color: ${darkMode ? '#fff' : '#333'};
+          transition: border 0.2s;
         }
-        .form-input:focus { border-color: ${mainColor}; box-shadow: 0 0 0 2px rgba(26,115,232,0.1); }
+        .form-input:focus { 
+          border-color: ${mainColor}; 
+          box-shadow: 0 0 0 3px rgba(26,115,232,0.1); 
+        }
         
         .modal-overlay { 
-          position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+          position: fixed; 
+          top: 0; 
+          left: 0; 
+          width: 100%; 
+          height: 100%; 
           background: rgba(0,0,0,0.85);
-          display: flex; justify-content: center; 
-          align-items: center; z-index: 1000; animation: fadeIn 0.2s ease;
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          z-index: 1000; 
+          animation: fadeIn 0.2s ease;
         }
         .modal-content { 
           background: ${darkMode ? '#1a1a2e' : 'white'}; 
-          padding: 32px;
+          padding: 24px;
           border-radius: 24px;
           max-width: 900px;
           width: 90%;
@@ -358,9 +384,10 @@ export default function Home() {
           align-items: center;
           gap: 6px;
           font-size: 0.85rem;
-          padding: 6px 12px;
+          padding: 8px 16px;
           border-radius: 30px;
           background: ${darkMode ? '#1a1a2e' : '#f0f2f5'};
+          text-decoration: none;
         }
         .social-icon:hover {
           transform: translateY(-2px);
@@ -368,7 +395,7 @@ export default function Home() {
         }
         
         .section-title {
-          font-size: 2rem;
+          font-size: clamp(1.5rem, 5vw, 2rem);
           font-weight: 700;
           margin-bottom: 16px;
           text-align: center;
@@ -377,7 +404,7 @@ export default function Home() {
         
         .categories-grid {
           display: flex;
-          gap: 24px;
+          gap: 20px;
           flex-wrap: wrap;
           justify-content: center;
           margin: 40px 0;
@@ -394,8 +421,12 @@ export default function Home() {
         }
         .view-all-link:hover { text-decoration: underline; }
         
-        .logo { transition: transform 0.2s ease; }
-        .logo:hover { transform: scale(1.05); }
+        .logo { 
+          transition: transform 0.2s ease; 
+        }
+        .logo:hover { 
+          transform: scale(1.05); 
+        }
         
         .navbar-search {
           display: flex;
@@ -408,28 +439,37 @@ export default function Home() {
         .navbar-search input {
           background: transparent;
           border: none;
-          padding: 6px 8px;
-          font-size: 0.8rem;
+          padding: 8px 12px;
+          font-size: 0.85rem;
           color: white;
           outline: none;
-          width: 140px;
+          width: 160px;
         }
-        .navbar-search input::placeholder { color: rgba(255,255,255,0.7); }
+        .navbar-search input::placeholder { 
+          color: rgba(255,255,255,0.7); 
+        }
+        .navbar-search span {
+          color: rgba(255,255,255,0.8);
+        }
         
         .language-selector {
           background: rgba(255,255,255,0.15);
           border: none;
           color: white;
-          padding: 6px 10px;
+          padding: 8px 12px;
           border-radius: 30px;
-          font-size: 0.75rem;
+          font-size: 0.8rem;
           cursor: pointer;
           margin-right: 10px;
+        }
+        .language-selector option {
+          background: ${mainColor};
+          color: white;
         }
         
         .slogan-container {
           display: flex;
-          gap: 16px;
+          gap: 12px;
           justify-content: flex-start;
           flex-wrap: wrap;
           margin-bottom: 20px;
@@ -448,7 +488,7 @@ export default function Home() {
           font-size: 1rem;
           color: ${darkMode ? '#ccc' : '#555'};
           margin-bottom: 25px;
-          line-height: 1.5;
+          line-height: 1.6;
         }
         
         .faq-item {
@@ -459,82 +499,274 @@ export default function Home() {
           cursor: pointer;
           transition: all 0.3s ease;
         }
-        .faq-item:hover { border-color: ${mainColor}; }
+        .faq-item:hover { 
+          border-color: ${mainColor}; 
+        }
         
         .admin-upload-summary {
           cursor: pointer;
           list-style: none;
         }
+        .admin-upload-summary::-webkit-details-marker {
+          display: none;
+        }
         
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .nav-links a, .nav-links button {
+          white-space: nowrap;
+        }
+        
+        @keyframes fadeIn { 
+          from { opacity: 0; } 
+          to { opacity: 1; } 
+        }
+        @keyframes slideUp { 
+          from { transform: translateY(30px); opacity: 0; } 
+          to { transform: translateY(0); opacity: 1; } 
+        }
 
+        /* Tablet Styles */
+        @media (max-width: 1024px) {
+          .categories-grid {
+            gap: 16px;
+          }
+          .category-card {
+            min-width: 140px;
+            padding: 20px 12px;
+          }
+        }
+
+        /* Mobile Styles */
         @media (max-width: 768px) {
-          .nav-links { display: ${isOpen ? 'flex' : 'none'} !important; flex-direction: column; 
-          position: absolute; top: 65px; left: 0; width: 100%; background-color: ${mainColor}; 
-          padding: 20px; gap: 12px; }
-          .menu-icon { display: block !important; }
-          .side-by-side-container { flex-direction: column !important; align-items: center !important; }
-          .side-box { width: 95% !important; min-width: unset !important; }
-          .modal-content { padding: 20px; }
-          .pdf-container { height: 400px; }
-          .categories-grid { gap: 16px; }
-          .category-card { min-width: 160px; padding: 16px; }
-          .slogan-container { justify-content: center; }
-          .main-slogan { text-align: center; }
+          .nav-links { 
+            display: ${isOpen ? 'flex' : 'none'} !important; 
+            flex-direction: column; 
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background-color: ${mainColor};
+            padding: 20px;
+            gap: 15px;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          }
+          .nav-links a, .nav-links div {
+            width: 100%;
+            text-align: center;
+          }
+          .menu-icon { 
+            display: block !important; 
+          }
+          .side-by-side-container { 
+            flex-direction: column !important; 
+            align-items: center !important; 
+          }
+          .side-box { 
+            width: 100% !important; 
+            min-width: unset !important; 
+            margin-bottom: 16px;
+          }
+          .events-container { 
+            flex-direction: column !important; 
+            align-items: center !important; 
+          }
+          .why-testimonial-container { 
+            flex-direction: column !important; 
+            align-items: center !important; 
+          }
+          .courses-container, .documents-grid {
+            justify-content: center !important;
+          }
+          .category-card {
+            min-width: calc(50% - 16px);
+            flex: 1;
+          }
+          .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+          }
+          .course-card, .doc-card {
+            max-width: 100%;
+            width: 100%;
+          }
+          .modal-content {
+            padding: 20px;
+            width: 95%;
+          }
+          .pdf-container {
+            height: 400px;
+          }
+          .slogan-container {
+            justify-content: center;
+          }
+          .main-slogan {
+            text-align: center;
+          }
+          .hero-btn {
+            width: 100%;
+            max-width: 280px;
+          }
+          .navbar-search input {
+            width: 100px;
+          }
+          .navbar-search {
+            margin: 0 5px;
+          }
+          .language-selector {
+            padding: 6px 8px;
+            font-size: 0.7rem;
+          }
+        }
+
+        /* Small Mobile Styles */
+        @media (max-width: 480px) {
+          .category-card {
+            min-width: 100%;
+          }
+          .categories-grid {
+            grid-template-columns: 1fr;
+          }
+          .section-title {
+            font-size: 1.3rem;
+          }
+          .navbar-search {
+            display: none;
+          }
+        }
+        
+        /* Landscape orientation fix */
+        @media (max-height: 500px) and (orientation: landscape) {
+          .modal-content {
+            max-height: 85vh;
+          }
+          .pdf-container {
+            height: 300px;
+          }
+        }
+        
+        /* Prevent horizontal scroll */
+        html, body {
+          overflow-x: hidden;
+          width: 100%;
+          position: relative;
+        }
+        
+        /* Ensure all images are responsive */
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+        
+        /* Smooth transitions */
+        button, a, .course-card, .category-card, .event-card {
+          -webkit-tap-highlight-color: transparent;
         }
       `}</style>
 
-      {/* Nav Bar */}
+      {/* Nav Bar with Dashboard Link */}
       <nav style={{ 
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center', 
-        padding: '10px 30px', backgroundColor: mainColor, color: 'white', 
-        position: 'sticky', top: 0, zIndex: 100, boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        padding: '12px 20px',
+        backgroundColor: mainColor, 
+        color: 'white', 
+        position: 'sticky', 
+        top: 0, 
+        zIndex: 100, 
+        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+        flexWrap: 'wrap'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <img src="/logo.png" alt="Logo" className="logo" style={{ width: '36px', height: '36px', borderRadius: '10px', objectFit: 'cover' }} />
-          <h2 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 600 }}>Waloo Academy</h2>
+          <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 600 }}>Waloo Academy</h2>
         </div>
         
-        <div className="navbar-search">
-          <span>🔍</span>
-          <input 
-            type="text" 
-            placeholder="Search..." 
-            value={navbarSearchTerm}
-            onChange={(e) => setNavbarSearchTerm(e.target.value)}
-          />
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+          <div className="navbar-search">
+            <span>🔍</span>
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              value={navbarSearchTerm}
+              onChange={(e) => setNavbarSearchTerm(e.target.value)}
+            />
+          </div>
+          
+          <select className="language-selector" value={language} onChange={(e) => setLanguage(e.target.value)}>
+            <option value="EN">🌐 EN</option>
+            <option value="AM">🇪🇹 AM</option>
+            <option value="OM">🇪🇹 OM</option>
+          </select>
+          
+          <button onClick={() => setDarkMode(!darkMode)} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', color: 'white', fontSize: '0.9rem', cursor: 'pointer', padding: '6px 12px', borderRadius: '30px' }}>
+            {darkMode ? '☀️' : '🌙'}
+          </button>
+          
+          <div className="menu-icon" style={{ display: 'none', fontSize: '1.6rem', cursor: 'pointer' }} onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? '✕' : '☰'}
+          </div>
         </div>
         
-        <select className="language-selector" value={language} onChange={(e) => setLanguage(e.target.value)}>
-          <option value="EN">🌐 EN</option>
-          <option value="AM">🇪🇹 AM</option>
-          <option value="OM">🇪🇹 OM</option>
-        </select>
-        
-        <button onClick={() => setDarkMode(!darkMode)} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', color: 'white', fontSize: '0.9rem', cursor: 'pointer', padding: '6px 12px', borderRadius: '30px' }}>
-          {darkMode ? '☀️' : '🌙'}
-        </button>
-        
-        <div className="menu-icon" style={{ display: 'none', fontSize: '1.6rem', cursor: 'pointer' }} onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? '✕' : '☰'}
-        </div>
-        
-        <div className="nav-links" style={{ display: 'flex', gap: '20px', alignItems: 'center', fontSize: '0.85rem' }}>
+        <div className="nav-links" ref={mobileMenuRef} style={{ display: 'flex', gap: '16px', alignItems: 'center', fontSize: '0.85rem', flexWrap: 'wrap' }}>
           <a href="#" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Home</a>
           <a href="#documents" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Categories</a>
           <a href="#courses" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Courses</a>
+          <a href="/blog" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Blog</a>
+          <a href="/resources" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Resources</a>
+          {isSignedIn && (
+            <a href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Dashboard</a>
+          )}
           <a href="#faq" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>FAQ</a>
           <a href="#events" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Events</a>
           <a href="#contact" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Contact</a>
+          
+          {!isSignedIn ? (
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <SignInButton mode="modal">
+                <button style={{ 
+                  background: 'white', 
+                  color: '#1a73e8', 
+                  border: 'none', 
+                  padding: '6px 14px', 
+                  borderRadius: '25px',
+                  cursor: 'pointer',
+                  fontWeight: 500,
+                  fontSize: '0.8rem'
+                }}>
+                  Sign In
+                </button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button style={{ 
+                  background: 'transparent', 
+                  color: 'white', 
+                  border: '1px solid white', 
+                  padding: '6px 14px', 
+                  borderRadius: '25px',
+                  cursor: 'pointer',
+                  fontWeight: 500,
+                  fontSize: '0.8rem'
+                }}>
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          )}
         </div>
       </nav>
 
-      <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 20px' }}>
+      <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px 20px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
         
-        {/* Hero Section - Slogans LEFT ALIGNED */}
+        {/* Hero Section */}
         <div style={{ width: '100%', maxWidth: '1100px', textAlign: 'left', marginBottom: '30px' }}>
-          <h1 style={{ color: mainColor, fontSize: '2.5rem', fontWeight: 700, marginBottom: '16px' }}>Waloo Academy</h1>
+          <h1 style={{ color: mainColor, fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 700, marginBottom: '16px' }}>Waloo Academy</h1>
           
           <div className="slogan-container">
             <span className="slogan-badge">📚 Learn Anywhere</span>
@@ -547,18 +779,18 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Image */}
+        {/* Hero Image */}
         <div style={{ width: '100%', maxWidth: '800px', marginBottom: '30px', textAlign: 'center' }}>
-          <img src="/profile2.png" alt="Students" loading="eager" width="700" height="400" style={{ width: '100%', maxWidth: '650px', borderRadius: '20px', boxShadow: '0 12px 30px rgba(0,0,0,0.1)', objectFit: 'cover' }} />
+          <img src="/profile2.png" alt="Students" loading="eager" width="700" height="400" style={{ width: '100%', maxWidth: '550px', borderRadius: '20px', boxShadow: '0 12px 30px rgba(0,0,0,0.1)', objectFit: 'cover' }} />
         </div>
 
-        {/* Explore Text - BELOW IMAGE */}
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 700, color: darkMode ? '#fff' : '#333', marginBottom: '8px' }}>Explore, learn, apply.</h2>
+        {/* Explore Text */}
+        <div style={{ textAlign: 'center', marginBottom: '20px', width: '100%' }}>
+          <h2 style={{ fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 700, color: darkMode ? '#fff' : '#333', marginBottom: '8px' }}>Explore, learn, apply.</h2>
           <p style={{ fontSize: '0.9rem', color: darkMode ? '#aaa' : '#666' }}>With over 300+ million documents, find the answers you need to get work done.</p>
         </div>
 
-                {/* Admin-Only Upload Section - Password Protected */}
+        {/* Admin Upload Section */}
         <div style={{ marginBottom: '30px', textAlign: 'center', width: '100%', maxWidth: '500px' }}>
           <details style={{ cursor: 'pointer' }}>
             <summary className="admin-upload-summary" style={{ 
@@ -591,46 +823,9 @@ export default function Home() {
                   color: darkMode ? '#fff' : '#333',
                   marginBottom: '10px'
                 }}
-                onKeyUp={(e) => {
-                  const password = e.target.value;
-                  const uploadBtn = document.getElementById('adminUploadBtn');
-                  const fileInput = document.getElementById('adminFileUpload');
-                  const authStatus = document.getElementById('adminAuthStatus');
-                  
-                  if (password === ADMIN_PASSWORD) {
-                    if (authStatus) authStatus.style.display = 'none';
-                    if (uploadBtn) {
-                      uploadBtn.style.backgroundColor = mainColor;
-                      uploadBtn.style.color = 'white';
-                      uploadBtn.style.cursor = 'pointer';
-                      uploadBtn.style.opacity = '1';
-                      uploadBtn.innerHTML = '📤 Choose File to Upload';
-                    }
-                    if (fileInput) fileInput.disabled = false;
-                  } else {
-                    if (password.length > 0 && authStatus) {
-                      authStatus.style.display = 'block';
-                      authStatus.innerHTML = '❌ Incorrect password! Access denied.';
-                    } else if (authStatus) {
-                      authStatus.style.display = 'none';
-                    }
-                    if (uploadBtn) {
-                      uploadBtn.style.backgroundColor = '#ccc';
-                      uploadBtn.style.color = '#666';
-                      uploadBtn.style.cursor = 'not-allowed';
-                      uploadBtn.style.opacity = '0.6';
-                      uploadBtn.innerHTML = '🔒 Enter correct password first';
-                    }
-                    if (fileInput) {
-                      fileInput.disabled = true;
-                      fileInput.value = '';
-                    }
-                  }
-                }}
               />
               <div id="adminAuthStatus" style={{ fontSize: '0.7rem', marginBottom: '10px', color: '#e74c3c', display: 'none' }}></div>
               
-              {/* Upload Button - Triggers file input */}
               <button
                 id="adminUploadBtn"
                 style={{
@@ -674,26 +869,13 @@ export default function Home() {
                   }
                   
                   if (!file) return;
-                  
-                  const newFile = {
-                    name: file.name,
-                    url: URL.createObjectURL(file),
-                    size: file.size,
-                    type: file.type,
-                    id: Date.now() + Math.random()
-                  };
-                  const updatedFiles = [...uploadedFiles, newFile];
-                  setUploadedFiles(updatedFiles);
-                  localStorage.setItem('waloo_uploaded_files', JSON.stringify(updatedFiles));
-                  alert(`✅ Uploaded: ${file.name}`);
+                  handleFileUpload(file);
                   e.target.value = '';
-                  
-                  // Refresh the page to show new file
                   setTimeout(() => window.location.reload(), 500);
                 }}
               />
               <p style={{ fontSize: '0.7rem', color: darkMode ? '#888' : '#999', marginTop: '10px' }}>
-                Only admin can upload files. Enter correct password to enable upload
+                Only admin can upload files. Password: waloo123
               </p>
             </div>
           </details>
@@ -703,7 +885,8 @@ export default function Home() {
             </p>
           )}
         </div>
-        {/* All Documents Section */}
+
+        {/* Categories Section */}
         <div id="documents" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px' }}>
           <div className="categories-grid">
             {categories.map(cat => (
@@ -713,26 +896,25 @@ export default function Home() {
                 onClick={() => setSelectedCategory(selectedCategory === cat.name ? null : cat.name)}
                 style={{ borderBottom: selectedCategory === cat.name ? `3px solid ${mainColor}` : 'none' }}
               >
-                <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>{cat.icon}</div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '6px', color: darkMode ? '#fff' : '#333' }}>{cat.name}</h3>
-                <p style={{ fontSize: '0.7rem', color: darkMode ? '#888' : '#999', marginBottom: '12px' }}>{cat.count} categories</p>
+                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>{cat.icon}</div>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: '4px' }}>{cat.name}</h3>
+                <p style={{ fontSize: '0.65rem', color: darkMode ? '#888' : '#999', marginBottom: '8px' }}>{cat.count} categories</p>
                 <a href="#" className="view-all-link" onClick={(e) => { e.preventDefault(); setSelectedCategory(selectedCategory === cat.name ? null : cat.name); }}>View all →</a>
               </div>
             ))}
           </div>
 
-          {/* Category Courses */}
           {selectedCategory && (
             <div style={{ marginTop: '30px', padding: '20px', background: darkMode ? '#1a1a2e' : 'white', borderRadius: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
-                <h3 style={{ color: mainColor, fontSize: '1.3rem', fontWeight: 600 }}>{selectedCategory} Courses</h3>
+                <h3 style={{ color: mainColor, fontSize: '1.2rem', fontWeight: 600 }}>{selectedCategory} Courses</h3>
                 <button onClick={() => setSelectedCategory(null)} style={{ background: 'none', border: 'none', color: mainColor, cursor: 'pointer', fontSize: '0.8rem' }}>Close ✕</button>
               </div>
               <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
                 {getCategoryCourses(selectedCategory).map(course => (
                   <div key={course.id} className="course-card" onClick={() => setSelectedCourse({ ...course, teacher: "Waloo Academy", price: "Free", detail: course.desc })}>
                     <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>{course.type === 'video' ? '🎥' : '📄'}</div>
-                    <h4 style={{ fontSize: '0.95rem', marginBottom: '5px', fontWeight: 600 }}>{course.title}</h4>
+                    <h4 style={{ fontSize: '0.9rem', marginBottom: '5px', fontWeight: 600 }}>{course.title}</h4>
                     <p style={{ fontSize: '0.7rem', color: darkMode ? '#aaa' : '#666' }}>{course.desc}</p>
                     <span style={{ color: mainColor, fontSize: '0.65rem', marginTop: '10px', display: 'block' }}>{course.type === 'video' ? '▶ Watch →' : '📖 Read →'}</span>
                   </div>
@@ -742,10 +924,10 @@ export default function Home() {
           )}
         </div>
 
-        {/* Document Cards for Uploaded Files */}
+        {/* Uploaded Documents */}
         {uploadedFiles.length > 0 && (
           <div style={{ width: '100%', maxWidth: '1100px', marginBottom: '40px' }}>
-            <h3 className="section-title" style={{ fontSize: '1.5rem' }}>📁 Uploaded Documents</h3>
+            <h3 className="section-title" style={{ fontSize: '1.3rem' }}>📁 Uploaded Documents</h3>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
               {uploadedFiles.map(file => (
                 <div key={file.id} className="doc-card" onClick={() => setSelectedCourse({
@@ -766,8 +948,8 @@ export default function Home() {
                   >
                     ✕
                   </button>
-                  <div style={{ fontSize: '1.8rem', marginBottom: '10px' }}>📄</div>
-                  <h3 style={{ fontSize: '0.9rem', marginBottom: '5px', color: darkMode ? '#fff' : '#333' }}>{file.name}</h3>
+                  <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>📄</div>
+                  <h3 style={{ fontSize: '0.8rem', marginBottom: '5px', fontWeight: 600 }}>{file.name.length > 30 ? file.name.substring(0, 30) + '...' : file.name}</h3>
                   <span className="section-badge" style={{ backgroundColor: mainColorLight, color: mainColor, padding: '2px 8px', borderRadius: '12px', fontSize: '0.6rem' }}>📎 Uploaded</span>
                 </div>
               ))}
@@ -775,19 +957,19 @@ export default function Home() {
           </div>
         )}
 
-        {/* Course Modal - PDF Viewer */}
+        {/* Course Modal */}
         {selectedCourse && selectedCourse.type === 'pdf' && (
           <div className="modal-overlay" onClick={() => setSelectedCourse(null)}>
             <div className="modal-content" onClick={e => e.stopPropagation()}>
-              <button onClick={() => setSelectedCourse(null)} style={{ position: 'absolute', top: '20px', right: '24px', border: 'none', background: 'none', fontSize: '1.5rem', cursor: 'pointer', color: darkMode ? '#fff' : '#888' }}>✕</button>
-              <h2 style={{ color: mainColor, fontSize: '1.3rem', marginBottom: '8px', fontWeight: 700 }}>{selectedCourse.title}</h2>
+              <button onClick={() => setSelectedCourse(null)} style={{ position: 'absolute', top: '16px', right: '20px', background: 'none', border: 'none', fontSize: '1.3rem', cursor: 'pointer', color: darkMode ? '#fff' : '#888' }}>✕</button>
+              <h2 style={{ color: mainColor, fontSize: '1.2rem', marginBottom: '8px', fontWeight: 700 }}>{selectedCourse.title}</h2>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
-                <h3 style={{ fontSize: '0.9rem', color: mainColor, fontWeight: 600 }}>📖 Document Viewer</h3>
+                <h3 style={{ fontSize: '0.85rem', color: mainColor, fontWeight: 600 }}>📖 Document Viewer</h3>
                 <button onClick={togglePdfFullscreen} className="fullscreen-btn" style={{ backgroundColor: mainColor, color: 'white', border: 'none', padding: '6px 14px', borderRadius: '8px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 500 }}>
                   {isPdfFullscreen ? '⛶ Exit' : '🖥️ Fullscreen'}
                 </button>
               </div>
-              <div ref={pdfContainerRef} className="pdf-container" style={{ height: '500px' }}>
+              <div ref={pdfContainerRef} className="pdf-container">
                 <iframe className="pdf-iframe" src={selectedCourse.contentLink} title={selectedCourse.title} />
               </div>
               <div style={{ marginTop: '24px' }}>
@@ -797,12 +979,11 @@ export default function Home() {
           </div>
         )}
 
-        {/* Course Modal - Video */}
         {selectedCourse && selectedCourse.type === 'video' && (
           <div className="modal-overlay" onClick={() => setSelectedCourse(null)}>
             <div className="modal-content" onClick={e => e.stopPropagation()}>
-              <button onClick={() => setSelectedCourse(null)} style={{ position: 'absolute', top: '20px', right: '24px', border: 'none', background: 'none', fontSize: '1.5rem', cursor: 'pointer', color: darkMode ? '#fff' : '#888' }}>✕</button>
-              <h2 style={{ color: mainColor, fontSize: '1.3rem', marginBottom: '8px', fontWeight: 700 }}>{selectedCourse.title}</h2>
+              <button onClick={() => setSelectedCourse(null)} style={{ position: 'absolute', top: '16px', right: '20px', background: 'none', border: 'none', fontSize: '1.3rem', cursor: 'pointer', color: darkMode ? '#fff' : '#888' }}>✕</button>
+              <h2 style={{ color: mainColor, fontSize: '1.2rem', marginBottom: '8px', fontWeight: 700 }}>{selectedCourse.title}</h2>
               <div className="video-container">
                 <iframe className="video-iframe" src={selectedCourse.contentLink} title={selectedCourse.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
               </div>
@@ -813,15 +994,15 @@ export default function Home() {
           </div>
         )}
 
-        {/* Popular Courses Section */}
+        {/* Courses Section */}
         <div id="courses" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
           <h2 className="section-title">📖 Popular Courses</h2>
-          <div className="categories-grid" style={{ justifyContent: 'center' }}>
+          <div className="categories-grid" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>
             {Object.keys(coursesByCategory).slice(0, 4).map(cat => (
               <div key={cat} className="category-card" onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}>
-                <div style={{ fontSize: '2rem', marginBottom: '10px' }}>{categories.find(c => c.name === cat)?.icon || '📚'}</div>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>{cat}</h3>
-                <p style={{ fontSize: '0.65rem', color: darkMode ? '#888' : '#999' }}>{coursesByCategory[cat].length} courses</p>
+                <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{categories.find(c => c.name === cat)?.icon || '📚'}</div>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 600 }}>{cat}</h3>
+                <p style={{ fontSize: '0.6rem', color: darkMode ? '#888' : '#999' }}>{coursesByCategory[cat].length} courses</p>
               </div>
             ))}
           </div>
@@ -830,110 +1011,55 @@ export default function Home() {
         {/* FAQ Section */}
         <div id="faq" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
           <h2 className="section-title">FAQ</h2>
-          <p style={{ textAlign: 'center', fontSize: '1rem', color: darkMode ? '#aaa' : '#666', marginBottom: '40px' }}>
+          <p style={{ textAlign: 'center', fontSize: '0.9rem', color: darkMode ? '#aaa' : '#666', marginBottom: '40px' }}>
             If you've got questions about anything, you've come to the right place.
           </p>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {/* FAQ 1 */}
             <div className="faq-item" onClick={(e) => {
               const answer = e.currentTarget.querySelector('.faq-answer');
               if (answer) answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: darkMode ? '#fff' : '#333', margin: 0 }}>What is Waloo Academy?</h3>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 600 }}>What is Waloo Academy?</h3>
                 <span style={{ fontSize: '1rem', color: mainColor }}>▼</span>
               </div>
-              <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, color: darkMode ? '#bbb' : '#666', fontSize: '0.85rem', lineHeight: 1.5 }}>
-                Waloo Academy is an online learning platform that provides quality education in Economics, Data Analysis, Programming, Digital Marketing, and Graphic Design. We offer both PDF courses and video lectures to help Ethiopian students excel in their careers.
+              <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, fontSize: '0.85rem', lineHeight: 1.5 }}>
+                Waloo Academy is an online learning platform providing quality education in Economics, Data Analysis, Programming, Digital Marketing, and Graphic Design.
               </div>
             </div>
 
-            {/* FAQ 2 */}
             <div className="faq-item" onClick={(e) => {
               const answer = e.currentTarget.querySelector('.faq-answer');
               if (answer) answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: darkMode ? '#fff' : '#333', margin: 0 }}>Do I need a subscription to access Waloo Academy?</h3>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 600 }}>Do I need a subscription?</h3>
                 <span style={{ fontSize: '1rem', color: mainColor }}>▼</span>
               </div>
-              <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, color: darkMode ? '#bbb' : '#666', fontSize: '0.85rem', lineHeight: 1.5 }}>
-                No! All our courses are currently FREE. You can access all PDF materials and video lectures without any subscription fee. Simply start learning today.
+              <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, fontSize: '0.85rem', lineHeight: 1.5 }}>
+                No! All our courses are FREE. Access all PDF materials and video lectures without any subscription.
               </div>
             </div>
 
-            {/* FAQ 3 */}
             <div className="faq-item" onClick={(e) => {
               const answer = e.currentTarget.querySelector('.faq-answer');
               if (answer) answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: darkMode ? '#fff' : '#333', margin: 0 }}>What are the benefits of learning at Waloo Academy?</h3>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 600 }}>How can I report an issue?</h3>
                 <span style={{ fontSize: '1rem', color: mainColor }}>▼</span>
               </div>
-              <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, color: darkMode ? '#bbb' : '#666', fontSize: '0.85rem', lineHeight: 1.5 }}>
-                Benefits include: expert instructors with real-world experience, hands-on projects, downloadable PDF materials, video lectures, certificates upon completion, and the ability to learn at your own pace from anywhere.
-              </div>
-            </div>
-
-            {/* FAQ 4 */}
-            <div className="faq-item" onClick={(e) => {
-              const answer = e.currentTarget.querySelector('.faq-answer');
-              if (answer) answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: darkMode ? '#fff' : '#333', margin: 0 }}>Can I upload documents?</h3>
-                <span style={{ fontSize: '1rem', color: mainColor }}>▼</span>
-              </div>
-              <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, color: darkMode ? '#bbb' : '#666', fontSize: '0.85rem', lineHeight: 1.5 }}>
-                Only admin can upload documents. Uploaded files appear in the documents section for everyone to access.
-              </div>
-            </div>
-
-            {/* FAQ 5 */}
-            <div className="faq-item" onClick={(e) => {
-              const answer = e.currentTarget.querySelector('.faq-answer');
-              if (answer) answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: darkMode ? '#fff' : '#333', margin: 0 }}>How can I report an issue?</h3>
-                <span style={{ fontSize: '1rem', color: mainColor }}>▼</span>
-              </div>
-              <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, color: darkMode ? '#bbb' : '#666', fontSize: '0.85rem', lineHeight: 1.5 }}>
-                You can report any issues through our Contact Us form, or reach out directly on Telegram. We're committed to providing the best learning experience.
-              </div>
-            </div>
-
-            {/* FAQ 6 */}
-            <div className="faq-item" onClick={(e) => {
-              const answer = e.currentTarget.querySelector('.faq-answer');
-              if (answer) answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: darkMode ? '#fff' : '#333', margin: 0 }}>How do I track my learning progress?</h3>
-                <span style={{ fontSize: '1rem', color: mainColor }}>▼</span>
-              </div>
-              <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, color: darkMode ? '#bbb' : '#666', fontSize: '0.85rem', lineHeight: 1.5 }}>
-                When you enroll in courses, they are saved to your dashboard. You can track your progress, access enrolled courses, and see all your registered events.
+              <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, fontSize: '0.85rem', lineHeight: 1.5 }}>
+                Use our Contact Us form or reach out on Telegram. We're committed to providing the best learning experience.
               </div>
             </div>
           </div>
 
-          {/* Have more questions? link with Telegram */}
           <div style={{ textAlign: 'center', marginTop: '40px', paddingTop: '20px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}` }}>
-            <p style={{ fontSize: '0.9rem', color: darkMode ? '#aaa' : '#666' }}>
+            <p style={{ fontSize: '0.85rem', color: darkMode ? '#aaa' : '#666' }}>
               Have more questions?{" "}
-              <a 
-                href="https://t.me/latusaid" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ color: mainColor, textDecoration: 'none', fontWeight: 500 }}
-                onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
-                onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
-              >
-                Contact our support team on Telegram 📱
-              </a>
+              <a href="https://t.me/latusaid" target="_blank" rel="noopener noreferrer" style={{ color: mainColor, textDecoration: 'none', fontWeight: 500 }}>Contact our support team on Telegram 📱</a>
             </p>
           </div>
         </div>
@@ -944,51 +1070,51 @@ export default function Home() {
           <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap' }}>
             {events.map(event => (
               <div key={event.id} className="event-card">
-                <div style={{ fontSize: '1.8rem', marginBottom: '10px' }}>📌</div>
-                <h3 style={{ color: mainColor, marginBottom: '8px', fontSize: '1rem', fontWeight: 600 }}>{event.title}</h3>
+                <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>📌</div>
+                <h3 style={{ color: mainColor, marginBottom: '8px', fontSize: '0.95rem', fontWeight: 600 }}>{event.title}</h3>
                 <p style={{ fontSize: '0.7rem', color: darkMode ? '#aaa' : '#666', marginBottom: '6px' }}>📅 {event.date} | ⏰ {event.time}</p>
-                <p style={{ fontSize: '0.75rem', color: darkMode ? '#888' : '#777', marginBottom: '16px' }}>{event.description}</p>
-                <button className="event-register-btn" style={{ width: '100%', padding: '8px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 500 }} onClick={() => setSelectedEvent(event)}>Register →</button>
+                <p style={{ fontSize: '0.7rem', color: darkMode ? '#888' : '#777', marginBottom: '16px' }}>{event.description}</p>
+                <button className="event-register-btn" style={{ width: '100%', padding: '8px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '25px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 500 }} onClick={() => setSelectedEvent(event)}>Register →</button>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Event Registration Modal */}
+        {/* Event Modal */}
         {selectedEvent && (
           <div className="modal-overlay" onClick={() => setSelectedEvent(null)}>
-            <div className="modal-content" style={{ maxWidth: '500px' }} onClick={e => e.stopPropagation()}>
-              <button onClick={() => setSelectedEvent(null)} style={{ position: 'absolute', top: '16px', right: '20px', border: 'none', background: 'none', fontSize: '1.3rem', cursor: 'pointer', color: darkMode ? '#fff' : '#888' }}>✕</button>
+            <div className="modal-content" style={{ maxWidth: '450px' }} onClick={e => e.stopPropagation()}>
+              <button onClick={() => setSelectedEvent(null)} style={{ position: 'absolute', top: '16px', right: '20px', background: 'none', border: 'none', fontSize: '1.3rem', cursor: 'pointer' }}>✕</button>
               <h2 style={{ color: mainColor, fontSize: '1.2rem', marginBottom: '12px' }}>Register for {selectedEvent.title}</h2>
               <p style={{ fontSize: '0.8rem', marginBottom: '20px' }}>📅 {selectedEvent.date} | ⏰ {selectedEvent.time}</p>
               <form action="https://formspree.io/f/xnjwyyvn" method="POST">
                 <input type="hidden" name="event" value={selectedEvent.title} />
                 <input type="hidden" name="event_date" value={selectedEvent.date} />
-                <input type="text" name="name" placeholder="Your Full Name" className="form-input" style={{ fontSize: '0.8rem' }} required />
-                <input type="email" name="email" placeholder="Your Email Address" className="form-input" style={{ fontSize: '0.8rem' }} required />
-                <button type="submit" style={{ width: '100%', marginTop: '16px', padding: '12px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '12px', fontWeight: 600, cursor: 'pointer', fontSize: '0.8rem' }}>Confirm Registration</button>
+                <input type="text" name="name" placeholder="Your Full Name" className="form-input" required />
+                <input type="email" name="email" placeholder="Your Email Address" className="form-input" required />
+                <button type="submit" style={{ width: '100%', padding: '12px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '12px', fontWeight: 600, cursor: 'pointer' }}>Confirm Registration</button>
               </form>
             </div>
           </div>
         )}
 
         {/* Contact Section */}
-        <div id="contact" className="side-by-side-container" style={{ display: 'flex', gap: '30px', justifyContent: 'center', width: '100%', maxWidth: '900px', marginBottom: '60px' }}>
-          <div className="side-box" style={{ flex: 1, backgroundColor: '#1e293b', color: 'white', padding: '24px', borderRadius: '20px' }}>
+        <div id="contact" className="side-by-side-container" style={{ display: 'flex', gap: '30px', justifyContent: 'center', width: '100%', maxWidth: '900px', marginBottom: '60px', flexWrap: 'wrap' }}>
+          <div className="side-box" style={{ flex: 1, minWidth: '260px', backgroundColor: '#1e293b', color: 'white', padding: '24px', borderRadius: '20px' }}>
             <h3 style={{ color: mainColor, marginBottom: '10px', fontSize: '1.1rem' }}>📧 Get Updates</h3>
             <p style={{ fontSize: '0.7rem', opacity: 0.8, marginBottom: '16px' }}>Subscribe for new courses</p>
             <form action="https://formspree.io/f/mojrzzqb" method="POST">
-              <input type="email" name="email" placeholder="Your email" style={{ width: '100%', padding: '10px', borderRadius: '30px', border: 'none', marginBottom: '12px', outline: 'none', fontSize: '0.8rem' }} required />
-              <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', fontWeight: 600, cursor: 'pointer', fontSize: '0.8rem' }}>Subscribe</button>
+              <input type="email" name="email" placeholder="Your email" style={{ width: '100%', padding: '12px', borderRadius: '30px', border: 'none', marginBottom: '12px', outline: 'none', fontSize: '0.8rem' }} required />
+              <button type="submit" style={{ width: '100%', padding: '12px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', fontWeight: 600, cursor: 'pointer' }}>Subscribe</button>
             </form>
           </div>
-          <div className="side-box" style={{ flex: 1, backgroundColor: darkMode ? '#1a1a2e' : mainColorLight, padding: '24px', borderRadius: '20px' }}>
+          <div className="side-box" style={{ flex: 1, minWidth: '260px', backgroundColor: darkMode ? '#1a1a2e' : mainColorLight, padding: '24px', borderRadius: '20px' }}>
             <h3 style={{ color: mainColor, marginBottom: '10px', fontSize: '1.1rem' }}>📩 Contact Us</h3>
             <form action="https://formspree.io/f/mojrzzqb" method="POST">
-              <input type="text" name="name" placeholder="Your Name" className="form-input" style={{ fontSize: '0.8rem' }} required />
-              <input type="email" name="_replyto" placeholder="Your Email" className="form-input" style={{ fontSize: '0.8rem' }} required />
-              <textarea name="message" placeholder="Message..." className="form-input" style={{ fontSize: '0.8rem', minHeight: '60px' }} required></textarea>
-              <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', fontWeight: 600, cursor: 'pointer', fontSize: '0.8rem' }}>Send</button>
+              <input type="text" name="name" placeholder="Your Name" className="form-input" required />
+              <input type="email" name="_replyto" placeholder="Your Email" className="form-input" required />
+              <textarea name="message" placeholder="Message..." className="form-input" style={{ minHeight: '80px' }} required></textarea>
+              <button type="submit" style={{ width: '100%', padding: '12px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '30px', fontWeight: 600, cursor: 'pointer' }}>Send</button>
             </form>
           </div>
         </div>
@@ -997,22 +1123,47 @@ export default function Home() {
 
       {/* Back to Top Button */}
       {showTopBtn && (
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ position: 'fixed', bottom: '20px', right: '20px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '50%', width: '36px', height: '36px', fontSize: '16px', cursor: 'pointer', boxShadow: '0 2px 8px rgba(0,0,0,0.2)', zIndex: 1000 }}>↑</button>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ 
+          position: 'fixed', 
+          bottom: '20px', 
+          right: '20px', 
+          backgroundColor: mainColor, 
+          color: 'white', 
+          border: 'none', 
+          borderRadius: '50%', 
+          width: '44px', 
+          height: '44px', 
+          fontSize: '20px', 
+          cursor: 'pointer', 
+          boxShadow: '0 4px 12px rgba(0,0,0,0.2)', 
+          zIndex: 1000,
+          transition: 'all 0.2s',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>↑</button>
       )}
 
       {/* Footer */}
-      <footer style={{ backgroundColor: '#0f172a', color: 'white', padding: '30px 20px', textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '12px' }}>
-          <img src="/logo.png" alt="Logo" style={{ width: '30px', height: '30px', borderRadius: '8px', objectFit: 'cover' }} />
+      <footer style={{ backgroundColor: '#0f172a', color: 'white', padding: '40px 20px', textAlign: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '16px', flexWrap: 'wrap' }}>
+          <img src="/logo.png" alt="Logo" style={{ width: '32px', height: '32px', borderRadius: '8px', objectFit: 'cover' }} />
           <h3 style={{ margin: 0, fontSize: '1rem' }}>Waloo Academy</h3>
         </div>
-        <p style={{ fontSize: '0.65rem', marginBottom: '16px', opacity: 0.7 }}>© 2025 Waloo Academy. Where Knowledge Meets Innovation!</p>
+        <p style={{ fontSize: '0.7rem', marginBottom: '20px', opacity: 0.7 }}>© 2025 Waloo Academy. Where Knowledge Meets Innovation!</p>
         <div style={{ marginBottom: '20px', display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <a href="https://t.me/latusaid" target="_blank" className="social-icon" style={{ color: '#0088cc', textDecoration: 'none', fontSize: '0.7rem' }}>📱 Telegram</a>
           <a href="https://youtube.com/@walooacademy" target="_blank" className="social-icon" style={{ color: '#ff0000', textDecoration: 'none', fontSize: '0.7rem' }}>▶️ YouTube</a>
           <a href="https://facebook.com/walooacademy" target="_blank" className="social-icon" style={{ color: '#1877f2', textDecoration: 'none', fontSize: '0.7rem' }}>👍 Facebook</a>
         </div>
-        <p style={{ marginTop: '16px', fontSize: '0.55rem', opacity: 0.5 }}>Empowering Ethiopian education</p>
+        <div style={{ marginTop: '16px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', fontSize: '0.7rem' }}>
+          <a href="#" style={{ color: mainColor, textDecoration: 'none' }}>Home</a>
+          <a href="/blog" style={{ color: mainColor, textDecoration: 'none' }}>Blog</a>
+          <a href="/resources" style={{ color: mainColor, textDecoration: 'none' }}>Resources</a>
+          {isSignedIn && <a href="/dashboard" style={{ color: mainColor, textDecoration: 'none' }}>Dashboard</a>}
+          <a href="#contact" style={{ color: mainColor, textDecoration: 'none' }}>Contact</a>
+        </div>
+        <p style={{ marginTop: '16px', fontSize: '0.55rem', opacity: 0.5 }}>Empowering Ethiopian education since 2025</p>
       </footer>
     </div>
   );

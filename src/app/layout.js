@@ -1,17 +1,22 @@
  import "./globals.css";
+import { ClerkProvider } from '@clerk/nextjs';
 
 export const metadata = {
-  title: "Waloo Academy - Learn Economics in Ethiopia",
-  description: "Expert-led courses in Macro Economics, Micro Economics, and Civic Education",
+  title: "Waloo Academy - Learn Economics, Data Analysis & Programming in Ethiopia",
+  description: "Expert-led courses in Economics, Data Analysis, Programming, Digital Marketing & Graphic Design. Get certified and start your learning journey today!",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://formspree.io" />
-      </head>
-      <body>{children}</body>
-    </html>
+    <ClerkProvider
+      unsafe_disableDevelopmentModeConsoleWarning={true}
+    >
+      <html lang="en">
+        <head>
+          <link rel="preconnect" href="https://formspree.io" />
+        </head>
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }
