@@ -9,6 +9,12 @@ export default function Home() {
   const [darkMode, setDarkMode] = useState(false);
   const [showTopBtn, setShowTopBtn] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [baseUrl, setBaseUrl] = useState("");
+
+  // Get base URL for PDF viewer
+  useEffect(() => {
+    setBaseUrl(window.location.origin);
+  }, []);
 
   // Course Data - 3 PDF Courses + 1 Video Course
   const courses = [
@@ -230,7 +236,7 @@ export default function Home() {
           background: ${darkMode ? '#1a1a2e' : 'white'}; 
           padding: 32px;
           border-radius: 24px;
-          max-width: 1000px;
+          max-width: 900px;
           width: 90%;
           max-height: 90vh;
           overflow-y: auto;
@@ -239,19 +245,19 @@ export default function Home() {
           animation: slideUp 0.2s ease;
         }
         
-        .pdf-viewer {
+        .pdf-container {
           width: 100%;
           height: 550px;
-          border: 1px solid ${darkMode ? '#333' : '#e0e0e0'};
           border-radius: 12px;
+          overflow: hidden;
+          border: 1px solid ${darkMode ? '#444' : '#ddd'};
           background-color: ${darkMode ? '#1a1a1a' : '#f5f5f5'};
-          transition: all 0.3s ease;
         }
         
         .video-container {
           position: relative;
           width: 100%;
-          padding-bottom: 56.25%; /* 16:9 aspect ratio */
+          padding-bottom: 56.25%;
           height: 0;
           overflow: hidden;
           border-radius: 12px;
@@ -335,6 +341,12 @@ export default function Home() {
           margin-bottom: 12px;
         }
         
+        iframe {
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
+        
         img {
           content-visibility: auto;
         }
@@ -351,8 +363,8 @@ export default function Home() {
           .side-box { width: 95% !important; min-width: unset !important; }
           .row-container { flex-direction: column !important; align-items: center !important; }
           .why-card, .testimonial-card, .event-card { width: 90% !important; }
-          .pdf-viewer { height: 300px; }
           .modal-content { padding: 20px; }
+          .pdf-container { height: 400px; }
         }
         
         @media (prefers-reduced-motion: reduce) {
@@ -523,7 +535,7 @@ export default function Home() {
                   style={{ color: mainColor, fontWeight: 500, fontSize: '0.7rem', cursor: 'pointer', display: 'block', textAlign: 'center', marginTop: '12px', padding: '8px', borderRadius: '8px', backgroundColor: mainColorLight }}
                   onClick={() => setSelectedCourse(course)}
                 >
-                  {course.type === 'video' ? '▶ Watch Video →' : 'Open Course →'}
+                  {course.type === 'video' ? '▶ Watch Video →' : '📖 Read Course →'}
                 </span>
               </div>
             ))}
@@ -596,7 +608,7 @@ export default function Home() {
                 </>
               ) : (
                 <>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
                     <h3 style={{ fontSize: '1rem', color: mainColor, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
                       📖 Course Materials
                     </h3>
@@ -611,27 +623,25 @@ export default function Home() {
                         borderRadius: '8px',
                         cursor: 'pointer',
                         fontSize: '0.8rem',
-                        fontWeight: 500,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px'
+                        fontWeight: 500
                       }}
                     >
                       {isFullscreen ? '⛶ Exit Fullscreen' : '🖥️ Fullscreen'}
                     </button>
                   </div>
-                  <iframe
-                    src={`${selectedCourse.contentLink}#toolbar=0&navpanes=0&statusbar=0&messages=0`}
-                    className="pdf-viewer"
-                    title={`${selectedCourse.title} - Course Content`}
-                    style={{
-                      width: '100%',
-                      height: isFullscreen ? 'calc(100vh - 200px)' : '550px',
-                      border: `1px solid ${darkMode ? '#333' : '#e0e0e0'}`,
-                      borderRadius: '12px',
-                      backgroundColor: darkMode ? '#1a1a1a' : '#f5f5f5'
-                    }}
-                  />
+                  
+                  {/* Google PDF Viewer - Works on ALL devices */}
+                  <div className="pdf-container">
+                    <iframe
+                      src={`https://docs.google.com/viewer?url=${baseUrl}${selectedCourse.contentLink}&embedded=true`}
+                      title={`${selectedCourse.title} PDF Viewer`}
+                      allowFullScreen
+                    />
+                  </div>
+                  
+                  <p style={{ fontSize: '0.7rem', color: darkMode ? '#888' : '#999', marginTop: '12px', textAlign: 'center' }}>
+                    📄 PDF document - Use the toolbar to zoom, download, or print. Works on all devices!
+                  </p>
                 </>
               )}
               
