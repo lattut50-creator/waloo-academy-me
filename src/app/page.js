@@ -777,7 +777,8 @@ export default function Home() {
         
         {/* Hero Section */}
         <div style={{ width: '100%', maxWidth: '1100px', textAlign: 'left', marginBottom: '30px' }}>
-          <h1 style={{ color: mainColor, fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 700, marginBottom: '16px' }}>Waloo Academy</h1>
+          
+             <h1 style={{ color: mainColor, fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 700, marginBottom: '16px' }}>Waloo Academy</h1>
           
           <div className="slogan-container">
             <span className="slogan-badge">📚 Learn Anywhere</span>
