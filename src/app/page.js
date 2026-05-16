@@ -666,12 +666,11 @@ export default function Home() {
       `}</style>
 
       {/* FIXED NAVBAR - DOES NOT MOVE */}
-    
-          <nav style={{ 
+      <nav style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center', 
-        padding: '6px 20px',
+        padding: '12px 20px',
         backgroundColor: mainColor, 
         color: 'white', 
         position: 'fixed',
@@ -679,63 +678,86 @@ export default function Home() {
         left: 0,
         right: 0,
         zIndex: 9999, 
-        boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
         flexWrap: 'wrap'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <img src="/logo.png" alt="Logo" className="logo" style={{ width: '28px', height: '28px', borderRadius: '6px', objectFit: 'cover' }} />
-          <h2 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 600 }}>Waloo Academy</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <img src="/logo.png" alt="Logo" className="logo" style={{ width: '36px', height: '36px', borderRadius: '10px', objectFit: 'cover' }} />
+          <h2 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 600 }}>Waloo Academy</h2>
         </div>
         
-        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '5px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
           <div className="navbar-search">
-            <span style={{ fontSize: '0.7rem' }}>🔍</span>
+            <span>🔍</span>
             <input 
               type="text" 
               placeholder="Search..." 
               value={navbarSearchTerm}
               onChange={(e) => setNavbarSearchTerm(e.target.value)}
-              style={{ width: '100px', padding: '3px 6px', fontSize: '0.7rem', background: 'transparent', border: 'none', color: 'white', outline: 'none' }}
             />
           </div>
           
-          <select className="language-selector" value={language} onChange={(e) => setLanguage(e.target.value)} style={{ padding: '3px 6px', fontSize: '0.65rem', background: 'rgba(255,255,255,0.15)', border: 'none', color: 'white', borderRadius: '20px', cursor: 'pointer' }}>
-            <option value="EN">EN</option>
-            <option value="AM">AM</option>
-            <option value="OM">OM</option>
+          <select className="language-selector" value={language} onChange={(e) => setLanguage(e.target.value)}>
+            <option value="EN">🌐 EN</option>
+            <option value="AM">🇪🇹 AM</option>
+            <option value="OM">🇪🇹 OM</option>
           </select>
           
-          <button onClick={() => setDarkMode(!darkMode)} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', color: 'white', fontSize: '0.7rem', cursor: 'pointer', padding: '3px 8px', borderRadius: '20px' }}>
+          <button onClick={() => setDarkMode(!darkMode)} style={{ background: 'rgba(255,255,255,0.15)', border: 'none', color: 'white', fontSize: '0.9rem', cursor: 'pointer', padding: '6px 12px', borderRadius: '30px' }}>
             {darkMode ? '☀️' : '🌙'}
           </button>
           
-          <div className="menu-icon" style={{ display: 'none', fontSize: '1.2rem', cursor: 'pointer' }} onClick={() => setIsOpen(!isOpen)}>
+          <div className="menu-icon" style={{ display: 'none', fontSize: '1.6rem', cursor: 'pointer' }} onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? '✕' : '☰'}
           </div>
         </div>
         
-        <div className="nav-links" ref={mobileMenuRef} style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '0.7rem', flexWrap: 'wrap' }}>
+        <div className="nav-links" ref={mobileMenuRef} style={{ display: 'flex', gap: '16px', alignItems: 'center', fontSize: '0.85rem', flexWrap: 'wrap' }}>
           <a href="#" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Home</a>
           <a href="#documents" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Categories</a>
           <a href="#courses" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Courses</a>
           <a href="/blog" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Blog</a>
           <a href="/resources" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Resources</a>
-          {isSignedIn && <a href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Dashboard</a>}
+          {isSignedIn && (
+            <a href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Dashboard</a>
+          )}
           <a href="#faq" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>FAQ</a>
           <a href="#events" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Events</a>
           <a href="#contact" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Contact</a>
           
           {!isSignedIn ? (
-            <div style={{ display: 'flex', gap: '5px' }}>
+            <div style={{ display: 'flex', gap: '8px' }}>
               <SignInButton mode="modal">
-                <button style={{ background: 'white', color: '#1a73e8', border: 'none', padding: '3px 10px', borderRadius: '20px', cursor: 'pointer', fontWeight: 500, fontSize: '0.65rem' }}>Sign In</button>
+                <button style={{ 
+                  background: 'white', 
+                  color: '#1a73e8', 
+                  border: 'none', 
+                  padding: '6px 14px', 
+                  borderRadius: '25px',
+                  cursor: 'pointer',
+                  fontWeight: 500,
+                  fontSize: '0.8rem'
+                }}>
+                  Sign In
+                </button>
               </SignInButton>
               <SignUpButton mode="modal">
-                <button style={{ background: 'transparent', color: 'white', border: '1px solid white', padding: '3px 10px', borderRadius: '20px', cursor: 'pointer', fontWeight: 500, fontSize: '0.65rem' }}>Sign Up</button>
+                <button style={{ 
+                  background: 'transparent', 
+                  color: 'white', 
+                  border: '1px solid white', 
+                  padding: '6px 14px', 
+                  borderRadius: '25px',
+                  cursor: 'pointer',
+                  fontWeight: 500,
+                  fontSize: '0.8rem'
+                }}>
+                  Sign Up
+                </button>
               </SignUpButton>
             </div>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <UserButton afterSignOutUrl="/" />
             </div>
           )}
@@ -743,20 +765,19 @@ export default function Home() {
       </nav>
 
       {/* MAIN CONTENT WITH TOP PADDING FOR FIXED NAVBAR */}
-       <main style={{ 
-  display: 'flex', 
-  flexDirection: 'column', 
-  alignItems: 'center', 
-  padding: '60px 20px 40px 20px',
-  maxWidth: '1400px', 
-  margin: '0 auto', 
-  width: '100%' 
-}}>
+      <main style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        padding: '80px 20px 40px 20px',
+        maxWidth: '1400px', 
+        margin: '0 auto', 
+        width: '100%' 
+      }}>
         
         {/* Hero Section */}
         <div style={{ width: '100%', maxWidth: '1100px', textAlign: 'left', marginBottom: '30px' }}>
-          
-             <h1 style={{ color: mainColor, fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 700, marginBottom: '16px' }}>Waloo Academy</h1>
+          <h1 style={{ color: mainColor, fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', fontWeight: 700, marginBottom: '16px' }}>Waloo Academy</h1>
           
           <div className="slogan-container">
             <span className="slogan-badge">📚 Learn Anywhere</span>
