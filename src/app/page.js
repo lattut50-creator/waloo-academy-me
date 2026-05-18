@@ -13,51 +13,18 @@ export default function Home() {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [navbarSearchTerm, setNavbarSearchTerm] = useState("");
   const [language, setLanguage] = useState("EN");
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [mounted, setMounted] = useState(false);
+  const [showMoreAbout, setShowMoreAbout] = useState(false);
   const pdfContainerRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const { isSignedIn } = useAuth();
 
-  // Fix hydration issues - only render after mount
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Admin password
-  const ADMIN_PASSWORD = "waloo123";
-
-  // Categories for Documents
-  const categories = [
-    { id: 1, name: "Art", count: 6, icon: "🎨", color: "#e74c3c" },
-    { id: 2, name: "Biography & Memoir", count: 4, icon: "📖", color: "#3498db" },
-    { id: 3, name: "Business", count: 10, icon: "💼", color: "#2ecc71" },
-    { id: 4, name: "Career & Growth", count: 6, icon: "📈", color: "#f39c12" },
-    { id: 5, name: "Technology", count: 8, icon: "💻", color: "#9b59b6" },
-    { id: 6, name: "Science", count: 7, icon: "🔬", color: "#1abc9c" }
-  ];
-
-  // Course Data by Category
-  const coursesByCategory = {
-    "Art": [
-      { id: 1, title: "Digital Art Fundamentals", desc: "Learn digital drawing", type: "pdf", contentLink: "/uploads/art1.pdf" },
-      { id: 2, title: "Color Theory", desc: "Master color combinations", type: "pdf", contentLink: "/uploads/art2.pdf" }
-    ],
-    "Business": [
-      { id: 3, title: "Marketing Strategy", desc: "Learn modern marketing", type: "pdf", contentLink: "/uploads/business1.pdf" },
-      { id: 4, title: "Financial Management", desc: "Master business finance", type: "pdf", contentLink: "/uploads/business2.pdf" },
-      { id: 5, title: "Business Economics", desc: "Learn economics for business", type: "pdf", contentLink: "/uploads/macro.pdf" }
-    ],
-    "Career & Growth": [
-      { id: 6, title: "CV Writing Masterclass", desc: "Create professional CV", type: "pdf", contentLink: "/uploads/career1.pdf" },
-      { id: 7, title: "Interview Success", desc: "Ace your interviews", type: "video", contentLink: "https://www.youtube-nocookie.com/embed/nbEOo5ae1bs?modestbranding=1&rel=0&showinfo=0&controls=1" }
-    ],
-    "Technology": [
-      { id: 8, title: "Programming Basics", desc: "Learn coding fundamentals", type: "pdf", contentLink: "/uploads/micro.pdf" },
-      { id: 9, title: "Web Development", desc: "Build modern websites", type: "pdf", contentLink: "/uploads/civic.pdf" },
-      { id: 10, title: "Economics Fundamentals", desc: "Learn economics", type: "video", contentLink: "https://www.youtube-nocookie.com/embed/nbEOo5ae1bs?modestbranding=1&rel=0&showinfo=0&controls=1" }
-    ]
-  };
+  // Courses Data (only used for homepage preview - will be removed)
+  // Keeping minimal data for any remaining functionality
 
   // Events Data
   const events = [
@@ -77,21 +44,6 @@ export default function Home() {
       console.error("Error loading files:", error);
     }
   }, []);
-
-  const handleFileUpload = (file) => {
-    if (!file) return;
-    const newFile = {
-      name: file.name,
-      url: URL.createObjectURL(file),
-      size: file.size,
-      type: file.type,
-      id: Date.now() + Math.random()
-    };
-    const updatedFiles = [...uploadedFiles, newFile];
-    setUploadedFiles(updatedFiles);
-    localStorage.setItem('waloo_uploaded_files', JSON.stringify(updatedFiles));
-    alert(`✅ Uploaded: ${file.name}`);
-  };
 
   const deleteUploadedFile = (fileId) => {
     const updatedFiles = uploadedFiles.filter(f => f.id !== fileId);
@@ -126,7 +78,6 @@ export default function Home() {
     return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
-  // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target) && isOpen) {
@@ -137,47 +88,24 @@ export default function Home() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  const getCategoryCourses = (categoryName) => {
-    return coursesByCategory[categoryName] || [];
-  };
-
   const mainColor = "#1a73e8";
   const mainColorDark = "#1557b0";
   const mainColorLight = "#e3f2fd";
 
-  // Combine all documents
-  const allDocuments = [
-    ...categories.flatMap(cat => 
-      getCategoryCourses(cat.name).map(course => ({
-        id: `course_${cat.name}_${course.id}`,
-        title: course.title,
-        type: 'course',
-        fileLink: course.contentLink,
-        icon: '📘',
-        teacher: "Waloo Academy",
-        category: cat.name
-      }))
-    ),
-    ...uploadedFiles.map(file => ({
-      id: `upload_${file.id}`,
-      title: file.name,
-      type: 'uploaded',
-      fileLink: file.url,
-      icon: '📄',
-      teacher: 'User Uploaded',
-      isUploaded: true,
-      fileId: file.id
-    }))
-  ];
-
-  const filteredDocuments = allDocuments.filter(doc =>
-    doc.title.toLowerCase().includes(navbarSearchTerm.toLowerCase())
-  );
-
-  // Don't render until mounted to avoid hydration issues
   if (!mounted) {
     return null;
   }
+
+  // Navbar items with proper links
+  const navItems = [
+    { name: "Home", href: "#", id: "home" },
+    { name: "Courses", href: "/courses", id: "courses" },
+    { name: "Blog", href: "/blog", id: "blog" },
+    { name: "Resources", href: "/resources", id: "resources" },
+    { name: "FAQ", href: "#faq", id: "faq" },
+    { name: "Events", href: "#events", id: "events" },
+    { name: "Contact", href: "#contact", id: "contact" }
+  ];
 
   return (
     <div style={{ 
@@ -202,73 +130,60 @@ export default function Home() {
           overflow-x: hidden;
         }
         
-        .category-card {
-          transition: all 0.3s ease;
-          background-color: ${darkMode ? '#1a1a2e' : 'white'};
-          padding: 24px 16px;
-          border-radius: 20px;
-          min-width: 160px;
-          text-align: center;
-          cursor: pointer;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-          border: 1px solid ${darkMode ? '#2a2a3e' : '#eef2f6'};
-        }
-        .category-card:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-          border-color: ${mainColor};
-        }
-        
-        .course-card, .doc-card {
-          transition: all 0.3s ease;
-          background-color: ${darkMode ? '#1a1a2e' : 'white'};
-          padding: 20px;
-          border-radius: 16px;
-          width: 100%;
-          max-width: 280px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-          text-align: left;
-          will-change: transform;
-          border: 1px solid ${darkMode ? '#2a2a3e' : '#eef2f6'};
-          cursor: pointer;
+        .nav-link {
           position: relative;
-        }
-        .course-card:hover, .doc-card:hover { 
-          transform: translateY(-6px); 
-          box-shadow: 0 12px 24px rgba(0,0,0,0.1); 
-          border-color: ${mainColor}; 
-        }
-        
-        .delete-btn {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background: rgba(231, 76, 60, 0.9);
-          color: white;
-          border: none;
-          border-radius: 50%;
-          width: 28px;
-          height: 28px;
-          font-size: 14px;
+          transition: all 0.3s ease;
           cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: all 0.2s;
-          z-index: 10;
-        }
-        .delete-btn:hover {
-          background: #c0392b;
-          transform: scale(1.1);
         }
         
-        .hero-btn { 
-          transition: all 0.3s ease; 
-          will-change: transform;
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background-color: white;
+          transition: width 0.3s ease;
         }
-        .hero-btn:hover { 
-          background-color: ${mainColorDark} !important; 
-          transform: scale(1.02); 
+        
+        .nav-link:hover::after {
+          width: 100%;
+        }
+        
+        .nav-link:hover {
+          transform: translateY(-2px);
+        }
+        
+        .about-card {
+          background: ${darkMode ? '#1a1a2e' : 'white'};
+          border-radius: 24px;
+          padding: 32px;
+          border: 1px solid ${darkMode ? '#2a2a3e' : '#eef2f6'};
+          transition: all 0.3s ease;
+        }
+        
+        .more-about-content {
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.5s ease;
+        }
+        
+        .more-about-content.show {
+          max-height: 800px;
+        }
+        
+        .more-btn {
+          background: transparent;
+          border: none;
+          color: ${mainColor};
+          cursor: pointer;
+          font-weight: 500;
+          transition: all 0.2s ease;
+        }
+        
+        .more-btn:hover {
+          transform: translateX(4px);
         }
         
         .event-card {
@@ -402,25 +317,6 @@ export default function Home() {
           color: ${mainColor};
         }
         
-        .categories-grid {
-          display: flex;
-          gap: 20px;
-          flex-wrap: wrap;
-          justify-content: center;
-          margin: 40px 0;
-        }
-        
-        .view-all-link {
-          color: ${mainColor};
-          text-decoration: none;
-          font-size: 0.85rem;
-          font-weight: 500;
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-        }
-        .view-all-link:hover { text-decoration: underline; }
-        
         .logo { 
           transition: transform 0.2s ease; 
         }
@@ -503,16 +399,46 @@ export default function Home() {
           border-color: ${mainColor}; 
         }
         
-        .admin-upload-summary {
+        .uploaded-doc-card {
+          transition: all 0.3s ease;
+          background-color: ${darkMode ? '#1a1a2e' : 'white'};
+          padding: 20px;
+          border-radius: 16px;
+          width: 100%;
+          max-width: 280px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+          text-align: left;
           cursor: pointer;
-          list-style: none;
+          border: 1px solid ${darkMode ? '#2a2a3e' : '#eef2f6'};
+          position: relative;
         }
-        .admin-upload-summary::-webkit-details-marker {
-          display: none;
+        .uploaded-doc-card:hover { 
+          transform: translateY(-6px); 
+          box-shadow: 0 12px 24px rgba(0,0,0,0.1); 
+          border-color: ${mainColor}; 
         }
         
-        .nav-links a, .nav-links button {
-          white-space: nowrap;
+        .delete-btn {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: rgba(231, 76, 60, 0.9);
+          color: white;
+          border: none;
+          border-radius: 50%;
+          width: 28px;
+          height: 28px;
+          font-size: 14px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s;
+          z-index: 10;
+        }
+        .delete-btn:hover {
+          background: #c0392b;
+          transform: scale(1.1);
         }
         
         @keyframes fadeIn { 
@@ -524,18 +450,6 @@ export default function Home() {
           to { transform: translateY(0); opacity: 1; } 
         }
 
-        /* Tablet Styles */
-        @media (max-width: 1024px) {
-          .categories-grid {
-            gap: 16px;
-          }
-          .category-card {
-            min-width: 140px;
-            padding: 20px 12px;
-          }
-        }
-
-        /* Mobile Styles */
         @media (max-width: 768px) {
           .nav-links { 
             display: ${isOpen ? 'flex' : 'none'} !important; 
@@ -567,27 +481,7 @@ export default function Home() {
             min-width: unset !important; 
             margin-bottom: 16px;
           }
-          .events-container { 
-            flex-direction: column !important; 
-            align-items: center !important; 
-          }
-          .why-testimonial-container { 
-            flex-direction: column !important; 
-            align-items: center !important; 
-          }
-          .courses-container, .documents-grid {
-            justify-content: center !important;
-          }
-          .category-card {
-            min-width: calc(50% - 16px);
-            flex: 1;
-          }
-          .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-          }
-          .course-card, .doc-card {
+          .uploaded-doc-card {
             max-width: 100%;
             width: 100%;
           }
@@ -604,69 +498,40 @@ export default function Home() {
           .main-slogan {
             text-align: center;
           }
-          .hero-btn {
-            width: 100%;
-            max-width: 280px;
-          }
           .navbar-search input {
             width: 100px;
           }
-          .navbar-search {
-            margin: 0 5px;
-          }
-          .language-selector {
-            padding: 6px 8px;
-            font-size: 0.7rem;
+          .about-card {
+            padding: 20px;
           }
         }
 
-        /* Small Mobile Styles */
         @media (max-width: 480px) {
-          .category-card {
-            min-width: 100%;
-          }
-          .categories-grid {
-            grid-template-columns: 1fr;
-          }
           .section-title {
             font-size: 1.3rem;
           }
           .navbar-search {
             display: none;
           }
-        }
-        
-        /* Landscape orientation fix */
-        @media (max-height: 500px) and (orientation: landscape) {
-          .modal-content {
-            max-height: 85vh;
-          }
-          .pdf-container {
-            height: 300px;
+          .about-card {
+            padding: 16px;
           }
         }
         
-        /* Prevent horizontal scroll */
         html, body {
           overflow-x: hidden;
           width: 100%;
           position: relative;
         }
         
-        /* Ensure all images are responsive */
         img {
           max-width: 100%;
           height: auto;
         }
-        
-        /* Smooth transitions */
-        button, a, .course-card, .category-card, .event-card {
-          -webkit-tap-highlight-color: transparent;
-        }
       `}</style>
 
-      {/* FIXED NAVBAR - DOES NOT MOVE */}
-           <nav style={{ 
+      {/* FIXED NAVBAR WITH PROPER LINKS */}
+      <nav style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center', 
@@ -694,7 +559,7 @@ export default function Home() {
               placeholder="Search..." 
               value={navbarSearchTerm}
               onChange={(e) => setNavbarSearchTerm(e.target.value)}
-              style={{ width: '100px', padding: '3px 6px', fontSize: '0.7rem', background: 'transparent', border: 'none', color: 'white', outline: 'none' }}
+              style={{ width: '120px', padding: '3px 6px', fontSize: '0.7rem', background: 'transparent', border: 'none', color: 'white', outline: 'none' }}
             />
           </div>
           
@@ -714,15 +579,28 @@ export default function Home() {
         </div>
         
         <div className="nav-links" ref={mobileMenuRef} style={{ display: 'flex', gap: '10px', alignItems: 'center', fontSize: '0.7rem', flexWrap: 'wrap' }}>
-          <a href="#" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Home</a>
-          <a href="#documents" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Categories</a>
-          <a href="#courses" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Courses</a>
-          <a href="/blog" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Blog</a>
-          <a href="/resources" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Resources</a>
-          {isSignedIn && <a href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Dashboard</a>}
-          <a href="#faq" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>FAQ</a>
-          <a href="#events" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Events</a>
-          <a href="#contact" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Contact</a>
+          {navItems.map((item) => (
+            <div key={item.id} className="nav-link">
+              {item.name === "Courses" || item.name === "Blog" || item.name === "Resources" ? (
+                <Link href={item.href} style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>
+                  {item.name}
+                </Link>
+              ) : (
+                <a 
+                  href={item.href} 
+                  style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}
+                >
+                  {item.name}
+                </a>
+              )}
+            </div>
+          ))}
+          
+          {isSignedIn && (
+            <div className="nav-link">
+              <a href="/dashboard" style={{ color: 'white', textDecoration: 'none', fontWeight: 500 }}>Dashboard</a>
+            </div>
+          )}
           
           {!isSignedIn ? (
             <div style={{ display: 'flex', gap: '5px' }}>
@@ -741,16 +619,16 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* MAIN CONTENT WITH TOP PADDING FOR FIXED NAVBAR */}
-     <main style={{ 
-  display: 'flex', 
-  flexDirection: 'column', 
-  alignItems: 'center', 
-  padding: '60px 20px 40px 20px',
-  maxWidth: '1400px', 
-  margin: '0 auto', 
-  width: '100%' 
-}}>
+      {/* MAIN CONTENT - NO FEATURED COURSES SECTION */}
+      <main style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        padding: '60px 20px 40px 20px',
+        maxWidth: '1400px', 
+        margin: '0 auto', 
+        width: '100%' 
+      }}>
         
         {/* Hero Section */}
         <div style={{ width: '100%', maxWidth: '1100px', textAlign: 'left', marginBottom: '30px' }}>
@@ -772,145 +650,68 @@ export default function Home() {
           <img src="/profile2.png" alt="Students" loading="eager" width="700" height="400" style={{ width: '100%', maxWidth: '550px', borderRadius: '20px', boxShadow: '0 12px 30px rgba(0,0,0,0.1)', objectFit: 'cover' }} />
         </div>
 
-        {/* Explore Text */}
-        <div style={{ textAlign: 'center', marginBottom: '20px', width: '100%' }}>
-          <h2 style={{ fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 700, color: darkMode ? '#fff' : '#333', marginBottom: '8px' }}>Explore, learn, apply.</h2>
-          <p style={{ fontSize: '0.9rem', color: darkMode ? '#aaa' : '#666' }}>With over 300+ million documents, find the answers you need to get work done.</p>
-        </div>
-
-        {/* Admin Upload Section */}
-        <div style={{ marginBottom: '30px', textAlign: 'center', width: '100%', maxWidth: '500px' }}>
-          <details style={{ cursor: 'pointer' }}>
-            <summary className="admin-upload-summary" style={{ 
-              display: 'inline-block',
-              backgroundColor: mainColor,
-              color: 'white',
-              border: 'none',
-              padding: '12px 28px',
-              borderRadius: '40px',
-              fontSize: '0.9rem',
-              fontWeight: 500,
-              cursor: 'pointer'
-            }}>
-              📤 Admin Upload (Click to expand)
-            </summary>
-            <div style={{ marginTop: '20px', padding: '20px', background: darkMode ? '#1a1a2e' : 'white', borderRadius: '16px' }}>
-              <p style={{ fontSize: '0.8rem', marginBottom: '15px', color: darkMode ? '#aaa' : '#666' }}>
-                Enter admin password to upload files
-              </p>
-              <input
-                type="password"
-                id="adminPassword"
-                placeholder="Enter admin password"
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  borderRadius: '8px',
-                  border: `1px solid ${darkMode ? '#444' : '#ddd'}`,
-                  background: darkMode ? '#2a2a2a' : 'white',
-                  color: darkMode ? '#fff' : '#333',
-                  marginBottom: '10px'
-                }}
-              />
-              <div id="adminAuthStatus" style={{ fontSize: '0.7rem', marginBottom: '10px', color: '#e74c3c', display: 'none' }}></div>
-              
-              <button
-                id="adminUploadBtn"
-                style={{
-                  display: 'block',
-                  width: '100%',
-                  backgroundColor: '#ccc',
-                  color: '#666',
-                  padding: '10px',
-                  borderRadius: '8px',
-                  textAlign: 'center',
-                  cursor: 'not-allowed',
-                  fontSize: '0.8rem',
-                  opacity: 0.6,
-                  border: 'none'
-                }}
-                onClick={() => {
-                  const password = document.getElementById('adminPassword').value;
-                  if (password === ADMIN_PASSWORD) {
-                    document.getElementById('adminFileUpload').click();
-                  } else {
-                    alert('❌ Incorrect password! Please enter the correct admin password.');
-                  }
-                }}
-              >
-                🔒 Enter correct password first
-              </button>
-              
-              <input
-                type="file"
-                id="adminFileUpload"
-                accept=".pdf,.doc,.docx,.txt"
-                style={{ display: 'none' }}
-                onChange={async (e) => {
-                  const file = e.target.files[0];
-                  const password = document.getElementById('adminPassword').value;
-                  
-                  if (password !== ADMIN_PASSWORD) {
-                    alert('❌ Incorrect password! Only admin can upload.');
-                    e.target.value = '';
-                    return;
-                  }
-                  
-                  if (!file) return;
-                  handleFileUpload(file);
-                  e.target.value = '';
-                  setTimeout(() => window.location.reload(), 500);
-                }}
-              />
-              <p style={{ fontSize: '0.7rem', color: darkMode ? '#888' : '#999', marginTop: '10px' }}>
-                Only admin can upload files. Password: waloo123
-              </p>
+        {/* About Me Section */}
+        <div style={{ width: '100%', maxWidth: '1100px', marginBottom: '40px' }}>
+          <div className="about-card">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap', marginBottom: '24px' }}>
+              <div style={{ 
+                width: '80px', 
+                height: '80px', 
+                background: mainColorLight, 
+                borderRadius: '50%', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                fontSize: '2.5rem'
+              }}>
+                👩‍💻
+              </div>
+              <div>
+                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: mainColor, marginBottom: '4px' }}>About Me</h2>
+                <p style={{ fontSize: '0.8rem', color: darkMode ? '#aaa' : '#666' }}>Founder of Waloo Academy</p>
+              </div>
             </div>
-          </details>
-          {uploadedFiles.length > 0 && (
-            <p style={{ fontSize: '0.7rem', color: darkMode ? '#888' : '#999', marginTop: '10px' }}>
-              {uploadedFiles.length} file(s) uploaded
+            
+            <p style={{ fontSize: '0.95rem', lineHeight: 1.7, color: darkMode ? '#ddd' : '#444', marginBottom: '20px' }}>
+              Hello! I am Rorisa, an Economics student at Addis Ababa University (AAU), a data enthusiast, and a web developer. 
+              Combining my deep understanding of economic principles with modern technical skills, I am passionate about leveraging 
+              data and technology to solve real-world problems and empower others.
             </p>
-          )}
-        </div>
-
-        {/* Categories Section */}
-        <div id="documents" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px' }}>
-          <div className="categories-grid">
-            {categories.map(cat => (
-              <div 
-                key={cat.id} 
-                className="category-card" 
-                onClick={() => setSelectedCategory(selectedCategory === cat.name ? null : cat.name)}
-                style={{ borderBottom: selectedCategory === cat.name ? `3px solid ${mainColor}` : 'none' }}
-              >
-                <div style={{ fontSize: '2rem', marginBottom: '8px' }}>{cat.icon}</div>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 600, marginBottom: '4px' }}>{cat.name}</h3>
-                <p style={{ fontSize: '0.65rem', color: darkMode ? '#888' : '#999', marginBottom: '8px' }}>{cat.count} categories</p>
-                <a href="#" className="view-all-link" onClick={(e) => { e.preventDefault(); setSelectedCategory(selectedCategory === cat.name ? null : cat.name); }}>View all →</a>
-              </div>
-            ))}
-          </div>
-
-          {selectedCategory && (
-            <div style={{ marginTop: '30px', padding: '20px', background: darkMode ? '#1a1a2e' : 'white', borderRadius: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
-                <h3 style={{ color: mainColor, fontSize: '1.2rem', fontWeight: 600 }}>{selectedCategory} Courses</h3>
-                <button onClick={() => setSelectedCategory(null)} style={{ background: 'none', border: 'none', color: mainColor, cursor: 'pointer', fontSize: '0.8rem' }}>Close ✕</button>
-              </div>
-              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-                {getCategoryCourses(selectedCategory).map(course => (
-                  <div key={course.id} className="course-card" onClick={() => setSelectedCourse({ ...course, teacher: "Waloo Academy", price: "Free", detail: course.desc })}>
-                    <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>{course.type === 'video' ? '🎥' : '📄'}</div>
-                    <h4 style={{ fontSize: '0.9rem', marginBottom: '5px', fontWeight: 600 }}>{course.title}</h4>
-                    <p style={{ fontSize: '0.7rem', color: darkMode ? '#aaa' : '#666' }}>{course.desc}</p>
-                    <span style={{ color: mainColor, fontSize: '0.65rem', marginTop: '10px', display: 'block' }}>{course.type === 'video' ? '▶ Watch →' : '📖 Read →'}</span>
-                  </div>
-                ))}
+            
+            <button 
+              className="more-btn"
+              onClick={() => setShowMoreAbout(!showMoreAbout)}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+            >
+              {showMoreAbout ? '▲ Less About Rorisa' : '▼ More About Rorisa'}
+            </button>
+            
+            <div className={`more-about-content ${showMoreAbout ? 'show' : ''}`}>
+              <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eef2f6'}` }}>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: mainColor, marginBottom: '16px' }}>📊 My Journey & Skills</h3>
+                <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: darkMode ? '#ddd' : '#444', marginBottom: '20px' }}>
+                  As a student of economics, I quickly realized the immense power of data in shaping our world. 
+                  This inspired me to dive into the field of data analysis, mastering tools like Excel and Power BI 
+                  to turn complex datasets into meaningful insights.
+                </p>
+                <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: darkMode ? '#ddd' : '#444', marginBottom: '20px' }}>
+                  Beyond data, I love building things for the digital world. I am a full-stack web developer experienced 
+                  in creating modern, responsive platforms using HTML, CSS, JavaScript, and Next.js. My technical background 
+                  allows me to build robust digital solutions from scratch.
+                </p>
+                
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: mainColor, marginBottom: '16px', marginTop: '24px' }}>🎯 The Vision Behind Waloo Academy</h3>
+                <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: darkMode ? '#ddd' : '#444', marginBottom: '20px' }}>
+                  I founded Waloo Academy to bridge the gap between academic theory and practical, real-world skills. 
+                  My mission is to provide high-quality educational tutorials and resources for secondary and higher education students. 
+                  I believe that by enriching our minds through quality education, we can build a brighter future together with modern skills.
+                </p>
               </div>
             </div>
-          )}
+          </div>
         </div>
+
+        {/* NO FEATURED COURSES SECTION - REMOVED */}
 
         {/* Uploaded Documents */}
         {uploadedFiles.length > 0 && (
@@ -918,7 +719,7 @@ export default function Home() {
             <h3 className="section-title" style={{ fontSize: '1.3rem' }}>📁 Uploaded Documents</h3>
             <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
               {uploadedFiles.map(file => (
-                <div key={file.id} className="doc-card" onClick={() => setSelectedCourse({
+                <div key={file.id} className="uploaded-doc-card" onClick={() => setSelectedCourse({
                   id: file.id,
                   title: file.name,
                   detail: "Uploaded document",
@@ -938,7 +739,7 @@ export default function Home() {
                   </button>
                   <div style={{ fontSize: '1.5rem', marginBottom: '8px' }}>📄</div>
                   <h3 style={{ fontSize: '0.8rem', marginBottom: '5px', fontWeight: 600 }}>{file.name.length > 30 ? file.name.substring(0, 30) + '...' : file.name}</h3>
-                  <span className="section-badge" style={{ backgroundColor: mainColorLight, color: mainColor, padding: '2px 8px', borderRadius: '12px', fontSize: '0.6rem' }}>📎 Uploaded</span>
+                  <span style={{ backgroundColor: mainColorLight, color: mainColor, padding: '2px 8px', borderRadius: '12px', fontSize: '0.6rem' }}>📎 Uploaded</span>
                 </div>
               ))}
             </div>
@@ -983,20 +784,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Popular Courses Section */}
-        <div id="courses" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
-          <h2 className="section-title">📖 Popular Courses</h2>
-          <div className="categories-grid" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '20px' }}>
-            {Object.keys(coursesByCategory).slice(0, 4).map(cat => (
-              <div key={cat} className="category-card" onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}>
-                <div style={{ fontSize: '1.8rem', marginBottom: '8px' }}>{categories.find(c => c.name === cat)?.icon || '📚'}</div>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 600 }}>{cat}</h3>
-                <p style={{ fontSize: '0.6rem', color: darkMode ? '#888' : '#999' }}>{coursesByCategory[cat].length} courses</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* FAQ Section */}
         <div id="faq" style={{ width: '100%', maxWidth: '1100px', marginBottom: '60px', paddingTop: '40px' }}>
           <h2 className="section-title">FAQ</h2>
@@ -1014,7 +801,7 @@ export default function Home() {
                 <span style={{ fontSize: '1rem', color: mainColor }}>▼</span>
               </div>
               <div className="faq-answer" style={{ display: 'none', marginTop: '12px', paddingTop: '12px', borderTop: `1px solid ${darkMode ? '#2a2a3e' : '#eee'}`, fontSize: '0.85rem', lineHeight: 1.5 }}>
-                Waloo Academy is an online learning platform providing quality education in Economics, Data Analysis, Programming, Digital Marketing, and Graphic Design.
+                Waloo Academy is an online learning platform providing quality education in Data Analysis, Programming, Economics, and High School subjects.
               </div>
             </div>
 
@@ -1081,7 +868,7 @@ export default function Home() {
                 <input type="hidden" name="event_date" value={selectedEvent.date} />
                 <input type="text" name="name" placeholder="Your Full Name" className="form-input" required />
                 <input type="email" name="email" placeholder="Your Email Address" className="form-input" required />
-                <button type="submit" style={{ width: '100%', padding: '12px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '12px', fontWeight: 600, cursor: 'pointer' }}>Confirm Registration</button>
+                <button type="submit" style={{ width: '100%', marginTop: '16px', padding: '12px', backgroundColor: mainColor, color: 'white', border: 'none', borderRadius: '12px', fontWeight: 600, cursor: 'pointer' }}>Confirm Registration</button>
               </form>
             </div>
           </div>
@@ -1126,7 +913,6 @@ export default function Home() {
           cursor: 'pointer', 
           boxShadow: '0 4px 12px rgba(0,0,0,0.2)', 
           zIndex: 1000,
-          transition: 'all 0.2s',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center'
@@ -1147,9 +933,10 @@ export default function Home() {
         </div>
         <div style={{ marginTop: '16px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', fontSize: '0.7rem' }}>
           <a href="#" style={{ color: mainColor, textDecoration: 'none' }}>Home</a>
-          <a href="/blog" style={{ color: mainColor, textDecoration: 'none' }}>Blog</a>
-          <a href="/resources" style={{ color: mainColor, textDecoration: 'none' }}>Resources</a>
-          {isSignedIn && <a href="/dashboard" style={{ color: mainColor, textDecoration: 'none' }}>Dashboard</a>}
+          <Link href="/courses" style={{ color: mainColor, textDecoration: 'none' }}>Courses</Link>
+          <Link href="/blog" style={{ color: mainColor, textDecoration: 'none' }}>Blog</Link>
+          <Link href="/resources" style={{ color: mainColor, textDecoration: 'none' }}>Resources</Link>
+          {isSignedIn && <Link href="/dashboard" style={{ color: mainColor, textDecoration: 'none' }}>Dashboard</Link>}
           <a href="#contact" style={{ color: mainColor, textDecoration: 'none' }}>Contact</a>
         </div>
         <p style={{ marginTop: '16px', fontSize: '0.55rem', opacity: 0.5 }}>Empowering Ethiopian education since 2025</p>
