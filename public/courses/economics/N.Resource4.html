@@ -1,0 +1,987 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Chapter 4 | Natural Resources | Economics Presentation</title>
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a2a1a 0%, #1a4a2a 30%, #0f172a 70%, #1e1b4b 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Grid */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        /* Floating Orbs Animation */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            pointer-events: none;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #10b981, #059669);
+            top: -200px;
+            left: -200px;
+        }
+
+        .orb-2 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, #3b82f6, #1d4ed8);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 3s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #f59e0b, #d97706);
+            top: 50%;
+            left: 80%;
+            animation-delay: 6s;
+        }
+
+        .orb-4 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #8b5cf6, #7c3aed);
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 9s;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -40px) scale(1.15); }
+        }
+
+        /* Main Container */
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        /* Slides Wrapper */
+        .slides-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Individual Slide */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            overflow-y: auto;
+            padding: 50px 70px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        /* Custom Scrollbar */
+        .slide::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 10px;
+        }
+
+        /* Slide Card - Glassmorphism Premium Style */
+        .slide-card {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(10px);
+            border-radius: 48px;
+            padding: 50px 60px;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.2);
+            animation: slideContentIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .slide-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 40px 70px -20px rgba(0,0,0,0.5);
+        }
+
+        @keyframes slideContentIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typography */
+        .chapter-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e1b4b, #10b981, #3b82f6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 25px;
+            border-left: 5px solid #10b981;
+            padding-left: 25px;
+        }
+
+        .slide-number {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.15);
+            color: #059669;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Content styling - unified text flow with 5 spaces indentation */
+        .content-text {
+            line-height: 1.8;
+            color: #1e293b;
+        }
+
+        .content-text p {
+            margin-bottom: 16px;
+        }
+
+        .original-text {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 12px;
+            font-size: 1.05rem;
+        }
+
+        .explanation-line {
+            margin-left: 28px;
+            margin-bottom: 8px;
+            color: #475569;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .explanation-line .bullet {
+            color: #10b981;
+            font-size: 1rem;
+            min-width: 20px;
+            font-weight: 600;
+        }
+
+        .explanation-line .text {
+            flex: 1;
+        }
+
+        .sub-bullet {
+            margin-left: 48px;
+            margin-bottom: 6px;
+            color: #64748b;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .sub-bullet .bullet {
+            color: #8b5cf6;
+            font-size: 0.9rem;
+            min-width: 20px;
+        }
+
+        /* Formula Box */
+        .formula-box {
+            background: linear-gradient(135deg, #1e1b4b, #2d2a5e);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+            text-align: center;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 1.2rem;
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* Key Point Box - Premium Summary Box */
+        .key-point-box {
+            background: linear-gradient(135deg, #e0f2fe, #d1fae5);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #10b981;
+            transition: transform 0.3s ease;
+        }
+
+        .key-point-box:hover {
+            transform: translateX(5px);
+        }
+
+        /* Research Box */
+        .research-box {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #ec4899;
+        }
+
+        /* Example Box */
+        .example-box {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #f59e0b;
+        }
+
+        /* Emoji styling */
+        .emoji {
+            font-size: 1.1rem;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: #1e1b4b;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Indicators */
+        .indicators {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            padding: 12px 25px;
+            border-radius: 50px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator:hover {
+            background: #10b981;
+            transform: scale(1.2);
+        }
+
+        .indicator.active {
+            background: #10b981;
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #059669, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 100;
+            font-family: 'Space Grotesk', monospace;
+        }
+
+        /* Chapter Divider */
+        .chapter-divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .chapter-divider span {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 8px 30px;
+            border-radius: 40px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px 15px;
+            }
+            .slide-card {
+                padding: 25px;
+            }
+            .slide-title {
+                font-size: 1.5rem;
+            }
+            .explanation-line {
+                margin-left: 15px;
+            }
+            .sub-bullet {
+                margin-left: 30px;
+            }
+            .nav-controls {
+                bottom: 15px;
+                right: 15px;
+            }
+            .indicators {
+                bottom: 15px;
+                left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-counter" id="slideCounter">1 / 20</div>
+
+    <div class="presentation-container">
+        <div class="slides-wrapper" id="slidesWrapper">
+            
+            <!-- CHAPTER 4 TITLE SLIDE -->
+            <div class="slide" data-index="0">
+                <div class="slide-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 70vh;">
+                    <div class="chapter-divider">
+                        <span>🌍 CHAPTER 4</span>
+                    </div>
+                    <div class="slide-title" style="text-align: center; border-left: none; font-size: 2.8rem;">NATURAL RESOURCES</div>
+                    <p style="font-size: 1.8rem; color: #07c740; margin-top: 20px;">PREPARED BY: RORISA TOLA</p>
+                    <p style="font-size: 1.2rem; color: #09042a; margin-top: 20px;">Classification, Essentialness, and Optimal Depletion Theory</p>
+                    <div style="margin-top: 50px;">
+                        <i class="fas fa-tree" style="font-size: 3rem; color: #10b981; margin: 0 20px;"></i>
+                        <i class="fas fa-water" style="font-size: 3rem; color: #3b82f6; margin: 0 20px;"></i>
+                        <i class="fas fa-oil-can" style="font-size: 3rem; color: #f59e0b; margin: 0 20px;"></i>
+                        <i class="fas fa-gem" style="font-size: 3rem; color: #8b5cf6; margin: 0 20px;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 1: Chapter Four – Natural Resources -->
+            <div class="slide" data-index="1">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 1</div>
+                    <div class="slide-title">Chapter Four – Natural Resources</div>
+                    <div class="content-text">
+                        <p class="original-text">Original: Chapter Four – Natural Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Natural Resources = Resources provided by nature.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Examples: <span class="emoji">🌳</span> Forests, <span class="emoji">💧</span> Water, <span class="emoji">⛽</span> Oil, <span class="emoji">🌬️</span> Air, <span class="emoji">🪨</span> Minerals.</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Natural resources are materials and components found in nature that are valuable to humans. They form the foundation of all economic activity and human survival. Examples include forests, water, oil, air, and minerals.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: Classification of Natural Resources (Origin & Availability) -->
+            <div class="slide" data-index="2">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 2</div>
+                    <div class="slide-title">4.1 Classification of Natural Resources</div>
+                    <div class="content-text">
+                        <p class="original-text">🔹 Based on the Origin of Natural Resources</p>
+                        
+                        <p class="original-text" style="margin-top: 15px;">Biotic Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resources that have life or come from living organisms.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Examples:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌳</span> Plants</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🐄</span> Animals</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🦠</span> Microorganisms</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">⛽</span> Fossil fuels</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Abiotic Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resources that do not have life and come from non-living things.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Examples:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">💧</span> Water</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌬️</span> Air</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌱</span> Soil</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🪨</span> Rocks</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">💎</span> Minerals</span></div>
+                        
+                        <p class="original-text" style="margin-top: 25px;">🔹 Based on the Availability of Resources</p>
+                        
+                        <p class="original-text" style="margin-top: 15px;">Renewable Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resources that can be replaced or replenished naturally.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">They are renewed faster than they are used.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Examples:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">☀️</span> Solar energy</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">💧</span> Water</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌬️</span> Wind</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Non-Renewable Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resources that are limited and can be used up completely.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">They take millions of years to form.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Examples:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">⛽</span> Fossil fuels</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🪨</span> Coal</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🦏</span> Rare species of organisms</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Natural resources are classified by origin (biotic vs. abiotic) and by availability (renewable vs. non-renewable). Biotic resources come from living organisms; abiotic from non-living matter. Renewable resources replenish naturally; non-renewable resources are finite.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3: Potential vs Reserved Resources -->
+            <div class="slide" data-index="3">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 3</div>
+                    <div class="slide-title">Classification of Natural Resources (Potential vs Reserved)</div>
+                    <div class="content-text">
+                        <p class="original-text">Potential Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resources that are known to exist but have not been measured completely and are not yet used.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">They may be used in the future.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Example:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌬️</span> Wind energy in areas where electricity is not yet generated from wind.</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">☢️</span> Nuclear minerals</span></div>
+                        
+                        <p class="original-text" style="margin-top: 25px;">Reserved Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resources that have been identified and measured, but are kept for future use.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">They are available but not currently exploited.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Example:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌊</span> Rivers</span></div>
+                        
+                        <p class="original-text" style="margin-top: 25px;">📌 Important Difference</p>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Potential Resources → Known to exist, but not fully quantified or utilized.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Reserved Resources → Already identified and quantified, but intentionally saved for future use.</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Potential resources are known but not yet fully measured or used. Reserved resources are identified and quantified but deliberately kept for future use. The key difference is that reserved resources are quantified and intentionally saved.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4: Stock vs Actual Resources -->
+            <div class="slide" data-index="4">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 4</div>
+                    <div class="slide-title">Classification of Natural Resources (Stock vs Actual)</div>
+                    <div class="content-text">
+                        <p class="original-text">Stock Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resources that have been discovered and measured, but cannot be used currently because technology is insufficient.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">The resource exists, but we lack the technology to utilize it economically.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Example:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🧪</span> Hydrogen</span></div>
+                        
+                        <p class="original-text" style="margin-top: 25px;">Actual Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resources that have been discovered, measured, developed, and are currently being used.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">These resources contribute directly to production and economic activities.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Examples:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">⛽</span> Crude oil</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌳</span> Forests</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Stock resources are discovered but unusable due to technological limitations. Actual resources are discovered, developed, and currently in use. Stock resources may become actual resources when technology advances.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5: Non-Renewable Resources -->
+            <div class="slide" data-index="5">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 5</div>
+                    <div class="slide-title">4.2 Non-Renewable Resources</div>
+                    <div class="content-text">
+                        <p class="original-text">4.2 Non-Renewable Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resources that are limited in quantity and cannot be replaced within a human lifetime.</span></div>
+                        
+                        <p class="original-text" style="margin-top: 25px;">4.2.1 Theory of Optimal Depletion</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Studies how non-renewable resources should be used over time to maximize benefits and avoid rapid exhaustion.</span></div>
+                        
+                        <p class="original-text" style="margin-top: 25px;">4.2.2 Energy Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Focuses on energy sources such as:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">⛽</span> Oil</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🪨</span> Coal</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🔥</span> Natural gas</span></div>
+                        
+                        <p class="original-text" style="margin-top: 25px;">4.2.3 Minerals</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Examines mineral resources used in production and industry.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Examples:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🪙</span> Gold</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🪨</span> Iron</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">💎</span> Copper</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🧱</span> Limestone</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Non-renewable resources are finite and cannot be replaced within human lifetimes. The Theory of Optimal Depletion studies their efficient use over time. Major categories include energy resources (oil, coal, natural gas) and minerals (gold, iron, copper, limestone).
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 6: Essentialness of Natural Resources -->
+            <div class="slide" data-index="6">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 6</div>
+                    <div class="slide-title">Essentialness of Natural Resources</div>
+                    <div class="content-text">
+                        <p class="original-text">As a waste disposal and reprocessing agent</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Natural resources help absorb, process, and recycle waste generated by human activities.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">The environment acts as a natural sink for waste.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Rivers, forests, soil, and microorganisms help break down many waste materials.</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Human Psychic Satisfaction (Aesthetic Enjoyment)</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Natural resources provide beauty, recreation, and psychological satisfaction.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">People enjoy natural scenery such as:</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌳</span> Forests</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🏞️</span> Mountains</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌊</span> Lakes</span></div>
+                        <div class="sub-bullet"><span class="bullet">🔹</span><span class="text"><span class="emoji">🌺</span> Parks</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Ecologically Essential</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Natural resources are necessary for maintaining ecosystem health and ecological balance.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">They support: Ecosystem services, Biodiversity, Energy flow, Ecological stability</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Essential for Production</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Natural resources serve as important inputs in the production of goods and services.</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Examples: <span class="emoji">⛽</span> Crude oil → petrol, <span class="emoji">🪵</span> Timber → furniture, <span class="emoji">🪨</span> Minerals → manufacturing</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Natural resources are essential for waste disposal, aesthetic enjoyment, ecological balance, and production. This chapter focuses specifically on their role in production as inputs for goods and services and drivers of economic growth.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7: Theory of Optimal Depletion -->
+            <div class="slide" data-index="7">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 7</div>
+                    <div class="slide-title">4.2.1 Theory of Optimal Depletion</div>
+                    <div class="content-text">
+                        <p class="original-text">Suppose the economy produces Q, which can be consumed or invested.</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Output Q can be used in two ways: <span class="emoji">🍞</span> Consumption (now) or <span class="emoji">🏭</span> Investment (future)</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Output is generated through a production function using a non-renewable resource input R and manufactured capital K.</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">R = Non-renewable resource (<span class="emoji">⛽</span> Oil, <span class="emoji">🪨</span> Coal, <span class="emoji">💎</span> Minerals)</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">K = Manufactured capital (<span class="emoji">🏭</span> Factories, <span class="emoji">⚙️</span> Machinery)</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Production function: Q = Q(K,R)</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Output depends on both Capital (K) and Natural Resources (R)</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Cobb-Douglas Production Function: Q = A K^α R^β</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Where: Q = Output, A = Technology, K = Capital, R = Resources</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">α = Output responsiveness to capital, β = Output responsiveness to resources</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">Both α and β are positive — more input = more output</span></div>
+                    </div>
+                    <div class="formula-box">
+                        📐 Q = A × K^α × R^β  |  α > 0, β > 0
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> The Theory of Optimal Depletion analyzes how non-renewable resources should be used over time. The Cobb-Douglas production function (Q = A K^α R^β) shows how both capital and resources contribute to output, with α and β measuring their contributions.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 8: CES Production Function -->
+            <div class="slide" data-index="8">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 8</div>
+                    <div class="slide-title">CES Production Function</div>
+                    <div class="content-text">
+                        <p class="original-text">Constant Elasticity of Substitution (CES) Production Function: Q = A (α K^{-θ} + β R^{-θ})^{-ε/θ}</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">θ (theta) determines how easily inputs can substitute for each other</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Cobb-Douglas is a special case of CES when θ → 0</span></div>
+                        
+                        <p class="original-text" style="margin-top: 25px;">Essential vs Non-Essential Resources</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">A resource is essential if Q(K,R=0) = 0 for any positive K</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">For CD function: Both R and K are essential (Q=0 if either input=0)</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">For CES: If θ < 0 → no input is essential (easy substitution)</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">If θ > 0 → all inputs are essential (limited substitution)</span></div>
+                    </div>
+                    <div class="formula-box">
+                        📐 CES: Q = A(αK^{-θ} + βR^{-θ})^{-ε/θ}
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> The CES production function allows different degrees of substitution between capital and resources. Cobb-Douglas is a special case. Resources are "essential" if production stops without them. For CD, both inputs are essential; for CES, θ determines essentiality.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 9: Elasticity of Substitution Definition -->
+            <div class="slide" data-index="9">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 9</div>
+                    <div class="slide-title">Elasticity of Substitution (σ)</div>
+                    <div class="content-text">
+                        <p class="original-text">The elasticity of substitution (σ) between non-renewable resources and capital measures how easily one input can replace the other while keeping output constant.</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Larger σ → Easier substitution</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Smaller σ → Harder substitution</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Helps understand: Resource scarcity, Technological flexibility, Long-run sustainability</span></div>
+                    </div>
+                    <div class="formula-box">
+                        📊 σ = Elasticity of Substitution = % change in (K/R) ÷ % change in (MPK/MPR)
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Elasticity of substitution (σ) measures how easily capital can replace natural resources in production. High σ means easy substitution; low σ means difficult substitution — crucial for understanding resource scarcity and sustainability.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 10: σ Values Interpretation -->
+            <div class="slide" data-index="10">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 10</div>
+                    <div class="slide-title">Interpreting Elasticity of Substitution (σ)</div>
+                    <div class="content-text">
+                        <p class="original-text">σ = 0: No input substitution possible (L-shaped isoquant, Leontief production)</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Inputs must be used in fixed proportions</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Having more of one input cannot compensate for shortage of the other</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">σ = ∞: Perfect substitution (straight line isoquant)</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">One input can completely replace the other</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Firms can freely choose whichever input is cheaper</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">0 < σ < ∞: Partial substitution (convex isoquant)</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Most real-world production processes</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Lower σ → more curvature → more difficult substitution</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Higher σ → less curvature → easier substitution</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> σ = 0 means no substitution; σ = ∞ means perfect substitution; 0 < σ < ∞ means partial substitution. Lower σ means more difficult substitution, making resource scarcity more economically damaging.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 11: Resource Scarcity Consequences -->
+            <div class="slide" data-index="11">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 11</div>
+                    <div class="slide-title">Resource Scarcity Consequences</div>
+                    <div class="content-text">
+                        <p class="original-text">As production continues, stocks of non-renewable resources decline.</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resource prices rise relative to capital prices</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">As relative resource price rises, resource-to-capital ratio falls.</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Firms substitute capital for resources when possible</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Marginal product of resource (MPR) increases</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Marginal product of capital (MPK) decreases</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">High σ (easy substitution):</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Small price changes induce large input changes</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resource scarcity causes few economic problems</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Low σ (difficult substitution):</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Even large price changes cause small input changes</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Resource scarcity causes serious economic damage</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> High σ means easy substitution → resource scarcity causes few problems. Low σ means difficult substitution → resource scarcity causes serious economic damage. σ = 0 means no substitution possible, making resource depletion catastrophic.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 12: Sustainable Development Feasibility -->
+            <div class="slide" data-index="12">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 12</div>
+                    <div class="slide-title">Feasibility of Sustainable Development</div>
+                    <div class="content-text">
+                        <p class="original-text">Is sustainable development actually possible?</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Meeting present needs without reducing future generations' ability to meet their needs</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Two necessary conditions:</p>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">1. A criterion of sustainability is required</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">2. Describe material transformation conditions (production possibilities)</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Sustainability Criterion: Non-declining per capita consumption over indefinite time</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Each generation should have at least the same consumption as the previous generation</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Consumption per person should not fall over time</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Sustainable development requires (1) a clear sustainability criterion and (2) understanding of production possibilities. The chapter uses the criterion of non-declining per capita consumption over indefinite time.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 13: Transformation Possibilities - Case A -->
+            <div class="slide" data-index="13">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 13</div>
+                    <div class="slide-title">Transformation Possibilities - Case A (Cobb-Douglas)</div>
+                    <div class="content-text">
+                        <p class="original-text">CASE A: Output produced under perfect competition with CD production function, constant returns to scale, inputs R and K.</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Without technical progress and constant population</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Sustainability (constant consumption) is feasible if α > β</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">α = Capital share of output</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">β = Resource share of output</span></div>
+                    </div>
+                    <div class="formula-box">
+                        📐 Sustainability Condition for CD: α > β
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> With Cobb-Douglas production, sustainability (constant per capita consumption) is feasible when the capital share of output (α) is greater than the resource share (β), assuming no technical progress and constant population.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 14: Case B and Case C -->
+            <div class="slide" data-index="14">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 14</div>
+                    <div class="slide-title">Other Cases - CES and Backstop Technology</div>
+                    <div class="content-text">
+                        <p class="original-text">CASE B: CES production function, perfect competition, constant returns</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Without technical progress and constant population</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Sustainability feasible if σ = 1/(1+θ) ≥ 1</span></div>
+                        
+                        <p class="original-text" style="margin-top: 25px;">CASE C: Backstop technology permanently available</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Non-renewable resources are not essential</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Sustainability is feasible (but consumption levels may be limited)</span></div>
+                    </div>
+                    <div class="formula-box">
+                        📐 CES Condition: σ ≥ 1  |  Backstop Technology: Resource not essential
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Case B: With CES, sustainability requires elasticity of substitution σ ≥ 1. Case C: With permanent backstop technology, resources are not essential, and sustainability is feasible (though consumption may be limited).
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 15: Technical Progress and Population Growth -->
+            <div class="slide" data-index="15">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 15</div>
+                    <div class="slide-title">Technical Progress & Population Growth Effects</div>
+                    <div class="content-text">
+                        <p class="original-text">Previous results assumed zero technical progress and zero population growth.</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Results change if either rate is non-zero</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Permanent technical progress:</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Increases the range of circumstances where constant consumption is feasible</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">HELPS sustainability</span></div>
+                        
+                        <p class="original-text" style="margin-top: 20px;">Constant population growth:</p>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">Has the opposite effect — makes sustainability harder</span></div>
+                        <div class="explanation-line"><span class="bullet">🔸</span><span class="text">However, sustainability possible if technical progress is sufficiently large and β (resource share) is low</span></div>
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Slide Summary:</strong> Technical progress helps sustainability; population growth hinders it. Even with population growth, constant per capita consumption is possible if technical progress is strong enough and the resource share is low enough.
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 16: General Conclusion -->
+            <div class="slide" data-index="16">
+                <div class="slide-card">
+                    <div class="slide-number">🌿 Chapter 4 | Slide 16</div>
+                    <div class="slide-title">General Conclusion on Sustainability</div>
+                    <div class="content-text">
+                        <p class="original-text">For CES production, sustained consumption is possible even where σ < 1, provided technology growth is sufficiently high relative to population growth.</p>
+                        
+                        <p class="original-text" style="margin-top: 25px;">The general conclusion: Sustainability requires EITHER:</p>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">1. A relatively high degree of substitutability between capital and the resource (high σ)</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">2. A sufficiently large continuing rate of technical progress</span></div>
+                        <div class="explanation-line"><span class="bullet">🔹</span><span class="text">3. The presence of a permanent backstop technology</span></div>
+                    </div>
+                    <div class="formula-box">
+                        🌍 SUSTAINABILITY = High σ OR Strong Technology OR Backstop Technology
+                    </div>
+                    <div class="key-point-box">
+                        <strong>📌 Chapter 4 Summary:</strong> Sustainable development requires either (1) high substitutability between capital and natural resources, (2) strong and continuous technological progress, or (3) permanent backstop technology. These three pathways can maintain consumption across generations despite resource depletion.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="indicators" id="indicators"></div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressBar = document.getElementById('progressBar');
+        const indicatorsContainer = document.getElementById('indicators');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Create indicators
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('indicator');
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.indicator');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+            
+            indicators.forEach((ind, index) => {
+                ind.classList.toggle('active', index === currentSlide);
+            });
+            
+            slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+        }
+
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateSlide();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

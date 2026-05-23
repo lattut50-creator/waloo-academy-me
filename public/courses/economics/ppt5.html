@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Chapter 4 | Integration & Mergers | Economics Presentation</title>
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a2a 0%, #1a1a4a 50%, #0a0a2a 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Particles */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Floating Orbs Animation */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.25;
+            pointer-events: none;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #f59e0b, #d97706);
+            top: -200px;
+            left: -200px;
+        }
+
+        .orb-2 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, #8b5cf6, #7c3aed);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 3s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #06b6d4, #0891b2);
+            top: 50%;
+            left: 70%;
+            animation-delay: 6s;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -40px) scale(1.15); }
+        }
+
+        /* Main Container */
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        /* Slides Wrapper */
+        .slides-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Individual Slide */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            overflow-y: auto;
+            padding: 50px 70px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        /* Custom Scrollbar */
+        .slide::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 10px;
+        }
+
+        /* Slide Card */
+        .slide-card {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(5px);
+            border-radius: 40px;
+            padding: 45px 55px;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.4);
+            animation: slideContentIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes slideContentIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typography */
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e1b4b, #5b21b6, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 25px;
+            border-left: 5px solid #f59e0b;
+            padding-left: 25px;
+        }
+
+        .slide-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Content styling - unified text flow */
+        .content-text {
+            line-height: 1.8;
+            color: #1e293b;
+        }
+
+        .content-text p {
+            margin-bottom: 16px;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #1e1b4b, #2d2a5e);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3rem;
+            color: #f59e0b;
+        }
+
+        .key-point-box {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #6366f1;
+        }
+
+        .research-box {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #ec4899;
+        }
+
+        /* Tables */
+        .premium-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .premium-table th {
+            background: linear-gradient(135deg, #1e1b4b, #2d2a5e);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .premium-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #1e1b4b;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            background: #f59e0b;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Indicators */
+        .indicators {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #f59e0b;
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706, #8b5cf6);
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 100;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Lists */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .bullet-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: #f59e0b;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px 15px;
+            }
+            .slide-card {
+                padding: 25px;
+            }
+            .slide-title {
+                font-size: 1.6rem;
+            }
+            .nav-controls {
+                bottom: 15px;
+                right: 15px;
+            }
+            .indicators {
+                bottom: 15px;
+                left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-counter" id="slideCounter">1 / 40</div>
+
+    <div class="presentation-container">
+        <div class="slides-wrapper" id="slidesWrapper">
+            
+            <!-- SLIDE 20 - Integration (Definition) -->
+            <div class="slide" data-index="0">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 20</div>
+                    <div class="slide-title">INTEGRATION (Definition)</div>
+                    
+                    <div class="content-text">
+                        <p>INTEGRATION – It refers to the operations by a firm in two or more industries representing successive stages in the flow of materials or products from an earlier to later stage of production or vice versa.</p>
+                        <p>🔵 Integration here means vertical integration – linking different stages of production.</p>
+                        <p>🟠 Successive stages = raw material → component manufacturing → assembly → wholesale → retail.</p>
+                        <p>🔴 From earlier to later (forward) or later to earlier (backward).</p>
+                        <p>🟣 Example: An oil company owns oil wells (early stage), refineries (middle stage), and gas stations (later stage).</p>
+                        <p>Thus, it is a type of diversification but it may be looked as 'vertical concentration', and if the process takes place by merging of two different firms, then it is 'vertical merger'.</p>
+                        <p>🟡 A type of diversification – vertical diversification, as opposed to horizontal or conglomerate.</p>
+                        <p>🔵 Vertical concentration = control over multiple stages of the supply chain.</p>
+                        <p>🔴 If achieved through merger (two separate firms combining), it's a vertical merger.</p>
+                        <p>🟣 If achieved through internal expansion (building new divisions), it's vertical integration without a merger.</p>
+                        <p>However, vertical integration is a popular term for all these.</p>
+                        <p>🟠 "All these" = whether by internal growth or by merger, people call it vertical integration.</p>
+                        <p>🔵 The term is used broadly to mean single ownership of multiple stages.</p>
+                        <p>🔴 The method (build vs. buy) is important for strategy, but the result is similar.</p>
+                        <p>🟣 So vertical integration is the general concept.</p>
+                        <p>Essentially, it is the integration among intermediate products used in production of a commodity.</p>
+                        <p>🟡 Intermediate products = goods that are inputs to further production (not sold to final consumers).</p>
+                        <p>🔵 Example: Steel is an intermediate product for car manufacturing.</p>
+                        <p>🔴 Integration among intermediate products = owning the steel mill and the car factory together.</p>
+                        <p>🟣 The final commodity (car) is the end product.</p>
+                        <p>It may be initiated in either way, i.e., a firm itself starts manufacturing all of them or different firms producing goods at different stages of the process and merge together.</p>
+                        <p>🔵 Either way = two paths: Internal expansion (build) or merger (buy).</p>
+                        <p>🟠 The result is the same: vertical integration.</p>
+                        <p>🔴 The choice depends on costs, speed, and availability of targets.</p>
+                        <p>🟣 Both are common in business history.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 21 - Types of Integration -->
+            <div class="slide" data-index="1">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 21</div>
+                    <div class="slide-title">Types of Integration</div>
+                    
+                    <div class="content-text">
+                        <p>Types of Integration – Integration of firms may be either horizontal or vertical in nature, or conglomerate.</p>
+                        <p>🔵 This slide lists the three types, but then focuses on vertical integration.</p>
+                        <p>🟠 Horizontal integration = merging with competitors at the same stage (already discussed in diversification).</p>
+                        <p>🔴 Vertical integration = merging with firms at different stages (the focus here).</p>
+                        <p>🟣 Conglomerate integration = merging with unrelated firms (also discussed earlier).</p>
+                        <p>Horizontal integration occurs when a business merges with or acquires another business. It is the acquisition of additional business activities at the same level of the value chain. Here, businesses in the same industry and which operate at the same stage of the production process are combined.</p>
+                        <p>🟡 Same level of the value chain = both make the same type of product.</p>
+                        <p>🔵 Example: Two car manufacturers merge – horizontal integration.</p>
+                        <p>🔴 The goal is often to increase market share, reduce competition, or achieve economies of scale.</p>
+                        <p>🟣 Horizontal integration is about becoming bigger in the same business, not moving into different stages.</p>
+                        <p>Vertical integration is the process in which several steps in the production and/or distribution of a product or service are controlled by a single company or entity, in order to increase that company's or entity's power in the market place.</p>
+                        <p>🔵 Several steps = multiple stages of the supply chain.</p>
+                        <p>🟠 Controlled by a single company = ownership, not just contracts.</p>
+                        <p>🔴 Goal: increase market power – by controlling inputs or distribution channels.</p>
+                        <p>🟣 Example: A coffee company that grows beans, roasts them, and runs its own coffee shops is vertically integrated.</p>
+                        <p>Backward vertical integration: involves acquiring a business operating earlier in the supply chain – e.g. a retailer buys a wholesaler, a brewer buys a hop farm.</p>
+                        <p>🟡 Earlier in the supply chain = closer to raw materials (upstream).</p>
+                        <p>🔵 Retailer buys wholesaler – moving backward toward distribution.</p>
+                        <p>🔴 Brewer buys hop farm – moving backward toward raw materials.</p>
+                        <p>🟣 Backward integration secures supply, controls quality, and may lower costs.</p>
+                        <p>Forward vertical integration: involves acquiring a business further up in the supply chain – e.g. a vehicle manufacturer buys a car parts distributor</p>
+                        <p>🔵 Further up the supply chain = closer to the final customer (downstream).</p>
+                        <p>🟠 Vehicle manufacturer buys a distributor – moving forward toward retail.</p>
+                        <p>🔴 Another example: A farmer buys a restaurant chain – forward integration.</p>
+                        <p>🟣 Forward integration secures market access, captures retail profits, and controls brand presentation.</p>
+                        <p>Conglomerate integration occurs when a business moves into a totally different area.</p>
+                        <p>🟡 Already covered earlier – unrelated diversification.</p>
+                        <p>🔵 Example: A tobacco company buys a hotel chain.</p>
+                        <p>🔴 No operational connection between old and new businesses.</p>
+                        <p>🟣 Motives are financial (risk spreading, internal capital markets) rather than operational.</p>
+                        <p>The foregoing discussion focuses on vertical integration in particular.</p>
+                        <p>🟠 Foregoing discussion = what comes next in the slides.</p>
+                        <p>🔵 The rest of the chapter will focus specifically on vertical integration.</p>
+                        <p>🔴 Horizontal and conglomerate were covered in diversification sections; vertical is now the main topic.</p>
+                        <p>🟣 So expect detailed analysis of vertical integration motives, costs, and benefits.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 22 - Vertical Integration (Forward and Backward) -->
+            <div class="slide" data-index="2">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 22</div>
+                    <div class="slide-title">Vertical Integration (Forward and Backward)</div>
+                    
+                    <div class="content-text">
+                        <p>Vertical integration occurs in one of two ways; Forward vertical integration occurs when a business acquires another business, which brings it closer to the customer.</p>
+                        <p>🔵 Closer to the customer = moving downstream, toward the final buyer.</p>
+                        <p>🟠 Example: A clothing manufacturer (makes clothes) buys a chain of retail clothing stores (sells to customers).</p>
+                        <p>🔴 The manufacturer now sells directly to consumers, capturing retail profits.</p>
+                        <p>🟣 Forward integration also gives control over how products are marketed and displayed.</p>
+                        <p>Backward vertical integration move closer to its sources of supply.</p>
+                        <p>🟡 Closer to sources of supply = moving upstream, toward raw materials.</p>
+                        <p>🔵 Example: A furniture manufacturer buys a timber forest and a sawmill.</p>
+                        <p>🔴 Now it controls its wood supply – quality, cost, and availability.</p>
+                        <p>🟣 Backward integration protects against supplier price increases or shortages.</p>
+                        <p>Vertical integration involves joining together under common ownership a series of separate but linked production processes.</p>
+                        <p>🔵 Separate but linked = different firms each doing one stage, but the stages connect sequentially.</p>
+                        <p>🟠 Joining under common ownership = one company owns all stages.</p>
+                        <p>🔴 Example: From iron ore mining to steel making to car manufacturing – all owned by one company.</p>
+                        <p>🟣 This is the essence of vertical integration.</p>
+                        <p>Such a strategy is used by many enterprises to widen the boundaries of the firm and to enlarge its size.</p>
+                        <p>🟡 Widen boundaries = the firm now does more things internally that it used to buy from markets.</p>
+                        <p>🔵 Enlarge its size = more employees, more assets, more revenue.</p>
+                        <p>🔴 Vertical integration is a growth strategy, not just an efficiency strategy.</p>
+                        <p>🟣 Many firms vertically integrate simply to become larger and more powerful.</p>
+                        <p>A decision by a firm to integrate vertically alters both the boundaries and the size of the firm.</p>
+                        <p>🔵 Boundaries – what the firm does itself vs. what it buys.</p>
+                        <p>🟠 Size – total assets, employees, sales.</p>
+                        <p>🔴 A vertical integration decision is a major strategic choice with long-term consequences.</p>
+                        <p>🟣 It changes the fundamental nature of the firm – from a specialist to a multi-stage producer.</p>
+                        <p>The production of goods and services involves a chain of linked activities from raw materials to final product.</p>
+                        <p>🟡 Chain of linked activities = the value chain or supply chain.</p>
+                        <p>🔵 Example (simple): Mining → smelting → manufacturing → assembly → distribution → retail.</p>
+                        <p>🔴 Each activity uses the output of the previous activity as input.</p>
+                        <p>🟣 Vertical integration means owning multiple links in that chain.</p>
+                        <p>At each point the product of the previous stage is used as input for the next stage of production.</p>
+                        <p>🔵 This describes the technological interdependence of stages.</p>
+                        <p>🟠 Example: Steel is input for cars; paint is input for painted cars; tires are input for finished cars.</p>
+                        <p>🔴 The output of one stage is not a final product – it's an input for the next stage.</p>
+                        <p>🟣 This is why vertical integration can create coordination benefits.</p>
+                        <p>Ultimately, all the various inputs are combined to meet the demands of final consumers.</p>
+                        <p>🟡 Final consumers = you and me, the end users.</p>
+                        <p>🔵 All the intermediate stages exist only to serve final consumer demand.</p>
+                        <p>🔴 Vertical integration can help align the whole chain toward consumer needs.</p>
+                        <p>🟣 But it can also create inefficiencies if consumer demand changes.</p>
+                        <p>Vertical integration is the outcome of a make or buy decision.</p>
+                        <p>🟠 Make or buy decision = should we produce this input ourselves (make) or purchase it from an outside supplier (buy)?</p>
+                        <p>🔵 If the firm decides "make" for multiple stages, it becomes vertically integrated.</p>
+                        <p>🔴 If it decides "buy" for all stages except one, it remains specialized (non-integrated).</p>
+                        <p>🟣 The make-or-buy decision is the core of vertical integration strategy.</p>
+                        <p>If the firm decides to make its own inputs, then it becomes vertically integrated. If it does not, then it remains vertically unintegrated.</p>
+                        <p>🟡 Make its own inputs = produce internally what used to be bought.</p>
+                        <p>🔵 Becoming vertically integrated is not binary – you can integrate some inputs and not others.</p>
+                        <p>🔴 Partial integration is common – a firm may make some components and buy others.</p>
+                        <p>🟣 The degree of integration can vary along the supply chain.</p>
+                        <p>Vertical integration is often taken to mean that the firm will either supply all its requirements for a particular input or use all the output it produces.</p>
+                        <p>🟠 All its requirements = 100% internal supply for a given input.</p>
+                        <p>🔵 All the output = 100% internal use of a given intermediate product.</p>
+                        <p>🔴 This is a common definition but too strict – real firms are rarely 100% integrated.</p>
+                        <p>🟣 Many textbooks use this "all or nothing" definition for simplicity, but reality is messier.</p>
+                        <p>However, vertical integration does not necessarily imply that all the output of every stage is used only within the firm. Nor does it mean that all inputs are produced within the firm.</p>
+                        <p>🔵 This corrects the strict definition.</p>
+                        <p>🟠 A vertically integrated firm may still buy some inputs from outside (partial backward integration).</p>
+                        <p>🔴 It may also sell some of its intermediate products to outside customers (partial forward integration).</p>
+                        <p>🟣 Example: A steel company that owns a car factory still sells most of its steel to other car companies.</p>
+                        <p>It may suit the firm to sell some output at some stages and to buy some inputs at other stages, resulting in partial integration.</p>
+                        <p>🟡 Partial integration = the most common real-world arrangement.</p>
+                        <p>🔵 A firm may integrate only where it makes strategic sense, and use markets elsewhere.</p>
+                        <p>🔴 Example: A computer company makes its own processors (backward integrated) but buys memory chips from outside.</p>
+                        <p>🟣 Partial integration balances control and flexibility.</p>
+                        <p>Vertical integration in the business sense is the ownership by one firm of two or more vertically linked processes.</p>
+                        <p>🔵 Ownership – legal control, not just a contract or alliance.</p>
+                        <p>🟠 Two or more vertically linked processes = at least two stages of production.</p>
+                        <p>🔴 The more stages, the higher the degree of vertical integration.</p>
+                        <p>🟣 This is the standard business definition.</p>
+                        <p>The more stages owned and controlled by one firm the greater the degree of vertical integration.</p>
+                        <p>🟡 Degree of vertical integration = a measure, not a yes/no.</p>
+                        <p>🔵 Owning 2 stages is less integrated than owning 5 stages.</p>
+                        <p>🔴 A fully integrated firm owns from raw material extraction to final retail sale.</p>
+                        <p>🟣 Example: Oil companies like Exxon own from oil wells to gas stations – very high degree.</p>
+                        <p>Traditionally, the emphasis has been on ownership of successive stages and has generally been understood to be an all or nothing concept.</p>
+                        <p>🟠 Traditionally – in older economics and business literature.</p>
+                        <p>🔵 All or nothing = either fully integrated or not integrated at all.</p>
+                        <p>🔴 This was a simplification for modeling purposes.</p>
+                        <p>🟣 Modern views recognize partial integration as normal.</p>
+                        <p>However, some writers have placed the emphasis on control rather than ownership.</p>
+                        <p>🟡 Control = the ability to direct activities, even without full ownership.</p>
+                        <p>🔵 Example: A firm may not own a supplier but have a long-term contract with performance clauses and quality audits – this gives effective control.</p>
+                        <p>🔴 Some argue that control matters more than legal ownership.</p>
+                        <p>🟣 This is a more nuanced, modern view of vertical integration.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 23 - Motives of Vertical Integration (Overview) -->
+            <div class="slide" data-index="3">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 23</div>
+                    <div class="slide-title">Motives of Vertical Integration (Overview)</div>
+                    
+                    <div class="content-text">
+                        <p>Motives of Vertical Integration – Firms may decide on a strategy of vertical integration for a multitude of reasons that do not lend themselves to neat economic categorizations.</p>
+                        <p>🔵 Multitude of reasons = many different motives, not just one.</p>
+                        <p>🟠 Do not lend themselves to neat economic categorizations = the reasons are messy, overlapping, and context-specific.</p>
+                        <p>🔴 Different industries, different times, different firms have different motives.</p>
+                        <p>🟣 So we need a broad framework, not a single simple theory.</p>
+                        <p>The various motivations can be categorized under four main headings: Efficiency gains in terms of technological joint economies, The ability to avoid imperfect markets, Distribution cost savings, Security and planning and avoidance of volatile markets.</p>
+                        <p>🟡 Four headings – a useful organizing framework.</p>
+                        <p>🔵 Technological joint economies – cost savings from physically linking stages (e.g., hot metal directly to rolling mill).</p>
+                        <p>🔴 Avoid imperfect markets – when markets fail (monopoly, information problems), vertical integration solves them.</p>
+                        <p>🟣 Distribution cost savings – lower costs of moving products between stages when owned together.</p>
+                        <p>🔵 Security and planning – reduce uncertainty, ensure supply, stabilize production.</p>
+                        <p>Porter suggested examining the advantages to a firm of pursuing a strategy of vertical integration under six headings: cost savings, increased control, improved communications, changed organizational climate, operations management and competitive differentiation.</p>
+                        <p>🟠 Michael Porter – famous strategy scholar (Five Forces, Value Chain).</p>
+                        <p>🔵 Six headings – a more detailed strategic framework.</p>
+                        <p>🔴 Cost savings – obvious.</p>
+                        <p>🟣 Increased control – over quality, timing, and quantity.</p>
+                        <p>🟡 Improved communications – easier information flow inside one firm than between separate firms.</p>
+                        <p>🔵 Changed organizational climate – integration can change culture and incentives.</p>
+                        <p>🔴 Operations management – scheduling and coordination are easier internally.</p>
+                        <p>🟣 Competitive differentiation – vertical integration can be a source of unique advantage.</p>
+                        <p>Moreover, we will examine the reasoning suggested for firms engaging in vertical integration under two broad headings: Traditional explanations and Modern explanations (associated with transaction cost economics).</p>
+                        <p>🔵 Traditional explanations – focus on technical efficiency, cost savings, market power.</p>
+                        <p>🟠 Modern explanations – transaction cost economics (Oliver Williamson, Ronald Coase).</p>
+                        <p>🔴 The modern view emphasizes market failures and governance costs.</p>
+                        <p>🟣 Both are useful – they complement each other.</p>
+                        <p>In general terms, both sets of explanations are looking for factors that result in increasing profits or reducing costs, as well as reducing risk, uncertainty and volatility.</p>
+                        <p>🟡 Increasing profits – the ultimate goal.</p>
+                        <p>🔵 Reducing costs – a key path to higher profits.</p>
+                        <p>🔴 Reducing risk, uncertainty, volatility – vertical integration can stabilize the firm.</p>
+                        <p>🟣 Both traditional and modern explanations share these same ultimate objectives.</p>
+                        <p>In addition, the modern view sees vertical integration as a trade-off between technical and agency, or managerial efficiency.</p>
+                        <p>🔵 Trade-off = you gain some things, you lose others.</p>
+                        <p>🟠 Technical efficiency = producing at lowest possible physical cost (economies of scale, scope, physical integration).</p>
+                        <p>🔴 Agency/managerial efficiency = costs of managing people inside the firm (bureaucracy, motivation, information).</p>
+                        <p>🟣 Vertical integration improves technical efficiency but may reduce managerial efficiency – you have to balance them.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 24 - Traditional Explanations for Vertical Integration -->
+            <div class="slide" data-index="4">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 24</div>
+                    <div class="slide-title">Traditional Explanations for Vertical Integration</div>
+                    
+                    <div class="content-text">
+                        <p>The traditional explanations for firms seeking to vertically integrate are: To establish a source of supply if none exists.</p>
+                        <p>🔵 If no supplier exists for a needed input, the firm must make it itself.</p>
+                        <p>🟠 Example: In a new industry, specialized components may not be available on the market.</p>
+                        <p>🔴 Henry Ford integrated backwards to make his own steel because no one made the type he needed.</p>
+                        <p>🟣 This is a necessity motive, not a choice.</p>
+                        <p>To secure cost savings by bringing under single ownership technologically linked processes.</p>
+                        <p>🟡 Technologically linked processes = stages that naturally fit together physically or chemically.</p>
+                        <p>🔵 Example: Oil refining and petrochemical production – heat from refining can be used for chemical processes.</p>
+                        <p>🔴 Single ownership allows optimal physical coordination.</p>
+                        <p>🟣 Savings come from avoiding reheating, transport, or storage between stages.</p>
+                        <p>To ensure the quality of the input.</p>
+                        <p>🔵 If outside suppliers provide inconsistent quality, vertical integration lets the firm control quality.</p>
+                        <p>🟠 Example: A luxury car maker may integrate into leather tanning to ensure perfect hides.</p>
+                        <p>🔴 Quality control is especially important when defects are hard to detect before use.</p>
+                        <p>🟣 Internal production allows real-time quality monitoring.</p>
+                        <p>To weaken the position of a supplier who appears to be making excessive profits.</p>
+                        <p>🟡 If a supplier has monopoly power and charges high prices, backward integration is a threat.</p>
+                        <p>🔵 The threat of integration can force the supplier to lower prices.</p>
+                        <p>🔴 Actually integrating removes the supplier's monopoly profit entirely.</p>
+                        <p>🟣 This is a power-based motive.</p>
+                        <p>Hence: To secure a supply of inputs at lower prices.</p>
+                        <p>🟠 This follows from the previous point.</p>
+                        <p>🔵 By integrating, the firm pays only its own production costs, not the supplier's profit margin.</p>
+                        <p>🔴 Lower input prices → lower final product costs → higher profit or lower consumer prices.</p>
+                        <p>🟣 This is a direct cost-saving motive.</p>
+                        <p>To control retail outlets and ensure market presence.</p>
+                        <p>🔵 Forward integration into retail ensures that your products are available to customers.</p>
+                        <p>🟠 Example: A manufacturer opens its own stores (Apple Store, Tesla showroom).</p>
+                        <p>🔴 This prevents retailers from favoring competitors or dropping your product.</p>
+                        <p>🟣 It also gives direct customer feedback and brand control.</p>
+                        <p>To strengthen monopoly power and raise barriers to entry.</p>
+                        <p>🟡 Vertical integration can increase market power by controlling key inputs or distribution channels.</p>
+                        <p>🔵 A vertically integrated firm can make it harder for new entrants: they would need to enter multiple stages at once.</p>
+                        <p>🔴 Example: A vertically integrated aluminum company owns bauxite mines, refineries, smelters, and fabricators – a new entrant would need to build all four.</p>
+                        <p>🟣 This raises barriers to entry significantly.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 25 - Technical Efficiency and Production Cost Savings -->
+            <div class="slide" data-index="5">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 25</div>
+                    <div class="slide-title">Technical Efficiency and Production Cost Savings</div>
+                    
+                    <div class="content-text">
+                        <p>Technical efficiency and production cost savings – linking the production of an input and output through ownership produces a more cost-effective solution.</p>
+                        <p>🔵 Cost-effective solution = lower total cost than using separate firms.</p>
+                        <p>🟠 Linking through ownership = vertical integration.</p>
+                        <p>🔴 The argument: physical coordination is cheaper inside one firm than through market contracts.</p>
+                        <p>🟣 Example: A steel plant next to a pipe mill – hot steel goes directly to pipe forming, saving energy and transport.</p>
+                        <p>Significant cost savings can be made by linking the production of a key input with a given product.</p>
+                        <p>🟡 Key input = an important component or raw material.</p>
+                        <p>🔵 Given product = the final product that uses that input.</p>
+                        <p>🔴 Linking them avoids transaction costs and physical waste.</p>
+                        <p>🟣 Example: A bakery that grows its own wheat – controls quality and avoids market price fluctuations.</p>
+                        <p>Production cost economies resulting from locating successive stages of production next to each other do not necessarily require single ownership of each stage: independent firms will locate such plants close to the source of the input if there are significant gains to be made.</p>
+                        <p>🟠 This is a counterargument – you don't need ownership to get location economies.</p>
+                        <p>🔵 Independent firms can co-locate (e.g., a steel mill next to a pipe mill owned by different companies).</p>
+                        <p>🔴 They can sign long-term contracts to share the benefits.</p>
+                        <p>🟣 So ownership is not strictly necessary for physical coordination – transaction costs matter.</p>
+                        <p>The controller of a firm inside an integrated firm has the power to allocate resources among divisions and to change output at various stages of the process.</p>
+                        <p>🟡 Controller = top management or CEO.</p>
+                        <p>🔵 Power to allocate resources = decide how much investment, labor, and materials go to each division.</p>
+                        <p>🔴 Change output = increase or decrease production at any stage without renegotiating contracts.</p>
+                        <p>🟣 This flexibility is a key advantage of vertical integration over market contracts.</p>
+                        <p>If the input is obtained from a separate supplier, the company seeking a change in supply will need to renegotiate or enforce the terms of the contract.</p>
+                        <p>🔵 Separate supplier = market relationship, not owned.</p>
+                        <p>🟠 Renegotiate = ask for changes, which the supplier may refuse or demand payment for.</p>
+                        <p>🔴 Enforce terms = if the contract already allows changes, legal enforcement may be costly and slow.</p>
+                        <p>🟣 Internal allocation is faster and cheaper – no negotiation needed.</p>
+                        <p>By avoiding the separate market, the integrated firm can avoid market transaction costs but does incur additional costs for managing a larger firm.</p>
+                        <p>🔵 Avoid market transaction costs = no search, negotiation, monitoring, enforcement costs.</p>
+                        <p>🟠 Incur additional management costs = more layers, more coordination, more bureaucracy.</p>
+                        <p>🔴 The decision to integrate depends on which is larger: transaction costs saved vs. management costs added.</p>
+                        <p>🟣 This is the core trade-off in transaction cost economics.</p>
+                        <p>Therefore, it is anticipated that the total management function expenses for the single company will be less than those for two separate companies that are connected through market transactions.</p>
+                        <p>🟡 This is the hypothesis: integration is cheaper than markets.</p>
+                        <p>🔵 Management function expenses = all costs of running a firm (head office, planning, coordination).</p>
+                        <p>🔴 If this is true, vertical integration is efficient.</p>
+                        <p>🟣 But it's an empirical question – not always true.</p>
+                        <p>On the other hand, the increased complexity of the firm may increase management costs compared with separately owned operations.</p>
+                        <p>🔵 Increased complexity = more products, more stages, more people.</p>
+                        <p>🟠 Complexity can lead to confusion, delays, and mistakes.</p>
+                        <p>🔴 Separately owned operations have simpler management tasks – each firm focuses on one stage.</p>
+                        <p>🟣 So integration may not always reduce total costs.</p>
+                        <p>However, even if management costs are higher they may be offset by production cost savings.</p>
+                        <p>🟡 Offset = compensate for, balance out.</p>
+                        <p>🔵 Higher management costs could be acceptable if production cost savings are even larger.</p>
+                        <p>🔴 Net effect = management cost increase minus production cost savings.</p>
+                        <p>🟣 If net is positive (savings > cost increase), integration is worthwhile.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 26 - Vertical Integration and Uncertainty -->
+            <div class="slide" data-index="6">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 26</div>
+                    <div class="slide-title">Vertical Integration and Uncertainty</div>
+                    
+                    <div class="content-text">
+                        <p>Vertical integration may reduce the uncertainties faced by non-integrated firms.</p>
+                        <p>🔵 Uncertainties = unpredictable events: supply disruptions, price spikes, demand changes.</p>
+                        <p>🟠 Non-integrated firms = firms that buy inputs from the market.</p>
+                        <p>🔴 Integration can shield a firm from market volatility.</p>
+                        <p>🟣 Example: A vertically integrated food company does not worry about crop price fluctuations because it owns its own farms.</p>
+                        <p>The controller of a firm is a boundedly rational individual making decisions with imperfect information in an uncertain environment.</p>
+                        <p>🟡 Boundedly rational = limited ability to process information and foresee the future (Herbert Simon).</p>
+                        <p>🔵 Imperfect information = not knowing everything about the market or the future.</p>
+                        <p>🔴 Uncertain environment = the future is unpredictable.</p>
+                        <p>🟣 This realistic view of human limits explains why firms seek to reduce uncertainty.</p>
+                        <p>The controller may be called on to react to unexpected or unforeseen events.</p>
+                        <p>🔵 Unexpected events = things that were not anticipated.</p>
+                        <p>🟠 Reacting is costly – you may make mistakes, lose money, or miss opportunities.</p>
+                        <p>🔴 Vertical integration can reduce the number of unexpected events you face.</p>
+                        <p>🟣 It creates a more predictable internal environment.</p>
+                        <p>Vertical integration may be seen as a way of reducing information deficiencies and having to react to market or industry changes.</p>
+                        <p>🟡 Information deficiencies = not knowing enough to make optimal decisions.</p>
+                        <p>🔵 When you own a supplier, you have full access to its cost and production information.</p>
+                        <p>🔴 When you buy from the market, you know much less.</p>
+                        <p>🟣 Integration reduces the need to react to market changes because you are less exposed to them.</p>
+                        <p>The sources of uncertainty in relation to supply include: Unexpected unreliability of suppliers to deliver on time and the consequences for production scheduling of losing critical supplies.</p>
+                        <p>🔵 Unexpected unreliability = a supplier that suddenly fails to deliver as promised.</p>
+                        <p>🟠 Consequences = factory downtime, missed orders, lost customers.</p>
+                        <p>🔴 Example: A car plant shuts down because a parts supplier had a strike.</p>
+                        <p>🟣 Vertical integration can eliminate this uncertainty – your own division will not strike against you.</p>
+                        <p>Unexpected use of monopoly power by suppliers.</p>
+                        <p>🟡 A supplier with monopoly power may suddenly raise prices.</p>
+                        <p>🔵 Example: A unique chip supplier doubles its price – the buyer has no alternative.</p>
+                        <p>🔴 Vertical integration (making your own chips) avoids this risk.</p>
+                        <p>🟣 Even the threat of integration can deter supplier opportunism.</p>
+                        <p>Variable quality of input that affects quality of output.</p>
+                        <p>🔵 If a supplier's quality varies, your final product quality varies.</p>
+                        <p>🟠 Variable quality damages brand reputation and customer satisfaction.</p>
+                        <p>🔴 Inspection and testing are costly and imperfect.</p>
+                        <p>🟣 Owning the supplier lets you control quality at the source.</p>
+                        <p>The sources of uncertainty in relation to selling the product include: Changing output due to fluctuating price movements, which may result in output reductions or increased storage of unsold output.</p>
+                        <p>🟡 Fluctuating price movements = prices go up and down unpredictably.</p>
+                        <p>🔵 Output reductions = you produce less because prices are low.</p>
+                        <p>🔴 Increased storage = you hold inventory, which costs money.</p>
+                        <p>🟣 Forward integration (owning retail) can smooth demand and stabilize prices.</p>
+                        <p>Unexpected changes in demand with similar consequences.</p>
+                        <p>🔵 Demand can suddenly fall (recession, new substitute product) or rise (trend, new use).</p>
+                        <p>🟠 Unexpected changes force costly adjustments.</p>
+                        <p>🔴 Vertical integration with downstream stages can provide better demand information.</p>
+                        <p>🟣 Example: A manufacturer that owns its own stores sees demand changes immediately.</p>
+                        <p>Greater certainty of access to sales outlets, particularly if the sector is dominated by powerful monopsonistic groups.</p>
+                        <p>🟡 Monopsonistic groups = a small number of powerful buyers (e.g., Walmart, Amazon).</p>
+                        <p>🔵 A manufacturer that sells through Walmart has little bargaining power.</p>
+                        <p>🔴 Forward integration (opening own stores) guarantees access to customers.</p>
+                        <p>🟣 This is a defensive motive – avoiding exploitation by powerful retailers.</p>
+                        <p>Vertical integration allows the firm to become more of a planning system.</p>
+                        <p>🔵 Planning system = instead of reacting to markets, the firm plans production internally.</p>
+                        <p>🟠 This is the opposite of the market system (supply and demand).</p>
+                        <p>🔴 A vertically integrated firm can set internal transfer prices and allocate resources by command.</p>
+                        <p>🟣 This reduces uncertainty and transaction costs but may reduce efficiency.</p>
+                        <p>It enables management to overcome uncertainties relating to quality of product, uncertainty of supply and unexpected changes in prices for inputs.</p>
+                        <p>🟡 Overcome = solve or mitigate.</p>
+                        <p>🔵 Quality uncertainty – resolved by internal quality control.</p>
+                        <p>🔴 Supply uncertainty – resolved by owning the source.</p>
+                        <p>🟣 Price uncertainty – resolved by using internal transfer prices instead of market prices.</p>
+                        <p>It does not, however, remove uncertainty relating to the market for final users in the production chain.</p>
+                        <p>🔵 Final users = consumers – their tastes, incomes, and preferences are outside the firm's control.</p>
+                        <p>🟠 Even a fully integrated firm cannot predict consumer behavior perfectly.</p>
+                        <p>🔴 Vertical integration does not eliminate demand uncertainty – only supply uncertainty.</p>
+                        <p>🟣 So integration is not a complete solution to all uncertainties.</p>
+                        <p>Vertical integration may give the firm two advantages in relation to information: First, the firm learns about the production issues relating to all aspects of linked activities compared with competitors who are not integrated.</p>
+                        <p>🟡 First advantage – deeper knowledge of the entire production chain.</p>
+                        <p>🔵 Non-integrated competitors only know their own stage.</p>
+                        <p>🔴 An integrated firm sees how decisions at one stage affect others.</p>
+                        <p>🟣 This knowledge can be a source of competitive advantage.</p>
+                        <p>Second, the vertically integrated firm may also be able to hide information from competitors since all processing takes place in-house.</p>
+                        <p>🔵 Second advantage – information secrecy.</p>
+                        <p>🟠 When you buy from the market, suppliers may also sell to competitors – they see your volume and may leak information.</p>
+                        <p>🔴 When you make inputs internally, competitors see nothing.</p>
+                        <p>🟣 You can keep your costs, technology, and production volumes private.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 27 - Transaction Cost Economics and Vertical Integration -->
+            <div class="slide" data-index="7">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 27</div>
+                    <div class="slide-title">Transaction Cost Economics and Vertical Integration</div>
+                    
+                    <div class="content-text">
+                        <p>Transaction cost economics is a key component of the more recent ideas explaining the drivers of vertical integration.</p>
+                        <p>🔵 Transaction cost economics (TCE) – developed by Ronald Coase (1937) and Oliver Williamson (1970s-2000s).</p>
+                        <p>🟠 More recent ideas = compared to traditional industrial organization.</p>
+                        <p>🔴 TCE explains why firms exist and why they integrate vertically.</p>
+                        <p>🟣 The core idea: firms replace markets when market transaction costs are high.</p>
+                        <p>It is argued that vertical integration will result in: Savings in transaction costs by not using the market, whereas buying through the market involves: incurring costs in searching for suppliers, discovering prices; writing, agreeing and monitoring contracts.</p>
+                        <p>🔵 Searching for suppliers – time, effort, travel, networking.</p>
+                        <p>🟠 Discovering prices – negotiating, comparing bids, market research.</p>
+                        <p>🔴 Writing contracts – legal fees, specifying terms, contingencies.</p>
+                        <p>🟣 Agreeing – bargaining, concessions, delays.</p>
+                        <p>🟡 Monitoring contracts – inspections, audits, tracking performance.</p>
+                        <p>🔵 All these costs are avoided if the firm makes the input internally.</p>
+                        <p>Increasing management costs because internalized activities will require supervision and co-ordination.</p>
+                        <p>🔵 Internal activities are not free – they require managers.</p>
+                        <p>🟠 Supervising workers, coordinating across departments, resolving conflicts.</p>
+                        <p>🔴 Management costs = salaries of middle managers, IT systems for internal communication, meeting time.</p>
+                        <p>🟣 These are the costs of "governance" inside the firm.</p>
+                        <p>Thus, the increase in management cost has to be less than the savings in transaction costs to justify vertical integration and also avoids problems associated with contracts.</p>
+                        <p>🟡 The decision rule: Integrate if saved transaction costs > added management costs.</p>
+                        <p>🔵 Also avoids problems associated with contracts = disputes, renegotiation, legal fees, court time.</p>
+                        <p>🔴 So even if management costs rise, integration can still be justified if transaction costs saved are even larger.</p>
+                        <p>🟣 This is the key formula of transaction cost economics.</p>
+                        <p>If incomplete, long-term contracts are signed, they can create problems when unforeseen changes take place in the business environment and the contract has to be revised; this gives the supplier the chance to engage in opportunistic behaviour, particularly if the buyer wishes to increase the quantity supplied.</p>
+                        <p>🔵 Incomplete contracts – no contract can cover every possible future event.</p>
+                        <p>🟠 Unforeseen changes – new technology, new regulations, market shifts.</p>
+                        <p>🔴 Revising contracts gives the supplier opportunities.</p>
+                        <p>🟣 Opportunistic behavior – taking advantage of the situation (e.g., demanding a higher price because the buyer is desperate).</p>
+                        <p>🟡 Example: A buyer needs more components than planned; the supplier raises the price knowing the buyer has no alternative.</p>
+                        <p>If suppliers have invested in highly specialized assets to produce the required input, then they may be able to exploit this to negotiate a higher price.</p>
+                        <p>🔵 Highly specialized assets – equipment, training, or facilities that are useless except for one specific buyer.</p>
+                        <p>🟠 Example: A supplier builds a factory next to the buyer's plant, customized to the buyer's specifications.</p>
+                        <p>🔴 After that investment, the buyer is locked in – switching suppliers would cost a fortune.</p>
+                        <p>🟣 The supplier can then demand higher prices (hold-up problem).</p>
+                        <p>🟡 Vertical integration solves this by owning the specialized asset.</p>
+                        <p>Vertical integration allows the buyer to avoid opportunistic behaviour by the supplier.</p>
+                        <p>🔵 Avoid = not have to face it at all.</p>
+                        <p>🟠 When the supplier is owned by the buyer, there is no independent profit-seeking supplier to act opportunistically.</p>
+                        <p>🔴 Internal transfer prices are set by management, not by bargaining.</p>
+                        <p>🟣 The hold-up problem disappears because assets are commonly owned.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 28 - Vertical Integration and Profitability (Brief) -->
+            <div class="slide" data-index="8">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 28</div>
+                    <div class="slide-title">Vertical Integration and Profitability (Brief)</div>
+                    
+                    <div class="content-text">
+                        <p>Vertical Integration and Profitability – Lessons learned from several vertically integrated acquisitions indicate that the corporate parent's influence over the acquired business is the primary factor determining success or failure.</p>
+                        <p>🔵 Corporate parent = the acquiring company, the new owner.</p>
+                        <p>🟠 Influence = how much and how well the parent manages the acquired business.</p>
+                        <p>🔴 Primary factor = more important than the industry, the size, or the technology.</p>
+                        <p>🟣 If influence is skillful and appropriate, success; if not, failure.</p>
+                        <p>For this to have a favourable impact: The acquired business must have the potential to improve its performance independently of its relationships with other divisions or business units within the company.</p>
+                        <p>🔵 Favourable impact = successful vertical integration.</p>
+                        <p>🟠 Potential to improve on its own = the business is not hopeless – it can become profitable with better management.</p>
+                        <p>🔴 Independent of relationships = the business should not depend on subsidies or special deals from other divisions.</p>
+                        <p>🟣 It must stand on its own feet eventually.</p>
+                        <p>The parent company must have the skills or resources necessary to help the business. In practice, they may not have the skills, and the methods chosen to integrate the company may cause more problems than they solve.</p>
+                        <p>🔵 Skills or resources – the parent must actually know how to improve the business.</p>
+                        <p>🟠 In practice, parents often overestimate their abilities.</p>
+                        <p>🔴 Wrong integration methods = forcing the acquired company to adopt the parent's systems, even if inappropriate.</p>
+                        <p>🟣 More problems than solve = the cure is worse than the disease.</p>
+                        <p>The parent company must understand the business well enough to avoid influencing it in ways that damage its performance.</p>
+                        <p>🟡 Understand well enough = not just general management, but specific industry knowledge.</p>
+                        <p>🔵 Avoiding damage = not imposing bad policies, not cutting useful functions, not alienating key employees.</p>
+                        <p>🔴 Many vertical integrations fail because the parent interferes badly.</p>
+                        <p>🟣 So vertical integration is not automatically beneficial – it requires skillful parenting.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 29 - Mergers (Definition and Nature) -->
+            <div class="slide" data-index="9">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 29</div>
+                    <div class="slide-title">MERGERS (Definition and Nature)</div>
+                    
+                    <div class="content-text">
+                        <p>MERGERS – This term refers to the amalgamation or integration of two or more firms.</p>
+                        <p>🔵 Amalgamation = combining into one.</p>
+                        <p>🟠 Two or more firms join to become a single legal entity.</p>
+                        <p>🔴 Merger is a form of consolidation of market power.</p>
+                        <p>🟣 In a merger, the firms are usually roughly equal in size (unlike a takeover).</p>
+                        <p>The firms under different ownership and management controls come under a united one through merger.</p>
+                        <p>🟡 Different ownership and management = separate companies before.</p>
+                        <p>🔵 United one = single company after.</p>
+                        <p>🔴 Control is transferred from multiple groups to one management team.</p>
+                        <p>🟣 This is a fundamental change in market structure.</p>
+                        <p>The terms 'acquisition' and 'takeover' are also used for 'merger', which implies that a firm acquires assets or stocks in part or full, of other firm(s) to get operational control over them.</p>
+                        <p>🔵 Acquisition / takeover – often used interchangeably with merger.</p>
+                        <p>🟠 Acquires assets or stocks = buys the target company's physical assets or its shares.</p>
+                        <p>🔴 Operational control = the power to make decisions about the target's business.</p>
+                        <p>🟣 In an acquisition, one firm is clearly the buyer; in a merger, they may be equals.</p>
+                        <p>In legal sense, there is a difference between these terms but from the point of view of the economic analysis they are similar.</p>
+                        <p>🔵 Legal sense – mergers require agreement of both boards; takeovers can be hostile.</p>
+                        <p>🟠 Economic analysis focuses on the result: transfer of control and combination of assets.</p>
+                        <p>🔴 For economists, the distinction is less important than the effects.</p>
+                        <p>🟣 So we treat them as similar for most purposes.</p>
+                        <p>The important feature of merger, that is relevant to us, is the transfer of control of business activity from one or more firms to another.</p>
+                        <p>🔵 Transfer of control – the key economic event.</p>
+                        <p>🟠 Control means the ability to direct resources, set strategy, hire/fire managers.</p>
+                        <p>🔴 Before merger, each firm controlled itself. After merger, one firm (or a new firm) controls all.</p>
+                        <p>🟣 This transfer of control is what changes market concentration and competition.</p>
+                        <p>The Nature of Merging – The words ''merger'' and ''acquisition'' are used interchangeably.</p>
+                        <p>🔵 In everyday business language, people use them as synonyms.</p>
+                        <p>🟠 Even financial news often says "merger" when legally it's an acquisition.</p>
+                        <p>🔴 The slide acknowledges this common usage.</p>
+                        <p>🟣 Then it gives a technical distinction in the next sentence.</p>
+                        <p>NB: If the two terms are to be distinguished, then a merger occurs when two or more firms are voluntarily combined under common ownership, while an acquisition, or takeover, occurs when one firm acquires or buys the assets of another without the agreement of the controllers of the target company.</p>
+                        <p>🔵 Voluntarily combined – both management teams agree.</p>
+                        <p>🟠 Common ownership – a new company is often formed.</p>
+                        <p>🔴 Without agreement – hostile takeover; the target's managers oppose it.</p>
+                        <p>🟣 The acquiring firm buys shares directly from shareholders, bypassing management.</p>
+                        <p>🟡 This is the key legal and strategic distinction.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 30 - Types of Mergers -->
+            <div class="slide" data-index="10">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 30</div>
+                    <div class="slide-title">Types of Mergers</div>
+                    
+                    <div class="content-text">
+                        <p>Types of Mergers – Economists have identified three types of mergers formed by firms. These are: Horizontal mergers, Vertical mergers and Conglomerate mergers.</p>
+                        <p>🔵 This classification matches the three types of integration.</p>
+                        <p>🟠 Horizontal – same industry, same stage.</p>
+                        <p>🔴 Vertical – different stages of the same production chain.</p>
+                        <p>🟣 Conglomerate – unrelated industries.</p>
+                        <p>🟡 Each has different competitive implications and antitrust treatment.</p>
+                        <p>Horizontal mergers occur when two firms in the same market are consolidated into a single enterprise; this means that the new enterprise will have increased its market share.</p>
+                        <p>🔵 Same market = direct competitors.</p>
+                        <p>🟠 Consolidated = combined into one.</p>
+                        <p>🔴 Increased market share = the merged firm has a larger share than either had separately.</p>
+                        <p>🟣 Example: Two airlines merge – combined market share may be 40% instead of 20% each.</p>
+                        <p>This type of merger is designed to acquire market power.</p>
+                        <p>🔵 Designed to = the intention, not always the outcome.</p>
+                        <p>🟠 Market power comes from higher concentration and reduced competition.</p>
+                        <p>🔴 Horizontal mergers are most closely scrutinized by antitrust authorities.</p>
+                        <p>🟣 They can lead to higher prices if not blocked or regulated.</p>
+                        <p>Vertical mergers take place between firms, which engage in successive stages of production such as brewing and running public houses; so both upstream (backward) or downstream (forward) are possible.</p>
+                        <p>🔵 Successive stages = one firm's output is another firm's input.</p>
+                        <p>🟠 Example: Brewery (makes beer) and pub chain (sells beer to customers).</p>
+                        <p>🔴 Upstream (backward) = merging with a supplier.</p>
+                        <p>🟣 Downstream (forward) = merging with a customer.</p>
+                        <p>🟡 Both are vertical mergers.</p>
+                        <p>The output of one stage of operation serves as an input or market outlet to the other stage.</p>
+                        <p>🔵 Input = for backward integration (steel → cars).</p>
+                        <p>🟠 Market outlet = for forward integration (cars → dealerships).</p>
+                        <p>🔴 The merger links the two stages directly.</p>
+                        <p>🟣 This can create efficiencies but also foreclose competitors.</p>
+                        <p>Conglomerate mergers occur when two firms producing independent products for different markets merge. Conglomerate mergers create larger diversified firms.</p>
+                        <p>🔵 Independent products = no customer or technology relationship.</p>
+                        <p>🟠 Different markets = no market overlap.</p>
+                        <p>🔴 Example: A cement company merges with a software company.</p>
+                        <p>🟣 The result is a larger, diversified (conglomerate) firm.</p>
+                        <p>Although these do not generate concerns about market dominance, there are concerns about their ability to compete unfairly against undiversified competitors because of their ability to cross-subsidize.</p>
+                        <p>🔵 No concerns about market dominance – no single market becomes more concentrated.</p>
+                        <p>🟠 Concerns about unfair competition – the conglomerate can use profits from one market to fund predatory pricing in another.</p>
+                        <p>🔴 Cross-subsidize = support losses in one division with profits from another.</p>
+                        <p>🟣 Undiversified competitors cannot do this – they may be driven out.</p>
+                        <p>Types of mergers will vary according to the nature of the industry and the degree of fragmentation.</p>
+                        <p>🔵 Nature of the industry – capital-intensive vs. labor-intensive, regulated vs. unregulated.</p>
+                        <p>🟠 Degree of fragmentation – many small firms (fragmented) vs. few large firms (concentrated).</p>
+                        <p>🔴 In fragmented industries, horizontal mergers are common.</p>
+                        <p>🟣 In concentrated industries, vertical or conglomerate mergers may be more common.</p>
+                        <p>In a sector like legal services, the vast majority of mergers will be horizontal because there are large numbers of small law practices that are currently consolidating.</p>
+                        <p>🔵 Legal services = many small firms (solo practitioners, small partnerships).</p>
+                        <p>🟠 Consolidating = merging to gain scale, share resources, expand geographic reach.</p>
+                        <p>🔴 Horizontal mergers reduce the number of firms but increase average size.</p>
+                        <p>🟣 This is a trend in many professional services.</p>
+                        <p>Some may be of a conglomerate nature in that firms in different industries may merge (e.g., legal and accountancy firms).</p>
+                        <p>🔵 Legal and accountancy firms are different industries but serve overlapping clients.</p>
+                        <p>🟠 A merger between them is conglomerate – unrelated services.</p>
+                        <p>🔴 But they may offer "one-stop shopping" for business clients.</p>
+                        <p>🟣 This is a strategic rationale for conglomerate mergers.</p>
+                        <p>In other industries that are more concentrated but have strong vertical linkages, mergers are less likely to be horizontal in nature and more likely to involve vertical integration.</p>
+                        <p>🔵 Strong vertical linkages = stages are closely connected (e.g., oil and gas).</p>
+                        <p>🟠 In concentrated industries, horizontal mergers may be blocked by antitrust.</p>
+                        <p>🔴 So firms turn to vertical mergers as an alternative growth path.</p>
+                        <p>🟣 Example: A concentrated auto industry sees more vertical mergers (suppliers) than horizontal (rival automakers).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 31 - Motives for Merging (Overview) -->
+            <div class="slide" data-index="11">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 31</div>
+                    <div class="slide-title">Motives for Merging (Overview)</div>
+                    
+                    <div class="content-text">
+                        <p>Motives for Merging – The motives for merging are different in managerial and owner-controlled firms: The former may be more concerned with increasing the growth rate of the firm, while owners are presumed to be more concerned with increasing profits or shareholder value.</p>
+                        <p>🔵 Managerial-controlled firms – run by professional managers who own few shares.</p>
+                        <p>🟠 Their motive: growth (higher sales, more employees, larger assets) – because their pay and status are tied to size.</p>
+                        <p>🔴 Owner-controlled firms – run by owners or owner-representatives.</p>
+                        <p>🟣 Their motive: profit and shareholder value – because their wealth is tied to returns.</p>
+                        <p>🟡 This is a classic principal-agent difference in merger motives.</p>
+                        <p>There are different causes/motives for mergers, among which, the following are included: Those relating to the structure of markets, i.e. the pursuit of either of economies of scale or of market power; Those which center on management efficiency; Theories based on the tax effects of merger.</p>
+                        <p>🔵 Market structure motives – economies of scale (cost savings) or market power (higher prices).</p>
+                        <p>🟠 Management efficiency motives – replacing inefficient managers, improving performance.</p>
+                        <p>🔴 Tax effects – using losses to reduce tax, changing capital structure for tax benefits.</p>
+                        <p>🟣 These three categories will be explained in the next slides.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 32 - Economies of Scale: Efficiency Gain -->
+            <div class="slide" data-index="12">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 32</div>
+                    <div class="slide-title">Economies of Scale: Efficiency Gain</div>
+                    
+                    <div class="content-text">
+                        <p>Economies of scale: Efficiency Gain – The first efficiency argument is the advantages of economies of scale.</p>
+                        <p>🔵 This is the most straightforward motive: combining two firms can lower average costs.</p>
+                        <p>🟠 Fixed costs (R&D, headquarters, factories) are spread over more output.</p>
+                        <p>🔴 Bulk purchasing, specialized machinery, and division of labor improve.</p>
+                        <p>🟣 Economies of scale are a purely efficiency-based reason for merging.</p>
+                        <p>Perhaps the most obvious justification of merger is a desire to reap economies of scale and hence enhance efficiency.</p>
+                        <p>🔵 Most obvious – the one that comes to mind first.</p>
+                        <p>🟠 Reap economies of scale = achieve lower unit costs by producing more.</p>
+                        <p>🔴 Enhance efficiency = produce the same output with fewer inputs (or more output with same inputs).</p>
+                        <p>🟣 This is the justification most acceptable to antitrust authorities – it benefits consumers.</p>
+                        <p>There are assets, which are costly, indivisible and 'fungible' (that is capable of being used in several industries).</p>
+                        <p>🔵 Costly – expensive to acquire.</p>
+                        <p>🟠 Indivisible – cannot be bought in small pieces (e.g., a supercomputer, a brand, a patent).</p>
+                        <p>🔴 Fungible – can be used in multiple different industries or applications.</p>
+                        <p>🟣 Example: A powerful AI algorithm can be used in healthcare, finance, and autonomous vehicles – fungible.</p>
+                        <p>Such assets give rise to 'economies of scope': they make it relatively easier for a company to enter new lines of business.</p>
+                        <p>🔵 Economies of scope – cheaper to produce multiple products together than separately.</p>
+                        <p>🟠 A fungible asset (like a brand or a technology) can be applied to many products.</p>
+                        <p>🔴 This makes diversification easier – the firm can enter new lines without building new assets from scratch.</p>
+                        <p>🟣 Example: Amazon's cloud computing infrastructure (AWS) was built for its own e-commerce but then sold to other companies – economies of scope.</p>
+                        <p>When fungible assets are the motive for merger, the result is likely to be diversification.</p>
+                        <p>🔵 If a firm merges to gain access to a fungible asset (e.g., a brand, a patent, a platform), it will likely use that asset to enter new markets.</p>
+                        <p>🟠 The merger is not just about scale in one market – it's about scope across markets.</p>
+                        <p>🔴 So the result is a more diversified firm.</p>
+                        <p>🟣 Example: A beverage company buys a snack company to use its distribution network (fungible asset) for both products.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 33 - Management Performance: Market for Corporate Control -->
+            <div class="slide" data-index="13">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 33</div>
+                    <div class="slide-title">Management Performance: Market for Corporate Control</div>
+                    
+                    <div class="content-text">
+                        <p>Management Performance: Merger as the Outcome of 'Market of Corporate Control' – The underlying theory of this outlook lies in both the 'managerial' and 'principal-agent' theories of the firm.</p>
+                        <p>🔵 Market for corporate control – the idea that companies are bought and sold like any other asset.</p>
+                        <p>🟠 Poorly managed companies become takeover targets.</p>
+                        <p>🔴 Managerial theory of the firm – managers pursue their own goals, not shareholders'.</p>
+                        <p>🟣 Principal-agent theory – principals (shareholders) cannot perfectly control agents (managers).</p>
+                        <p>🟡 Mergers are a way to discipline poor managers.</p>
+                        <p>This is all about 'market for corporate control' that may lead to hostile take-over.</p>
+                        <p>🔵 Hostile takeover = acquiring a company against the wishes of its management.</p>
+                        <p>🟠 The market for corporate control allows outsiders to replace bad managers by buying the company.</p>
+                        <p>🔴 This is a "market" – buyers bid for control, sellers (shareholders) accept.</p>
+                        <p>🟣 Hostile takeovers are the ultimate threat to underperforming managers.</p>
+                        <p>Participants in this market are management teams of companies, together with investors.</p>
+                        <p>🔵 Management teams – both the current managers (defenders) and raiding managers (attackers).</p>
+                        <p>🟠 Investors – shareholders who own the company and decide whether to sell.</p>
+                        <p>🔴 The market operates through share purchases – if raiders buy enough shares, they gain control.</p>
+                        <p>🟣 Investors are the ultimate decision-makers – they sell to the highest bidder.</p>
+                        <p>Managers (both incumbent and raider managers) engage in competition for the control of companies.</p>
+                        <p>🔵 Incumbent managers – current management, trying to keep control.</p>
+                        <p>🟠 Raider managers – outsiders who want to take over and run the company.</p>
+                        <p>🔴 Competition for control = bidding war for shares.</p>
+                        <p>🟣 The winner gets to run the company (and usually fires the incumbent team).</p>
+                        <p>This competition takes the form of bids: 'raiding' teams bid for the control of other companies by offering cash or securities (bonds or shares) to investors.</p>
+                        <p>🔵 Bids = offers to buy shares at a certain price.</p>
+                        <p>🟠 Cash – straightforward, immediate payment.</p>
+                        <p>🔴 Securities – bonds or shares in the acquiring company – more complex.</p>
+                        <p>🟣 Investors choose the best offer – they sell to the highest bidder.</p>
+                        <p>The implication of this competition in management is the fact that this spurs efficiency.</p>
+                        <p>🔵 Spurs efficiency = encourages managers to perform better.</p>
+                        <p>🟠 If managers run the company poorly, its share price falls → the company becomes a cheap takeover target.</p>
+                        <p>🔴 Fear of takeover forces managers to maximize profits and share price.</p>
+                        <p>🟣 This is the disciplinary effect of the market for corporate control.</p>
+                        <p>If managers fail to maximize profits they lay themselves open to takeover.</p>
+                        <p>🔵 Fail to maximize profits – pursue growth, perks, or quiet life instead of profits.</p>
+                        <p>🟠 Lay themselves open = become vulnerable.</p>
+                        <p>🔴 A low share price invites raiders.</p>
+                        <p>🟣 Once taken over, the managers are likely fired.</p>
+                        <p>🟡 So the threat of takeover is a powerful motivator.</p>
+                        <p>The causes of inefficiency are not difficult to list. It may arise from the incentive structure of the company.</p>
+                        <p>🔵 Causes of inefficiency – why managers might not maximize profits.</p>
+                        <p>🟠 Incentive structure = how managers are paid (salary vs. bonuses vs. stock options).</p>
+                        <p>🔴 Poor incentives (e.g., fixed salary with no performance pay) lead to shirking or self-dealing.</p>
+                        <p>🟣 Mergers can fix this by changing ownership and incentives.</p>
+                        <p>It can be hypothesized that since mergers are indeed a market for corporate control, then a merger should be followed by an enhanced performance in terms of higher sales and/or an increase in profits.</p>
+                        <p>🔵 Hypothesized – a testable prediction.</p>
+                        <p>🟠 If the market for corporate control works, takeovers improve performance.</p>
+                        <p>🔴 Higher sales and/or profits – the evidence is mixed.</p>
+                        <p>🟣 Some studies find improvement; others find no change or even decline.</p>
+                        <p>One of the critics forwarded against this role of mergers is that of short-termism.</p>
+                        <p>🔵 Short-termism – focusing on short-term profits at the expense of long-term value.</p>
+                        <p>🟠 Managers fearing takeover may cut R&D, advertising, or capital investment to boost current profits.</p>
+                        <p>🔴 This makes the company look good now but hurts it later.</p>
+                        <p>🟣 So the threat of takeover can actually harm long-term efficiency.</p>
+                        <p>The argument that mergers are a spur to management to run companies efficiently has its converse side.</p>
+                        <p>🔵 Converse side = the opposite effect.</p>
+                        <p>🟠 The same mechanism (takeover threat) that can improve efficiency can also cause short-termism.</p>
+                        <p>🔴 So the net effect is ambiguous – depends on many factors.</p>
+                        <p>🟣 This is a lively debate in corporate finance.</p>
+                        <p>Mergers (the threat of mergers) force managers to maintain profits and dividends in the short run for the sake of boosting share values.</p>
+                        <p>🔵 Short run – next quarter, next year, not five years ahead.</p>
+                        <p>🟠 Boosting share values = increasing stock price.</p>
+                        <p>🔴 Profits and dividends are what investors see – they drive share prices.</p>
+                        <p>🟣 So managers focus on these visible metrics, not on long-term investments.</p>
+                        <p>This could lead to a tendency to reduce capital spending or investment in R&D.</p>
+                        <p>🔵 Capital spending – building factories, buying equipment.</p>
+                        <p>🟠 R&D – research and development, innovation.</p>
+                        <p>🔴 Both are long-term investments that reduce short-term profits.</p>
+                        <p>🟣 Under threat of takeover, managers cut them to boost current profits – harming future competitiveness.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 34 - Taxation Effect of Merger -->
+            <div class="slide" data-index="14">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 34</div>
+                    <div class="slide-title">Taxation Effect of Merger</div>
+                    
+                    <div class="content-text">
+                        <p>3. Taxation effect of merger – Merging may have the effect of reducing the aggregate tax liability of the companies concerned.</p>
+                        <p>🔵 Aggregate tax liability = total taxes paid by the merged company compared to the two separate companies.</p>
+                        <p>🟠 Tax reduction is a financial benefit of merging.</p>
+                        <p>🔴 It is not an efficiency gain – it's a transfer from the government to the firm.</p>
+                        <p>🟣 But for the firms, it's a real cash benefit.</p>
+                        <p>Tax authorities treat transactions differently; Since interest payments on companies' borrowed funds are tax-deductible there is an incentive to issue bonds against shares.</p>
+                        <p>🔵 Interest payments are tax-deductible – they reduce taxable profit.</p>
+                        <p>🟠 Dividends are not tax-deductible – paid from after-tax profit.</p>
+                        <p>🔴 So debt financing has a tax advantage over equity financing.</p>
+                        <p>🟣 Issue bonds against shares = borrow money (debt) instead of selling shares (equity).</p>
+                        <p>Rebalancing a company's capital structure so that there are fewer shares and relatively more bonds is not easy to negotiate, but mergers can provide an opportunity.</p>
+                        <p>🔵 Capital structure = mix of debt and equity.</p>
+                        <p>🟠 Changing it without a merger is difficult – requires buying back shares, issuing bonds, may be expensive.</p>
+                        <p>🔴 A merger allows restructuring of the combined company's capital in one go.</p>
+                        <p>🟣 This is a tax-driven merger motive.</p>
+                        <p>Second, while company profits are taxed, losses entitle a company to a refund or a reduction in future tax.</p>
+                        <p>🔵 Losses – negative profits.</p>
+                        <p>🟠 Tax refund or reduction – many tax systems allow loss carry-backs or carry-forwards.</p>
+                        <p>🔴 Example: If you lose $10M this year, you can reduce taxes on next year's profits by that amount.</p>
+                        <p>🟣 But if you never make profits again, the tax benefit is worthless.</p>
+                        <p>These losses may be 'carried forward' from the year in which they are sustained and used in a year in which profits are made, a process of smoothing or averaging.</p>
+                        <p>🔵 Carried forward – using this year's losses to reduce future years' taxes.</p>
+                        <p>🟠 Smoothing or averaging – profits and losses averaged over time to reduce taxes.</p>
+                        <p>🔴 A profitable company can acquire a loss-making company and use its tax losses.</p>
+                        <p>🟣 This is a classic tax-driven merger motive.</p>
+                        <p>Such credits can also be transferred to an acquiring company.</p>
+                        <p>🔵 Tax credits = rights to reduce taxes.</p>
+                        <p>🟠 When a profitable company acquires a loss-making company, it often gains the right to use the target's tax losses.</p>
+                        <p>🔴 This is legal in many countries, but with restrictions to prevent abuse.</p>
+                        <p>🟣 The combined company pays less tax than the profitable company would have alone.</p>
+                        <p>This feature of the tax system in some countries means that a profitable raider, which acquires a victim with tax losses can use those losses to reduce its own tax liabilities.</p>
+                        <p>🔵 Profitable raider – acquiring company with high profits and high taxes.</p>
+                        <p>🟠 Victim with tax losses – target company losing money, with unused loss carry-forwards.</p>
+                        <p>🔴 Acquire the victim → use its losses to offset raider's profits → lower tax bill.</p>
+                        <p>🟣 This is a pure tax arbitrage – no real economic benefit, just tax avoidance.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 35 - Mergers and Growth -->
+            <div class="slide" data-index="15">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 35</div>
+                    <div class="slide-title">Mergers and Growth</div>
+                    
+                    <div class="content-text">
+                        <p>Mergers and growth – Marris (1964) in his analysis of growth visualized the firm having to create opportunities for growth to satisfy managerial preferences.</p>
+                        <p>🔵 Marris (1964) – economist Robin Marris, known for growth theory of the firm.</p>
+                        <p>🟠 Managerial preferences – managers like growth (higher salaries, power, prestige).</p>
+                        <p>🔴 If the firm cannot grow internally (limited market for existing products), it must create opportunities.</p>
+                        <p>🟣 Mergers are one way to create growth opportunities.</p>
+                        <p>If the firm is limited in its growth opportunities in its existing activities, then the acquisition of other enterprises is one way of increasing its size and increasing its average growth rate as long as the acquired activity is in a faster growing sector.</p>
+                        <p>🔵 Limited growth opportunities – slow market growth, saturated demand.</p>
+                        <p>🟠 Acquisition of other enterprises = buying another company.</p>
+                        <p>🔴 Faster growing sector = the target operates in a market growing faster than the acquirer's market.</p>
+                        <p>🟣 Even if the acquirer's market grows at 2%, if the target's market grows at 10%, combined growth rate rises.</p>
+                        <p>Acquisition is viewed as a more rapid way of achieving greater size and a higher growth rate than pursuing internal or organic growth.</p>
+                        <p>🔵 Internal/organic growth – building new factories, developing new products from scratch.</p>
+                        <p>🟠 This is slow – takes years.</p>
+                        <p>🔴 Acquisition is instant – you buy an existing company with existing sales.</p>
+                        <p>🟣 For managers wanting fast growth, acquisition is attractive.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 36 - Mergers and Market Power -->
+            <div class="slide" data-index="16">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 36</div>
+                    <div class="slide-title">Mergers and Market Power</div>
+                    
+                    <div class="content-text">
+                        <p>Mergers and market power – Market power arises from a firm having a significant presence in a market.</p>
+                        <p>🔵 Significant presence = large market share, strong brand, control over key resources.</p>
+                        <p>🟠 Market power allows raising prices above competitive levels.</p>
+                        <p>🔴 Mergers can increase market power.</p>
+                        <p>🟣 This is the most controversial motive for mergers.</p>
+                        <p>Greater market power can be achieved by increasing market share at the expense of rivals.</p>
+                        <p>🔵 Increase market share organically (by competing better) – slow and uncertain.</p>
+                        <p>🟠 Or acquire a rival – immediate increase in market share.</p>
+                        <p>🔴 At the expense of rivals = they lose market share to you (or disappear).</p>
+                        <p>🟣 Higher market share → more market power.</p>
+                        <p>Competing away the market share of rivals requires the firm be in a relatively stronger competitive position than its rivals.</p>
+                        <p>🔵 Competing away – taking customers one by one through better prices, quality, or service.</p>
+                        <p>🟠 Stronger competitive position = lower costs, better product, stronger brand.</p>
+                        <p>🔴 This takes time and investment.</p>
+                        <p>🟣 Not all firms can do it successfully.</p>
+                        <p>This allows the firm to undercut rivals' prices or achieve higher profit margin at any price.</p>
+                        <p>🔵 Undercut prices – charge less than rivals, attracting their customers.</p>
+                        <p>🟠 Higher profit margin – charge the same price but have lower costs, so keep more profit per unit.</p>
+                        <p>🔴 Either way, the stronger firm gains market share.</p>
+                        <p>🟣 This is healthy competition when done organically.</p>
+                        <p>As the competitive process evolves, some firms will gain market share at the expense of others and some firms may withdraw or be forced from the market; this will free up market share which existing competitors can strive to win.</p>
+                        <p>🔵 Natural competitive process – winners gain, losers shrink or exit.</p>
+                        <p>🟠 Exiting firms free up market share (their former customers need new suppliers).</p>
+                        <p>🔴 Remaining firms compete for that freed-up share.</p>
+                        <p>🟣 This is how markets become more concentrated over time without mergers.</p>
+                        <p>The second way of achieving a higher market share is to acquire a rival; this eliminates a competitor and at the same time increases the market share of the acquiring firm.</p>
+                        <p>🔵 First way – win share by competing (organic).</p>
+                        <p>🟠 Second way – buy a rival (acquisition).</p>
+                        <p>🔴 Eliminates a competitor – one less rival to worry about.</p>
+                        <p>🟣 Increases acquirer's share immediately – the target's customers become the acquirer's customers.</p>
+                        <p>The firm can strive to maintain this increased market share against its remaining competitors.</p>
+                        <p>🔵 After the merger, the firm is larger.</p>
+                        <p>🟠 It must now defend that share against the remaining competitors.</p>
+                        <p>🔴 This may require continued investment, innovation, or further acquisitions.</p>
+                        <p>🟣 Market power is not permanent – it must be maintained.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 37 - Acquiring Competences -->
+            <div class="slide" data-index="17">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 37</div>
+                    <div class="slide-title">Acquiring Competences</div>
+                    
+                    <div class="content-text">
+                        <p>Acquiring competences – A firm may be motivated to acquire another because of the assets the target firm possesses.</p>
+                        <p>🔵 Not all acquisitions are about market share or cost savings.</p>
+                        <p>🟠 Some are about acquiring valuable assets that are hard to buy separately.</p>
+                        <p>🔴 Target's assets = patents, technology, brand, customer relationships, skilled workforce.</p>
+                        <p>🟣 This is called an "asset-seeking" or "capability-seeking" acquisition.</p>
+                        <p>In particular, the concern is to acquire intangible assets or competences that cannot be purchased in the market.</p>
+                        <p>🔵 Intangible assets – non-physical: knowledge, brand, culture, processes.</p>
+                        <p>🟠 Cannot be purchased in the market – you cannot just order "Toyota's production system" from a catalog.</p>
+                        <p>🔴 The only way to get them is to buy the whole company.</p>
+                        <p>🟣 Example: Google acquired Android not for its revenue (zero at the time) but for its mobile OS competence.</p>
+                        <p>Such assets are embedded in individuals and the architecture of the firm.</p>
+                        <p>🔵 Embedded in individuals – specific people carry the knowledge (engineers, managers, designers).</p>
+                        <p>🟠 Architecture of the firm – routines, culture, communication patterns, teamwork.</p>
+                        <p>🔴 You cannot separate the asset from the people and the organization.</p>
+                        <p>🟣 If you hire the individuals but not the firm, the architecture is lost.</p>
+                        <p>This means that these resources can be utilized within the firm at a constant or declining marginal cost and have high market transaction costs, so that the most profitable way to exploit them is within the firm and the only way to acquire them is through acquisition.</p>
+                        <p>🔵 Constant or declining marginal cost – using the competence for new products costs very little extra.</p>
+                        <p>🟠 High market transaction costs – you cannot license or contract for these competences.</p>
+                        <p>🔴 Most profitable way – internal use, not selling.</p>
+                        <p>🟣 Only way to acquire – buy the whole firm.</p>
+                        <p>It is these competences that make a firm potentially more profitable than its competitors, but it is also these competences that make the firm a potential target.</p>
+                        <p>🔵 Competences = source of superior profitability.</p>
+                        <p>🟠 That profitability makes the firm attractive to buyers.</p>
+                        <p>🔴 Rivals may want to acquire the firm to gain those competences.</p>
+                        <p>🟣 So the very thing that makes a firm successful also makes it a takeover target.</p>
+                        <p>The problem with acquiring a firm for its competences is that they reside in one or more individuals; so, if they leave after the acquisition, then the takeover may have been in vain.</p>
+                        <p>🔵 In vain = wasted effort, no benefit.</p>
+                        <p>🟠 Key individuals may leave after acquisition – they don't like the new management, or they were paid and leave.</p>
+                        <p>🔴 Without those people, the competence walks out the door.</p>
+                        <p>🟣 This is the "key person risk" in competence-seeking acquisitions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 38 - Mergers and Cost Savings -->
+            <div class="slide" data-index="18">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 38</div>
+                    <div class="slide-title">Mergers and Cost Savings</div>
+                    
+                    <div class="content-text">
+                        <p>Mergers and cost savings – The majority of mergers are intended to produce cost savings from synergy between existing and acquired activities.</p>
+                        <p>🔵 Majority – most mergers have cost-saving as a primary motive.</p>
+                        <p>🟠 Synergy = 2 + 2 = 5 – combined value greater than sum of parts.</p>
+                        <p>🔴 Cost savings are the most concrete and measurable synergy.</p>
+                        <p>🟣 Mergers that fail often overestimated the cost savings.</p>
+                        <p>The main source of these advantages will be: From economies of scale, as production is concentrated at fewer facilities; From economies of scope, as administrative functions are shared and purchases of raw materials are co-ordinated; and From economies of size, which allows larger firms to achieve lower costs than smaller ones.</p>
+                        <p>🔵 Economies of scale – produce more at the same factory → lower unit cost.</p>
+                        <p>🟠 Economies of scope – share functions (HR, IT, accounting) across divisions → lower overhead.</p>
+                        <p>🔴 Economies of size – bulk purchasing, lower borrowing costs, spreading fixed costs.</p>
+                        <p>🟣 These are the three cost-saving channels.</p>
+                        <p>Whether the expected cost savings are achieved depends on the success of the acquiring firm to integrate the new operation into its existing organizational and management structure.</p>
+                        <p>🔵 Expected cost savings = what the merger plan promised.</p>
+                        <p>🟠 Integration is difficult – merging different cultures, systems, and processes.</p>
+                        <p>🔴 If integration fails, cost savings may never materialize.</p>
+                        <p>🟣 This is why many mergers fail to deliver the promised benefits.</p>
+                        <p>If the costs of restructuring and setting up new management structures prove more expensive than anticipated, then the merger may not achieve its expected benefits.</p>
+                        <p>🔵 Restructuring costs = severance, plant closures, system conversions, rebranding.</p>
+                        <p>🟠 More expensive than anticipated = cost overruns, delays, unexpected problems.</p>
+                        <p>🔴 Expected benefits = cost savings that justified the merger.</p>
+                        <p>🟣 If costs exceed savings, the merger destroys value.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 39 - Defensive and Opportunistic Reasons -->
+            <div class="slide" data-index="19">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 39</div>
+                    <div class="slide-title">Defensive and Opportunistic Reasons</div>
+                    
+                    <div class="content-text">
+                        <p>Defensive and opportunistic reasons – The management of a firm may seek to merge for defensive reasons, such as to protect their own positions, to avoid bankruptcy or to avoid being taken over by an unwelcome bidder.</p>
+                        <p>🔵 Defensive reasons – protecting management's own jobs and control.</p>
+                        <p>🟠 Protect their own positions – make themselves harder to fire.</p>
+                        <p>🔴 Avoid bankruptcy – merge with a stronger firm to survive.</p>
+                        <p>🟣 Avoid unwelcome takeover – merge with a "white knight" (friendly acquirer) instead.</p>
+                        <p>Alternatively, an acquisition may be made because a company becomes available.</p>
+                        <p>🔵 Opportunistic reasons – taking advantage of an opportunity when it appears.</p>
+                        <p>🟠 A company becomes available = for sale at a good price, or owner wants to retire.</p>
+                        <p>🔴 The acquirer was not actively seeking, but the opportunity was too good to pass.</p>
+                        <p>🟣 This is opportunistic, not strategic.</p>
+                        <p>If a firm fears that it will become the subject of a takeover bid, then it may itself launch a bid to increase its size and make the firm a more expensive target.</p>
+                        <p>🔵 Fear of being taken over – the firm is a vulnerable target.</p>
+                        <p>🟠 Launch a bid = acquire another company (become a hunter instead of prey).</p>
+                        <p>🔴 Increasing size makes the firm more expensive to acquire – deters raiders.</p>
+                        <p>🟣 This is "defensive acquisition" or "shark repellent."</p>
+                        <p>An alternative approach to such a threat or to a launched bid is to seek another firm, or suitor, of the firm's own choosing to take the firm over in preference to the original bid.</p>
+                        <p>🔵 Alternative approach – instead of acquiring someone else, find a friendly acquirer.</p>
+                        <p>🟠 Suitor of the firm's own choosing – a "white knight."</p>
+                        <p>🔴 The white knight agrees to acquire the firm on terms management prefers.</p>
+                        <p>🟣 This blocks the hostile raider (the original bidder).</p>
+                        <p>Opportunities to make acquisitions or seek mergers may present themselves from time to time.</p>
+                        <p>🔵 Opportunities arise unexpectedly – not part of a long-term plan.</p>
+                        <p>🟠 Example: A competitor's owner dies, and the family wants to sell quickly.</p>
+                        <p>🔴 Or a recession makes many companies cheap.</p>
+                        <p>🟣 Opportunistic mergers can be very profitable if timed right.</p>
+                        <p>Two smaller firms in a market might merge to create a stronger firm to survive the challenge of a larger rival.</p>
+                        <p>🔵 Survive the challenge – a large rival is dominating the market.</p>
+                        <p>🟠 Two small firms merge → become a medium firm → better able to compete.</p>
+                        <p>🔴 This is a defensive merger to avoid being crushed.</p>
+                        <p>🟣 Example: Two regional airlines merge to compete with a national giant.</p>
+                        <p>There may be opportunities to deploy liquid assets (or a cash mountain) to acquire companies, which will improve the growth prospects of the firm and keep shareholders happy because of their dislike of excessive non-working assets.</p>
+                        <p>🔵 Liquid assets – cash or assets easily converted to cash.</p>
+                        <p>🟠 Cash mountain – large cash reserves earning low interest.</p>
+                        <p>🔴 Shareholders dislike excessive cash – they would rather see it invested or returned as dividends.</p>
+                        <p>🟣 Acquiring another company puts that cash to work, potentially earning higher returns.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 40 - Changes in the Economy and Final Summary -->
+            <div class="slide" data-index="20">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 40</div>
+                    <div class="slide-title">Changes in the Economy and Final Summary</div>
+                    
+                    <div class="content-text">
+                        <p>Changes in the economy – Mergers are sometimes motivated by general changes in an industry, such as changes in demand and technology, and trends in the economy as a whole, such as globalization.</p>
+                        <p>🔵 General changes – big, slow-moving trends, not firm-specific events.</p>
+                        <p>🟠 Changes in demand – tastes shift, new customer segments emerge.</p>
+                        <p>🔴 Changes in technology – new production methods, new product possibilities.</p>
+                        <p>🟣 Globalization – companies need scale to compete internationally.</p>
+                        <p>For example, declining demand in the defence sector following the end of the cold war led to mergers of defence companies and consolidation of the industry.</p>
+                        <p>🔵 End of the Cold War (1991) – sharp reduction in military spending.</p>
+                        <p>🟠 Declining demand → many defense firms faced ruin.</p>
+                        <p>🔴 Mergers allowed them to cut costs, share facilities, and survive.</p>
+                        <p>🟣 Examples: Lockheed Martin, Boeing, Raytheon formed through mergers.</p>
+                        <p>The general state of the economy may also be conducive to mergers.</p>
+                        <p>🔵 Conducive = favorable conditions for mergers.</p>
+                        <p>🟠 Boom times – high stock prices make stock-financed mergers cheap.</p>
+                        <p>🔴 Low interest rates – debt-financed mergers are cheap.</p>
+                        <p>🟣 High confidence – managers are optimistic about future synergies.</p>
+                        <p>For example, boom conditions with rising stock market prices may make takeovers financed by shares extremely attractive and encourage predatory firms to seek targets.</p>
+                        <p>🔵 Rising stock prices → acquiring company's shares are highly valued.</p>
+                        <p>🟠 Using shares to buy a target is like paying with expensive currency.</p>
+                        <p>🔴 Predatory firms = aggressive acquirers looking for bargains.</p>
+                        <p>🟣 Example: The late 1990s dot-com boom saw many stock-financed mergers.</p>
+                        <p>Changes in particular economic policies may create opportunities for merger activity as previous restrictions on firm behaviour are removed.</p>
+                        <p>🔵 Economic policies – deregulation, privatization, trade liberalization.</p>
+                        <p>🟠 Previous restrictions removed → new opportunities to merge.</p>
+                        <p>🔴 Example: Deregulation of airlines allowed them to merge across routes.</p>
+                        <p>🟣 Privatization of state-owned enterprises often leads to mergers with private firms.</p>
+                        <p>Deregulation in the US airline market created new opportunities for business experiment and consolidation.</p>
+                        <p>🔵 US airline deregulation (1978) – removed government control over routes and fares.</p>
+                        <p>🟠 New opportunities – airlines could enter new markets, experiment with prices.</p>
+                        <p>🔴 Consolidation followed – many airlines merged as competition intensified.</p>
+                        <p>🟣 Example: Delta, United, American all grew through mergers post-deregulation.</p>
+                        <p>Deregulation and privatization, which have been features of economic development in many countries, created market structures that were designed by committee.</p>
+                        <p>🔵 Designed by committee – artificially created, not naturally evolved.</p>
+                        <p>🟠 Governments decide how many firms, how to split assets, what rules to apply.</p>
+                        <p>🔴 These artificial structures are often unstable – mergers follow.</p>
+                        <p>🟣 Example: Breakup of AT&T (1984) created many regional phone companies, later re-merged.</p>
+                        <p>The new firms that were created have often taken the opportunity to merge with each other or have themselves been taken over by others keen to enter the market.</p>
+                        <p>🔵 New firms from deregulation/privatization often start small.</p>
+                        <p>🟠 They merge to gain scale and compete with incumbents.</p>
+                        <p>🔴 Or they become takeover targets for larger firms wanting entry.</p>
+                        <p>🟣 Merger waves often follow deregulation events.</p>
+                        <p>Profit and efficiency benefits – The economic case for horizontal mergers is generally based on higher unit revenues from the use of market power and lower unit costs from efficiency savings.</p>
+                        <p>🔵 Higher unit revenues – raising prices (market power).</p>
+                        <p>🟠 Lower unit costs – economies of scale, scope, or size (efficiency).</p>
+                        <p>🔴 These are the two potential benefits of horizontal mergers.</p>
+                        <p>🟣 Antitrust authorities worry about the first (higher prices) but accept the second (cost savings).</p>
+                        <p>If two firms were to merge, then the new firm could use its market power to restrict output and raise prices.</p>
+                        <p>🔵 This is the anti-competitive scenario.</p>
+                        <p>🟠 Fewer firms → easier to coordinate → higher prices.</p>
+                        <p>🔴 This harms consumers – the reason horizontal mergers are scrutinized.</p>
+                        <p>🟣 The merged firm may also cut output to drive up prices.</p>
+                        <p>For vertical mergers there may be cost savings where two technologically linked stages of a production chain are joined together under common ownership.</p>
+                        <p>🔵 Vertical mergers are less about market power and more about efficiency.</p>
+                        <p>🟠 Technologically linked stages = natural fit (e.g., assembly and parts manufacturing).</p>
+                        <p>🔴 Cost savings come from coordination, reduced inventory, lower transaction costs.</p>
+                        <p>🟣 Example: A car company merging with a seat manufacturer.</p>
+                        <p>Such a link avoids recourse to market transactions and avoids transaction costs; however, these may be offset by increases in governance costs.</p>
+                        <p>🔵 Avoid recourse to market transactions – no need to buy from outside.</p>
+                        <p>🟠 Avoids transaction costs (search, negotiation, monitoring).</p>
+                        <p>🔴 Offset by governance costs – managing the integrated firm costs money.</p>
+                        <p>🟣 Net benefit depends on which is larger.</p>
+                        <p>For conglomerate mergers where the activities are unrelated, the cost savings may arise from more efficient management, from a lower cost of capital for market funding and from operating an internal capital market.</p>
+                        <p>🔵 Conglomerate mergers have no operational synergies – no shared technology or customers.</p>
+                        <p>🟠 More efficient management – better managers run the acquired firm.</p>
+                        <p>🔴 Lower cost of capital – larger firm may borrow more cheaply.</p>
+                        <p>🟣 Internal capital market – the conglomerate can shift money from cash-rich divisions to investment-needy divisions without going through banks.</p>
+                        <p>🟡 These are financial and managerial synergies, not operational.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="indicators" id="indicators"></div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressBar = document.getElementById('progressBar');
+        const indicatorsContainer = document.getElementById('indicators');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Create indicators
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('indicator');
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.indicator');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+            
+            indicators.forEach((ind, index) => {
+                ind.classList.toggle('active', index === currentSlide);
+            });
+            
+            slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+        }
+
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateSlide();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

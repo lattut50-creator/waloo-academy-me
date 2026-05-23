@@ -1,0 +1,1269 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Market Concentration | Complete Chapter Presentation | Economics</title>
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a2a 0%, #1a1a4a 50%, #0a0a2a 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Particles */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Floating Orbs Animation */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.25;
+            pointer-events: none;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #f59e0b, #d97706);
+            top: -200px;
+            left: -200px;
+        }
+
+        .orb-2 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, #8b5cf6, #7c3aed);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 3s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #06b6d4, #0891b2);
+            top: 50%;
+            left: 70%;
+            animation-delay: 6s;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -40px) scale(1.15); }
+        }
+
+        /* Main Container */
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        /* Slides Wrapper */
+        .slides-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Individual Slide */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            overflow-y: auto;
+            padding: 50px 70px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        /* Custom Scrollbar */
+        .slide::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 10px;
+        }
+
+        /* Slide Card */
+        .slide-card {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(5px);
+            border-radius: 40px;
+            padding: 45px 55px;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.4);
+            animation: slideContentIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes slideContentIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typography */
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e1b4b, #5b21b6, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 25px;
+            border-left: 5px solid #f59e0b;
+            padding-left: 25px;
+        }
+
+        .slide-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Content styling - no distinction between original and explanation */
+        .content-text {
+            line-height: 1.8;
+            color: #1e293b;
+        }
+
+        .content-text p {
+            margin-bottom: 16px;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #1e1b4b, #2d2a5e);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3rem;
+            color: #f59e0b;
+        }
+
+        .key-point-box {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #6366f1;
+        }
+
+        .research-box {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #ec4899;
+        }
+
+        /* Color tags for emoji bullets */
+        .content-text strong {
+            color: #1e1b4b;
+        }
+
+        /* Tables */
+        .premium-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .premium-table th {
+            background: linear-gradient(135deg, #1e1b4b, #2d2a5e);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .premium-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #1e1b4b;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            background: #f59e0b;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Indicators */
+        .indicators {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #f59e0b;
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706, #8b5cf6);
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 100;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Lists */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .bullet-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: #f59e0b;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px 15px;
+            }
+            .slide-card {
+                padding: 25px;
+            }
+            .slide-title {
+                font-size: 1.6rem;
+            }
+            .nav-controls {
+                bottom: 15px;
+                right: 15px;
+            }
+            .indicators {
+                bottom: 15px;
+                left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-counter" id="slideCounter">1 / 20</div>
+
+    <div class="presentation-container">
+        <div class="slides-wrapper" id="slidesWrapper">
+            <!-- SLIDE 1 - Definition of Market Concentration -->
+            <div class="slide" data-index="0">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 1</div>
+                    <div class="slide-title">Definition of Market Concentration</div>
+                    
+                    <div class="content-text">
+                        <p>Market concentration refers to the situation in which an industry or a market is controlled by a small number of leading producers who are exclusively or very largely engaged in that industry.</p>
+                        <p>🔵 Think of a few big companies dominating everything – like in mobile operating systems or aircraft manufacturing.</p>
+                        <p>🟢 "Exclusively or very largely engaged" means these top firms focus mainly on this specific industry, not as a side business.</p>
+                        <p>🟠 Control here means they can influence prices, supply, and competition.</p>
+                        <p>It is used when smaller firms account for large percentage of the total market.</p>
+                        <p>🔴 Even if there are many small businesses, if a handful of them hold most of the sales, we say the market is concentrated.</p>
+                        <p>🟣 Example: 3 big stores + 97 tiny shops – but the 3 big ones make 80% of all sales.</p>
+                        <p>It measures the extent of domination of sales by one or more firms in a particular market.</p>
+                        <p>🟡 It answers the question: "How much of the market's total sales belong to the largest players?"</p>
+                        <p>🟢 A single number (like 70% for the top 4 firms) tells you the domination level.</p>
+                        <p>Two variables that determinates such situation are: The number and Size distribution of firms within the market.</p>
+                        <p>🔵 "Determinates" here means "determine" (small typo in the slide).</p>
+                        <p>🟠 First variable: How many firms exist? Fewer firms → higher concentration.</p>
+                        <p>🔴 Second variable: Are the firms similar in size, or one giant and many dwarfs? Unequal size → higher concentration.</p>
+                        <p>Having vital consequences for the pricing and output decisions of the firm, how these two dimensions cause different forms of the market structure.</p>
+                        <p>🟣 The number of firms and their size distribution directly affect how firms set prices and how much they produce.</p>
+                        <p>🟡 Different combinations lead to different market structures: monopoly, oligopoly, perfect competition.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2 - Implications of Market Concentration -->
+            <div class="slide" data-index="1">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 2</div>
+                    <div class="slide-title">Implications of Market Concentration</div>
+                    
+                    <div class="content-text">
+                        <p>The implication of market concentration in industrial economics is far wider than theory of the firm.</p>
+                        <p>🔵 It's not just about one company's behavior – it affects entire industries, government policy, and antitrust laws.</p>
+                        <p>🟠 "Theory of the firm" focuses on a single company. Market concentration looks at the whole playing field.</p>
+                        <p>Market concentration (the degree of sellers' concentration in the market), is an important element of the market structure, which plays a dominant role in determining the behaviour of a firm in the market.</p>
+                        <p>🟣 Concentration tells you how much power sellers have.</p>
+                        <p>🔴 Market structure = the environment firms operate in. That environment shapes whether firms compete fiercely or cooperate quietly.</p>
+                        <p>A market is said to be more concentrated, the fewer the number of firms.</p>
+                        <p>🟡 Simple rule: 2 firms → more concentrated than 100 firms (if market shares are similar within each case).</p>
+                        <p>🟢 Think of a tug-of-war: fewer teams means each team pulls harder.</p>
+                        <p>The "market structure-conduct-performance" requires a means of identifying different market structures: Concentration in the ownership of the industry, Concentration of decision-making power, and Concentration of the firms in a particular location or region, etc.</p>
+                        <p>🔵 The SCP model says: Structure → Conduct → Performance. But first you must identify the structure.</p>
+                        <p>🟠 Three ways concentration appears: Ownership, Decision-making power, Geographic clustering.</p>
+                        <p>All of these elements of market concentration may have considerable impact on the market performance of the firms such as profitability, growth, and technological progress.</p>
+                        <p>🔴 High concentration can lead to higher profits (less price competition).</p>
+                        <p>🟣 It can also affect how fast firms grow and whether they invest in new technology.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3 - Measuring Market Concentration (Introduction) -->
+            <div class="slide" data-index="2">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 3</div>
+                    <div class="slide-title">Measuring Market Concentration (Introduction)</div>
+                    
+                    <div class="content-text">
+                        <p>Measuring Market Concentration – This help us to test empirically the behavioral hypothesis about the firms and industries.</p>
+                        <p>🔵 "Empirically" means using real-world data, not just theory.</p>
+                        <p>🟠 A hypothesis like "firms in concentrated markets collude" can be tested by measuring concentration and observing behavior.</p>
+                        <p>Various quantitative indices have been suggested for this purpose.</p>
+                        <p>🟣 Many math formulas exist to calculate concentration – each with pros and cons.</p>
+                        <p>🔴 Examples: Concentration Ratio (CR), Herfindahl-Hirschman Index (HHI), Gini coefficient, Entropy index.</p>
+                        <p>Some of them are used to measure the monopoly power and some others for market concentration.</p>
+                        <p>🟡 Monopoly power indices focus on one firm (e.g., Lerner Index).</p>
+                        <p>🟢 Market concentration indices look at all firms together (e.g., CR4, HHI).</p>
+                        <p>These two terms are closely interrelated and cannot be separated from each other in the measurement process of market concentration.</p>
+                        <p>🔵 High market concentration usually creates potential for monopoly power.</p>
+                        <p>🟠 In practice, when you measure one, you are indirectly measuring the other.</p>
+                        <p>The measures for monopoly power: It would be more appropriate at firm level.</p>
+                        <p>🔴 Ask: "How much power does this single firm have?"</p>
+                        <p>🟣 You cannot measure monopoly power for a whole industry – it's a firm-specific concept.</p>
+                        <p>Indicates the actual monopoly power exercised by firms.</p>
+                        <p>🟡 Actual = really happening, not just possible.</p>
+                        <p>🟢 For example, if a firm charges prices much higher than its costs, that's actual monopoly power.</p>
+                        <p>The measures of concentration: It would give us the potential monopoly power in the market or industry as a whole.</p>
+                        <p>🔵 Potential = what could happen if firms cooperate.</p>
+                        <p>🟠 A highly concentrated market has high potential for abuse, even if no firm is currently misbehaving.</p>
+                        <p>Market concentration is therefore a necessary condition for the monopoly power.</p>
+                        <p>🔴 Necessary = you cannot have significant monopoly power without concentration.</p>
+                        <p>🟣 But concentration alone is not enough – you also need barriers to entry and collusion.</p>
+                        <p>A market concentration measure should be decreasing as the number of firms in the market keeps on increasing.</p>
+                        <p>🟡 If new firms enter, concentration should drop – unless the new firm is huge.</p>
+                        <p>🟢 Example: 10 firms → 11 firms (all small) lowers concentration.</p>
+                        <p>There are several measures suggested for measuring market concentration all of which are not equally good or bad.</p>
+                        <p>🔵 No single index is perfect for every situation.</p>
+                        <p>🟠 CR4 is simple but misses distribution; HHI is better but needs more data.</p>
+                        <p>There is no perfect or the best index for concentration or monopoly power.</p>
+                        <p>🔴 Perfect index would satisfy all desirable properties – but none does.</p>
+                        <p>🟣 Researchers choose based on their question, data availability, and industry context.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4 - General Conditions for Concentration Indices -->
+            <div class="slide" data-index="3">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 4</div>
+                    <div class="slide-title">General Conditions for Concentration Indices</div>
+                    
+                    <div class="content-text">
+                        <p>A measure of market concentration tries to transform the information on the number, size and distribution of firms presented on the concentration curve into a single value.</p>
+                        <p>🔵 The concentration curve is a picture (graph). An index condenses that picture into one number.</p>
+                        <p>🟠 One number is easier to compare across industries than a whole graph.</p>
+                        <p>Some of the general conditions that should be satisfied by each one of the indices are: The measure must yield unambiguous ranking of industries by concentration.</p>
+                        <p>🔴 Unambiguous = clear, no confusion.</p>
+                        <p>🟣 If Index says Industry X is more concentrated than Y, that ranking should not flip just because you change something arbitrary.</p>
+                        <p>The concentration measure should be a function of the combined market share of firms rather than the absolute size of the market or industry.</p>
+                        <p>🟡 Use percentages, not dollars.</p>
+                        <p>🟢 A $1M market with one firm is highly concentrated; a $1B market with 100 equal firms is not – even though the second is bigger in absolute dollars.</p>
+                        <p>If the number of firms increases, then concentration should decrease. However, if the new entrant is large enough, then concentration may go up.</p>
+                        <p>🔵 Normally, more firms = lower concentration.</p>
+                        <p>🟠 Exception: If a giant firm enters, it might become the new largest player, raising the top firms' combined share.</p>
+                        <p>If there is transfer of sales from a small firm to a large one in the market, then concentration increases.</p>
+                        <p>🔴 When customers leave small firms and buy from big firms, the big get bigger.</p>
+                        <p>🟣 Number of firms stays the same, but concentration rises because shares become more unequal.</p>
+                        <p>Proportionate decrease in the market share of all firms reduces the concentration by the same proportion.</p>
+                        <p>🟡 Example: All firms lose exactly 10% of their share (e.g., to a new entrant).</p>
+                        <p>🟢 The relative sizes stay the same, but the Herfindahl index drops by a proportional amount.</p>
+                        <p>Merger activities increase the degree of concentration.</p>
+                        <p>🔵 Two firms become one → fewer firms total.</p>
+                        <p>🟠 The new combined firm has a larger share than either had alone → higher concentration.</p>
+                        <p><em>NOTE: It may not be possible for an index of concentration to satisfy all of the above conditions.</em></p>
+                        <p>🔴 Real-world indices often fail one or more of these ideal properties.</p>
+                        <p>🟣 Economists accept trade-offs – no index is perfect.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5 - Concentration Curve -->
+            <div class="slide" data-index="4">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 5</div>
+                    <div class="slide-title">Concentration Curve</div>
+                    
+                    <div class="content-text">
+                        <p>The Concentration Curve and Measures of Market Concentration – It plot the cumulative market share from the largest to the smallest.</p>
+                        <p>🔵 "It plot" is a small grammar issue – should be "It plots."</p>
+                        <p>🟠 X-axis: firms ranked from biggest to smallest (1st firm, 2nd firm, 3rd firm…).</p>
+                        <p>🔴 Y-axis: running total of market share percent (e.g., after 3 firms, you have 60% of the market).</p>
+                        <p>It may provide information on the structural characteristics of the market.</p>
+                        <p>🟣 The shape of the curve tells you how skewed the market is.</p>
+                        <p>🟡 Very steep start → high concentration (few firms dominate).</p>
+                        <p>🟢 Gentle slope → low concentration (many firms share the market).</p>
+                        <p>Graphs between cumulative number of firms from largest to smallest (X-axis) and cumulative percentage of market supply (Y-axis) are shown by points: A, B & C for three industries.</p>
+                        <p>🔵 The slide refers to a figure (Fig 3.1) with three curves – one for Industry A, one for B, one for C.</p>
+                        <p>🟠 Each curve plots cumulative share against cumulative number of firms.</p>
+                        <p>Market A is the highly concentrated industry. A single firm has 100% market share.</p>
+                        <p>🔴 Industry A: one firm sells everything.</p>
+                        <p>🟣 On the graph, the curve jumps straight to 100% after the first firm, then stays flat.</p>
+                        <p>For a market involved with few or large number of firms, there are different cases.</p>
+                        <p>🟡 "Few" = oligopoly (e.g., 2–5 firms).</p>
+                        <p>🟢 "Large number" = near-perfect competition (e.g., 100+ firms).</p>
+                        <p>🔵 The shape of the concentration curve looks very different in each case.</p>
+                        <p>For instance, for the first five largest firms, market C is more concentrated than B. But, for the number of firms greater than five, market B is more concentrated than C.</p>
+                        <p>🔴 This shows a problem with fixed-top firm ratios (like CR5).</p>
+                        <p>🟠 Market C has a stronger top 5, but after that, its remaining firms are tiny.</p>
+                        <p>🟣 Market B has a weaker top 5, but more medium-sized firms beyond #5, so total concentration beyond 5 firms is higher.</p>
+                        <p>Generally, the above relations and measurement of market concentration can be supported by outcome of various market concentration measurement.</p>
+                        <p>🟡 Different concentration indices may rank markets B and C differently depending on how many firms they include.</p>
+                        <p>🟢 That's why economists use multiple measures – one index alone can be misleading.</p>
+                        <p>There are six main measures of concentration.</p>
+                        <p>🔵 The slide is introducing the next section: Concentration Ratio (CR), Herfindahl-Hirschman Index (HHI), Entropy Index, Gini Coefficient, Lerner Index (monopoly power), Others…</p>
+                    </div>
+
+                    <div class="formula-box">
+                        📊 Concentration Curve: Cumulative Market Share vs Cumulative Number of Firms
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 6 - Concentration Ratio (CR) -->
+            <div class="slide" data-index="5">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 6</div>
+                    <div class="slide-title">Concentration Ratio (CR)</div>
+                    
+                    <div class="content-text">
+                        <p>Concentration Ratio (Cr) is the most popular and simplest index for measurement of market concentration or monopoly power.</p>
+                        <p>🔵 This is the index that people use most often because it's easy to calculate and understand.</p>
+                        <p>🟠 "Simplest" means you just add up the market shares of the biggest firms – no complicated math.</p>
+                        <p>🔴 Even government agencies (like the U.S. Department of Justice) use it for antitrust checks.</p>
+                        <p>It is defined as the share of market held by r largest firms, where r is an arbitrary number.</p>
+                        <p>🟣 "r" is just a placeholder – you choose how many top firms to include.</p>
+                        <p>🟡 Example: If r = 4, you add the market shares of the 4 largest firms. That sum is CR4.</p>
+                        <p>🟢 "Arbitrary" means there's no fixed rule – different researchers pick different r values.</p>
+                        <p>The normal practice is to take r = 4.</p>
+                        <p>🔵 In most real-world studies, people use the top 4 firms.</p>
+                        <p>🟠 Sometimes r = 3, r = 5, or r = 8 depending on the industry.</p>
+                        <p>🔴 CR4 is so common that many people just say "concentration ratio" and mean CR4.</p>
+                        <p>Limitation of the concentration ratio – This index has two limitations: The arbitrary selection of r and The concentration ratio indicate or shows only a single point on the concentration curve is taken without information on the size distribution of the r firms.</p>
+                        <p>🟣 First limitation: Picking r = 4 or r = 5 is somewhat random – a different r can give a different ranking of industries.</p>
+                        <p>🟡 Second limitation: CR only tells you the total share of the top r firms, not how that share is split among them.</p>
+                        <p>🟢 Example: CR4 = 80% could mean one firm has 77% and three have 1% each – or all four have 20% each. CR alone cannot tell the difference.</p>
+                        <p>It did not show any thing about the size distribution among the selected firms – it show only how much the first 4 or 5 firm have a market share.</p>
+                        <p>🔵 This repeats the second limitation for emphasis: CR ignores inequality among the top firms.</p>
+                        <p>🟠 A monopoly disguised as an oligopoly? CR would not catch it.</p>
+                        <p>🔴 That's why CR is called "simple" but also "crude."</p>
+                        <p>The Arbitrary Selection of r – when the concentration curves intersect, the measure (Cr) will give different ranking of industries for different values of r.</p>
+                        <p>🟣 Imagine two industries: Industry X and Industry Y.</p>
+                        <p>🟡 If you pick r = 3, X may look more concentrated. If you pick r = 6, Y may look more concentrated.</p>
+                        <p>🟢 This is exactly what happens when concentration curves cross – and CR gives inconsistent rankings.</p>
+                        <p>For instance, at Cr3, firm C is more concentrated than B. But at Cr6 market B is more concentrated than market C.</p>
+                        <p>🔵 This refers back to the earlier example with markets B and C from the concentration curve.</p>
+                        <p>🟠 CR3 (top 3 firms): Market C wins (higher share among top 3).</p>
+                        <p>🔴 CR6 (top 6 firms): Market B wins (because after the top 3, Market B has more substantial firms).</p>
+                        <p>To deal with the first problem, suppose in industry A where there are four firms, the largest firm has 97% market share and the other three account for 1% each. In industry B there are four firms each with a market share of 25%. For both industries (A&B) Cr4 = 100% although the market structure is different. That is, market A is more or less a monopoly market.</p>
+                        <p>🟣 CR4 = 100% for both industries – the index cannot distinguish them.</p>
+                        <p>🟡 But Industry A is essentially a monopoly (one giant, three dwarfs).</p>
+                        <p>🟢 Industry B is an equal oligopoly (four equal-sized firms).</p>
+                        <p>🔵 This is the classic problem with CR: it ignores how the share is distributed among the top r firms.</p>
+                        <p>Thus, the concentration ratio does not give the information that how the selected firms are operating.</p>
+                        <p>🔴 "How they are operating" means: Are they cooperating? Competing aggressively? One dominant firm leading?</p>
+                        <p>🟠 CR just gives a number – no behavioral insight.</p>
+                        <p>🟣 That's why economists developed more sophisticated indices like HHI.</p>
+                    </div>
+
+                    <div class="formula-box">
+                        CR₄ = S₁ + S₂ + S₃ + S₄
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>⚠️ Classic Problem with CR:</strong></p>
+                        <p>Industry A: 97% + 1% + 1% + 1% = 100% CR₄<br>
+                        Industry B: 25% + 25% + 25% + 25% = 100% CR₄<br>
+                        <strong>Same CR₄ but completely different market structures!</strong> Industry A is near monopoly; Industry B is equal oligopoly.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7 - Herfindahl-Hirschman Index (HHI) -->
+            <div class="slide" data-index="6">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 7</div>
+                    <div class="slide-title">Herfindahl-Hirschman Index (HHI)</div>
+                    
+                    <div class="content-text">
+                        <p>In general, the Herfindahl-Hirschman Index measures competition in a particular industry by examining the proportion of all existing players' market share.</p>
+                        <p>🔵 HHI looks at every firm in the market, not just the top few.</p>
+                        <p>🟠 "Proportion" means each firm's market share is squared, then summed.</p>
+                        <p>🔴 Formula: HHI = s1² + s2² + s3² + … + sn² (where s = market share as a percent or decimal).</p>
+                        <p><strong>Advantages:</strong> The index reflects the distribution of market share and gives weight to the largest players proportionately. So, it's a better measure than the concentration ratio.</p>
+                        <p>🟣 Because shares are squared, a large firm gets much more weight than a small one.</p>
+                        <p>🟡 Example: A firm with 50% share contributes 2500 to HHI (if using 0–100 scale), while a 1% firm contributes only 1.</p>
+                        <p>🟢 This solves the CR problem: HHI distinguishes between one giant + many smalls vs. several equal-sized firms.</p>
+                        <p><strong>Disadvantages:</strong> The index doesn't take into account the possibility of entering new companies.</p>
+                        <p>🔵 HHI is a snapshot of the current market – it cannot predict future changes.</p>
+                        <p>🟠 Even if a market looks highly concentrated today, if entry is easy, competition may still be strong.</p>
+                        <p>🔴 Example: A monopolist with 100% share faces no competition today – but if any company can enter freely tomorrow, that monopoly power is fragile.</p>
+                        <p>Market power is less relevant when barriers to entry are low. A new player brings in new capacity and erodes the incumbent's market share, reducing their market power.</p>
+                        <p>🟣 Low barriers = anyone can open a competing business easily.</p>
+                        <p>🟡 New entrants increase the number of firms and take away customers from existing large firms.</p>
+                        <p>🔵 Over time, concentration falls and market power weakens – but HHI alone doesn't tell you this.</p>
+                        <p>It is challenging to collect market share data for the entire company.</p>
+                        <p>🔴 Large companies often operate in multiple industries (conglomerates).</p>
+                        <p>🟠 Defining "the market" is hard – should you include all their products or just one specific product line?</p>
+                        <p>🟢 Getting reliable sales data for every single competitor can be very difficult or expensive.</p>
+                        <p>Another problem is when the supply comes from imports, it may be challenging to track down each foreign company.</p>
+                        <p>🔵 If many small foreign firms export to your country, you may not know their exact market shares.</p>
+                        <p>🟣 Example: The U.S. steel market includes imports from dozens of Chinese, Korean, and European mills – tracking each separately is nearly impossible.</p>
+                        <p>🟡 Some studies treat "imports" as one single firm, which distorts concentration measurement.</p>
+                        <p>Sensitive to market definitions. Say, you calculated the company's market share for the food industry. You may find the market is less concentrated. However, if you dig deeper into a subsegment, for example, the bakery market, you may come to a different conclusion.</p>
+                        <p>🔴 How you define the market changes the HHI dramatically.</p>
+                        <p>🟠 A company may have 2% of the total food market (low concentration) but 60% of the frozen pizza subsegment (very high concentration).</p>
+                        <p>🟣 Which definition is correct? It depends on the research question – but HHI gives different answers.</p>
+                        <p>It says nothing about differentiation. Suppose you calculate market share based on production volume. In that case, it will produce a different number when you use the revenue value. Revenue is sensitive to an individual firm's pricing strategy. Differentiation allows the company to get market power and set a high price, enabling it to achieve target revenue even with low volume.</p>
+                        <p>🔵 Market share can be measured by units sold (volume) or by money earned (revenue).</p>
+                        <p>🟠 A differentiated product (like Apple iPhone) can charge high prices – high revenue share even with moderate volume share.</p>
+                        <p>🟡 HHI based on volume vs. revenue can give different concentration levels.</p>
+                        <p>🔴 Differentiation itself creates market power, but HHI does not capture that directly – only the resulting share.</p>
+                    </div>
+
+                    <div class="formula-box">
+                        HHI = S₁² + S₂² + S₃² + ... + Sₙ²
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📌 HHI Examples:</strong></p>
+                        <p>Monopoly (100%): HHI = 10,000 | Equal Duopoly (50%+50%): HHI = 5,000<br>
+                        Unequal Duopoly (75%+25%): HHI = 6,250 | 100 equal firms (1% each): HHI = 100</p>
+                        <p><strong>US Merger Guidelines:</strong> HHI &lt; 1500 = Unconcentrated | 1500-2500 = Moderate | &gt;2500 = Highly concentrated</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 8 - Entropy Coefficient -->
+            <div class="slide" data-index="7">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 8</div>
+                    <div class="slide-title">Entropy Coefficient (EI)</div>
+                    
+                    <div class="content-text">
+                        <p>For a monopoly firm (n=1) the Entropy coefficient takes the value of zero which means no uncertainty and there is maximum concentration.</p>
+                        <p>🔵 Entropy (EI) is another concentration measure borrowed from information theory.</p>
+                        <p>🟠 When only one firm exists, there is no "surprise" or "uncertainty" about which firm you will get – it's always that one firm.</p>
+                        <p>🔴 EI = 0 means perfect concentration (monopoly).</p>
+                        <p>Thus, we find inverse relationship between the Entropy coefficient (EI) and the degree of market concentration.</p>
+                        <p>🟣 Inverse = when one goes up, the other goes down.</p>
+                        <p>🟡 High concentration → Low EI.</p>
+                        <p>🟢 Low concentration (many equal firms) → High EI.</p>
+                        <p>If there are n firms, all equal in size, then: EI = log n</p>
+                        <p>🔵 Example: 10 equal firms → EI = log(10) = 1 (if using base 10).</p>
+                        <p>🟠 100 equal firms → EI = log(100) = 2.</p>
+                        <p>🔴 As n increases, EI increases – meaning lower concentration.</p>
+                        <p>EI is similar to HHI, but the difference is that EI gives relatively more weight to the smaller firms.</p>
+                        <p>🟣 HHI squares shares → big firms get heavy weight.</p>
+                        <p>🟡 EI uses logarithms → small firms contribute more proportionally than in HHI.</p>
+                        <p>🟢 This means EI is more sensitive to changes among smaller players, while HHI is more sensitive to changes among top firms.</p>
+                    </div>
+
+                    <div class="formula-box">
+                        EI = Σ Sᵢ × log(1/Sᵢ) | For n equal firms: EI = log n
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📊 EI vs HHI Comparison:</strong> HHI gives more weight to large firms; EI gives more weight to small firms. HHI higher = higher concentration; EI higher = lower concentration.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 9 - Gini Coefficient and Lorenz Curve -->
+            <div class="slide" data-index="8">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 9</div>
+                    <div class="slide-title">Gini Coefficient (GC) & Lorenz Curve</div>
+                    
+                    <div class="content-text">
+                        <p>Gini coefficient (GC) is an index used to measure equality/inequality.</p>
+                        <p>🔵 Originally developed for income inequality (economics), but adapted for market concentration.</p>
+                        <p>🟠 GC ranges from 0 (perfect equality) to 1 (perfect inequality).</p>
+                        <p>🔴 In market concentration: GC = 0 means all firms have identical market shares. GC close to 1 means one firm has almost everything.</p>
+                        <p>It is used to plot cumulative market share against the cumulative percentage of firms.</p>
+                        <p>🟣 X-axis: cumulative % of firms (from smallest to largest – this is different from the concentration curve!).</p>
+                        <p>🟡 Y-axis: cumulative % of market share owned by those firms.</p>
+                        <p>🔵 This creates the Lorenz curve.</p>
+                        <p>In this case, firms are cumulated from the smallest to the largest unlike that of the concentration curve.</p>
+                        <p>🔴 Important difference: Concentration curve = largest to smallest. Lorenz curve = smallest to largest.</p>
+                        <p>🟠 Why? Because Lorenz curves traditionally show how the "poorest" (smallest firms) accumulate share.</p>
+                        <p>That is, the Gini (or Lorenz curve) shows the variation in cumulative percentage distribution of market share with cumulative distribution of firms from smallest to largest in the market (as shown in figure below).</p>
+                        <p>🟣 Example: The smallest 50% of firms might own only 5% of the market – that's high inequality.</p>
+                        <p>🟡 If the smallest 50% own 50% of the market, that's perfect equality.</p>
+                        <p>🔵 The further the curve bends away from the diagonal line, the higher the concentration.</p>
+                        <p>In the above figure, Line OA is line of perfect equality, representing equal sized firms. Curves 2 & 3 represent Lorenz Curve. Greater inequality results if Lorenz curve is farther from line of equality. Curve 3 thus reflects highest inequality.</p>
+                        <p>🔴 Line OA = the diagonal (45-degree line). If all firms are equal, the Lorenz curve sits exactly on this line.</p>
+                        <p>🟠 Curve 2 is closer to the diagonal → moderate inequality.</p>
+                        <p>🟣 Curve 3 is far from the diagonal → high inequality (a few very large firms, many very small ones).</p>
+                        <p>A coefficient which we may call 'Lorenz coefficient' or 'GINI-coefficient' is obtained by dividing the area bounded between the Lorenz curve (say curve-2) and the diagonal line OA (shown with rectangles in it) by the area of the triangle under the diagonal (OAC).</p>
+                        <p>🔵 Formula: GC = (Area between Lorenz curve and diagonal) / (Total area under diagonal)</p>
+                        <p>🟡 In the figure: The region between Curve 2 and the diagonal is filled with small rectangles – that area is measured.</p>
+                        <p>🟠 That area is divided by the triangle OAC (the whole area under the diagonal).</p>
+                        <p>🔴 Result: GC always between 0 and 1.</p>
+                        <p>That is, GC = (Area between Lorenz curve and diagonal) / (Area under diagonal)</p>
+                        <p>🟣 This is the mathematical definition repeated for clarity.</p>
+                        <p>🟢 If the Lorenz curve is exactly on the diagonal → area between = 0 → GC = 0.</p>
+                        <p>🔵 If one firm owns everything → Lorenz curve runs along bottom then jumps to top → area between = entire triangle → GC = 1.</p>
+                        <p>In all case, 0 < GC < 1; greater the magnitude of GC say 0.5, 0.6 or 0.7 higher inequality exists and vice versa.</p>
+                        <p>🔴 GC is always between 0 and 1 (excluding exact 0 or 1 in real-world data).</p>
+                        <p>🟠 0.5 = moderate inequality. 0.7 = high inequality. 0.2 = low inequality.</p>
+                        <p><strong>Limitation of Gini coefficient:</strong> it favors equality of market shares without regard to the number of equal sized firms, i.e. GC equal to zero for two firms with 50% market share each or 3 firms with 33.3% market share each, etc. Thus, GC=0 implies equal level of competition.</p>
+                        <p>🟣 GC cannot distinguish between 2 equal firms and 100 equal firms – both give GC = 0.</p>
+                        <p>🟡 But a market with 2 equal firms (duopoly) is much more concentrated than a market with 100 equal firms (perfect competition).</p>
+                        <p>🔴 So GC = 0 does not mean "low concentration" – it only means "equal shares."</p>
+                        <p>But this is not always true because the level of competition differs with the number of firms but not equal size firms.</p>
+                        <p>🔵 Two equal firms can collude and act like a monopoly.</p>
+                        <p>🟠 One hundred equal firms cannot collude easily – competition is fierce.</p>
+                        <p>🟣 GC ignores the number of firms entirely – a serious flaw.</p>
+                        <p>Sufficient and accurate data about the market share of every firm in the market may not be available.</p>
+                        <p>🔴 To calculate GC, you need every single firm's market share – even the tiniest ones.</p>
+                        <p>🟡 In many industries, thousands of very small firms exist, and tracking them all is impossible.</p>
+                        <p>🟢 Without full data, GC cannot be computed accurately.</p>
+                    </div>
+
+                    <div class="formula-box">
+                        GC = Area between Lorenz curve and diagonal / Total area under diagonal | 0 ≤ GC ≤ 1
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 10 - Lerner Index -->
+            <div class="slide" data-index="9">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 10</div>
+                    <div class="slide-title">Lerner Index (Monopoly Power)</div>
+                    
+                    <div class="content-text">
+                        <p>By substitution, we have: L = (P - MC) / P</p>
+                        <p>🔵 This is the Lerner Index – a measure of monopoly power for a single firm.</p>
+                        <p>🟠 P = price the firm charges. MC = marginal cost of production.</p>
+                        <p>🔴 If P = MC, L = 0 → perfect competition (no monopoly power). If P >> MC, L is close to 1 → high monopoly power.</p>
+                        <p>Where e is the price elasticity of demand and hence, LI is the inverse of e, which is price elasticity of demand.</p>
+                        <p>🟣 For a profit-maximizing firm: L = 1 / |e|, where e = price elasticity of demand.</p>
+                        <p>🟡 If demand is very elastic (e = -10), L = 0.1 → low monopoly power.</p>
+                        <p>🔵 If demand is inelastic (e = -1.1), L ≈ 0.91 → high monopoly power.</p>
+                        <p>🔴 This shows that market power is limited by how easily customers can switch away when prices rise.</p>
+                    </div>
+
+                    <div class="formula-box">
+                        Lerner Index = (P - MC) / P = 1 / |e|
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 11 - Concentration and Market Performance -->
+            <div class="slide" data-index="10">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 11</div>
+                    <div class="slide-title">Concentration and Market Performance</div>
+                    
+                    <div class="content-text">
+                        <p>Market Concentration and the market performance – We know that a firm with substantial monopoly power will tend to: Charge high price, Produce and sell less output, Make high rate of profit, Grow faster than others, Capable of doing anything it wants in connection with its business such as: R&D, advertisement, etc.</p>
+                        <p>🔵 This is a list of typical behaviors of a powerful firm in a concentrated market.</p>
+                        <p>🟠 Charge high price – because few competitors means less pressure to keep prices low.</p>
+                        <p>🔴 Produce and sell less output – restricting supply keeps prices high (monopoly behavior).</p>
+                        <p>🟣 Make high rate of profit – higher prices + lower costs (if efficient) = extra profit.</p>
+                        <p>🟡 Grow faster than others – market power can fuel expansion through acquisitions or aggressive marketing.</p>
+                        <p>🔵 Capable of doing anything – from R&D to advertising, because profits provide financial freedom.</p>
+                        <p>If we assume that concentration is appropriate measure of monopoly power, we are then in a position to verify the various propositions of the economic theory which reflects the relationship between concentration and market performance of the firm.</p>
+                        <p>🟠 Big assumption here: concentration = monopoly power. If that's true, then we can test theories.</p>
+                        <p>🔴 Economic theories predict: higher concentration → higher profits, slower output growth, etc.</p>
+                        <p>🟣 Verification means using real-world data to check if these predictions hold.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 12 - Concentration and Profit -->
+            <div class="slide" data-index="11">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 12</div>
+                    <div class="slide-title">Concentration and Profit</div>
+                    
+                    <div class="content-text">
+                        <p>Concentration and profit: A firm derives the market power or monopoly power in the situation of concentration.</p>
+                        <p>🔵 Concentration creates an environment where firms can exercise market power.</p>
+                        <p>🟠 Market power = ability to raise prices above competitive levels without losing all customers.</p>
+                        <p>🔴 Without concentration (many small firms), no single firm has such power.</p>
+                        <p>Firm having market power can increase profitability through either various market conduct or direct role.</p>
+                        <p>🟣 Market conduct = strategies like tacit collusion, price leadership, or limiting output.</p>
+                        <p>🟡 Direct role = simply charging higher prices because competitors are too weak to undercut.</p>
+                        <p>🔵 Both paths lead to higher profits compared to a competitive market.</p>
+                        <p>It is frequently assumed that persistence of high rates of profits over a long period of time is the consequence of high degree of intra-industry concentration.</p>
+                        <p>🔴 Persistence = profits stay high year after year, not just one good year.</p>
+                        <p>🟠 In competitive markets, high profits attract new entrants, which drives profits back down.</p>
+                        <p>🟣 In concentrated markets, entry barriers prevent that correction – so high profits persist.</p>
+                        <p>Bain was the first to make empirical study on the relationship between concentration & profit.</p>
+                        <p>🔵 Joe Bain (1950s) – a pioneer in industrial organization economics.</p>
+                        <p>🟡 He collected data across industries and found a positive correlation: more concentration → higher profits.</p>
+                        <p>🔴 His work launched decades of debate and research.</p>
+                        <p>He argued that there is strong linkage between the two and hence profit rate can be a measure of concentration.</p>
+                        <p>🟣 Strong linkage = concentration and profit move together consistently.</p>
+                        <p>🟠 If profit rate measures concentration, then you could use accounting data on profits as a proxy for market power.</p>
+                        <p>🔵 But this is circular reasoning – which causes which? Bain thought concentration → profit.</p>
+                        <p>However, there are some difficulties in establishing the correct relationship between concentration and profit as both are subject to ambiguities of measurements.</p>
+                        <p>🔴 Ambiguities = multiple ways to measure both concepts, leading to different results.</p>
+                        <p>🟡 Which concentration index? CR4? HHI? Gini? Each gives a different answer.</p>
+                        <p>🟣 Which profit measure? Accounting profit? Economic profit? Before or after tax? Short-term or long-term?</p>
+                        <p>For example, since we do have various measures of concentration, we do not know which one is the best measure of concentration.</p>
+                        <p>🔵 No consensus among economists on the "best" index.</p>
+                        <p>🟠 Some prefer HHI for its weighting; others prefer CR4 for simplicity.</p>
+                        <p>🔴 Your conclusion about the concentration-profit relationship may depend entirely on which index you choose.</p>
+                        <p>If one measure of concentration is selected, it may have strong correlation with profit but if another indicator of concentration is used it may have weak correlation with profit.</p>
+                        <p>🟣 This is a real problem in empirical research – results are not robust.</p>
+                        <p>🟡 Example: CR4 shows strong correlation; HHI shows weak correlation for the same industries.</p>
+                        <p>🔵 Which one is true? Researchers cannot agree.</p>
+                        <p>Further, the measurement of profit is not free from weaknesses. For example, it is often based on accounting data which ignores certain opportunity cost elements that are related to own fund, own building and own entrepreneurial ability.</p>
+                        <p>🔴 Accounting data comes from company financial statements (revenue minus expenses).</p>
+                        <p>🟠 But accounting profit ignores opportunity costs – what the owner's money, building, or time could have earned elsewhere.</p>
+                        <p>🟣 Example: A firm using its own building rent-free looks more profitable than it really is economically.</p>
+                        <p>🔵 Economic profit (which includes opportunity costs) is harder to measure but more accurate.</p>
+                        <p>All in all, there is positive relationship between profit rate and degree of market concentration on the basis of theoretical logic, though the very precise estimation of which is yet to come.</p>
+                        <p>🟡 Theory says: concentration → market power → higher profits. That part is clear.</p>
+                        <p>🟢 But precise estimation (exact number: how much profit increases per unit increase in concentration) is still debated.</p>
+                        <p>🔴 More research is needed – hence the question marks and "Researchable area" note in the slide.</p>
+                    </div>
+
+                    <div class="research-box">
+                        <p><strong>🔬 Researchable Area ? ? ? ? ?</strong></p>
+                        <p>Possible research topics: Which concentration index best predicts profit? Does the relationship hold across different countries or time periods? How do barriers to entry change the concentration-profit link?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 13 - Concentration and Price-Cost Margins -->
+            <div class="slide" data-index="12">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 13</div>
+                    <div class="slide-title">Concentration and Price-Cost Margins</div>
+                    
+                    <div class="content-text">
+                        <p>Concentration and Price – Cost Margins: Price margin is another way to define profitability.</p>
+                        <p>🔵 Profitability can be measured in different ways – profit rate, return on assets, price-cost margin.</p>
+                        <p>🟠 Price-cost margin = (Price – Average Cost) / Price. Also called the Lerner Index.</p>
+                        <p>🔴 It focuses on the gap between what customers pay and what it costs to produce.</p>
+                        <p>It is a short-term view of profitability based on current assets and cost figures.</p>
+                        <p>🟣 Short-term = uses current period data (this year's prices, this year's costs).</p>
+                        <p>🟡 Long-term profitability might include investments, R&D, or strategic losses.</p>
+                        <p>🔵 Price-cost margin is more like a "snapshot" rather than a video.</p>
+                        <p>Price– Average cost margin is just a ratio of these two magnitudes.</p>
+                        <p>🔴 "These two magnitudes" = Price and Average Cost.</p>
+                        <p>🟠 Formula: (P – AC) / P. If P = AC, margin = 0 (no profit). If P > AC, margin > 0.</p>
+                        <p>🟣 Higher margin → more market power.</p>
+                        <p>Some empirical studies supported the positive relationship between concentration and price-cost margin.</p>
+                        <p>🔵 Some researchers found: higher concentration → higher price-cost margins.</p>
+                        <p>🟡 This matches the theoretical prediction: fewer firms → less price competition → wider gap between price and cost.</p>
+                        <p>🔴 Examples: Industries like airlines, banking, and telecommunications sometimes show this pattern.</p>
+                        <p>However, some other studies indicate insignificant relationships between the two variables.</p>
+                        <p>🟣 Insignificant = no clear connection – concentration up, margins flat or random.</p>
+                        <p>🟠 Possible reasons: Entry threats keep prices low even if concentration is high, price regulation by government, firms compete on non-price factors (quality, service) instead of price.</p>
+                        <p>🔵 So the evidence is mixed – not settled.</p>
+                    </div>
+
+                    <div class="research-box">
+                        <p><strong>❓ Need a research. Hence, think over it. ???????</strong></p>
+                        <p>Possible research: Compare price-cost margins across industries with similar concentration but different entry barriers. Or study how price-cost margins change before and after a merger.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 14 - Concentration and Growth (Two Views) -->
+            <div class="slide" data-index="13">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 14</div>
+                    <div class="slide-title">Concentration and Growth of the Firm (Two Views)</div>
+                    
+                    <div class="content-text">
+                        <p>Concentration and growth of the firm: There are two different views (streams of thoughts) to explain the actual relationship between concentration and profit.</p>
+                        <p>🔵 Two competing theories – they cannot both be true.</p>
+                        <p>🟠 One says: concentration slows growth. The other says: concentration fuels growth.</p>
+                        <p>🔴 This section applies those views to the relationship between concentration and firm growth (not just profit).</p>
+                        <p><strong>First view:</strong> a firm with the market power may prefer to maintain its high rates of profits by restricting output and charging high price.</p>
+                        <p>🟣 Restricting output keeps prices high – classic monopoly strategy.</p>
+                        <p>🟡 If a firm grows too much, it might have to lower prices to sell more output.</p>
+                        <p>🔵 This view says: market power makes firms lazy or cautious – they protect profit margins instead of expanding.</p>
+                        <p>If it grows, it has to scarify some profit margin and lower price which may not be in its interest.</p>
+                        <p>🔴 "Scarify" is a typo – should be "sacrifice."</p>
+                        <p>🟠 Growing means selling more → often requires lower prices (demand curve slopes down).</p>
+                        <p>🟢 Lower prices → lower profit margin per unit.</p>
+                        <p>🔵 So the firm says: Why grow? I'm already making high profit at low output.</p>
+                        <p>Moreover, there will be all kinds of government restrictions to stop further growth of the firm.</p>
+                        <p>🔴 Antitrust laws (like in the US or EU) may block mergers or break up monopolies.</p>
+                        <p>🟠 Governments may regulate prices or force divestitures.</p>
+                        <p>🟣 So even if the firm wanted to grow, legal barriers might prevent it.</p>
+                        <p>Static diseconomies of scale and other bottlenecks all adversely affect the growth of such a firm.</p>
+                        <p>🔵 Diseconomies of scale = when a firm gets too big, costs per unit start rising (inefficiency).</p>
+                        <p>🟠 Bottlenecks = management problems, coordination failures, supply chain issues.</p>
+                        <p>🔴 This view argues that very large, powerful firms become slow and inefficient.</p>
+                        <p>Thus, we expect the higher the monopoly power, the lesser may be the growth of the firm.</p>
+                        <p>🟣 This is the negative relationship hypothesis: High concentration → high monopoly power for top firms → but those firms grow slowly.</p>
+                        <p>🟡 Why? Because they prefer profit over growth, face government restrictions, and suffer diseconomies.</p>
+                        <p><strong>Second view:</strong> sees positive relationship between concentration and growth of the firm.</p>
+                        <p>🔵 The opposite argument: concentration actually helps firms grow faster.</p>
+                        <p>🟠 Large firms in concentrated markets have resources, stability, and market power to expand.</p>
+                        <p>🔴 This is the positive relationship hypothesis.</p>
+                        <p>To maximize the long-term profit, firms may like to grow over time even under market concentration.</p>
+                        <p>🟣 Long-term profit vs. short-term profit.</p>
+                        <p>🟡 A firm might accept lower margins today to capture more market share and earn higher total profit in the future.</p>
+                        <p>🔵 Even a monopolist can benefit from growing if demand is increasing.</p>
+                        <p>They may create excess capacity to meet the future growing demand and to discourage new entry in the market.</p>
+                        <p>🔴 Excess capacity = building factories or hiring workers beyond current needs.</p>
+                        <p>🟠 Why? So when demand grows, they are ready – and potential new competitors see a market already "full" and stay out.</p>
+                        <p>🟣 This is a strategic barrier to entry.</p>
+                        <p>For these firms may sacrifice some profit to stimulate long term growth.</p>
+                        <p>🔵 Sacrifice profit now (lower prices, higher investment) → grow larger → earn more profit later.</p>
+                        <p>🟡 This is the classic trade-off: short-term pain for long-term gain.</p>
+                        <p>🔴 So concentration does not prevent growth – it may even enable it.</p>
+                        <p>Thus, we find a case for positive relationship between initial market concentration and growth of the firm.</p>
+                        <p>🟣 "Initial" concentration = high concentration at the start of the period.</p>
+                        <p>🟠 Firms that begin in concentrated markets may grow faster than firms in competitive markets.</p>
+                        <p>🔵 Which view is correct? The slide says: both exist in theory. Empirically, it depends on the industry, time period, and regulatory environment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 15 - Concentration and Technological Progress -->
+            <div class="slide" data-index="14">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 15</div>
+                    <div class="slide-title">Concentration and Technological Progress</div>
+                    
+                    <div class="content-text">
+                        <p>Concentration and Technological Progress: We know that few firms that enjoy monopoly power in concentrated industries will be large enough.</p>
+                        <p>🔵 Concentration means few large firms dominate the market.</p>
+                        <p>🟠 Large size gives them advantages: financial resources, stable revenues, specialized teams.</p>
+                        <p>🔴 This sets the stage for technological innovation.</p>
+                        <p>They will be having stability, financial resource and ability to initiate the process of R&D and again the benefit from them.</p>
+                        <p>🟣 Stability – steady profits allow long-term planning without worrying about bankruptcy.</p>
+                        <p>🟡 Financial resource – plenty of money to spend on expensive R&D labs and scientists.</p>
+                        <p>🔵 Ability to initiate – they can start research projects that might take years to pay off.</p>
+                        <p>🔴 Benefit from them – if they invent something new, they have the market power to commercialize it successfully.</p>
+                        <p>Some recent researches show the situation when the market is concentrated and innovative activities are positively correlated.</p>
+                        <p>🟠 Positive correlation = more concentration → more innovation.</p>
+                        <p>🟣 Examples: Pharmaceuticals, tech giants (Google, Apple), aerospace (Boeing, Airbus).</p>
+                        <p>🔵 These firms spend billions on R&D and produce many patents.</p>
+                        <p>However, there is no conclusive empirical evidence to prove such proposition.</p>
+                        <p>🔴 Conclusive = all studies agree. That is not the case here.</p>
+                        <p>🟡 Some studies find a positive link; others find none; some even find a negative link (monopolies become lazy).</p>
+                        <p>🟣 The famous "Schumpeterian hypothesis" (monopoly fosters innovation) is still debated.</p>
+                        <p>Some argue that it may not be the concentration but the other attributes of market structure like the size of the firm, product differentiation possibilities that may be having collinearity with concentration and thus causing a spurious positive correlation between concentration and technological change.</p>
+                        <p>🟣 Spurious correlation = two things appear related, but a third hidden factor causes both.</p>
+                        <p>🟡 Example: Large firm size might cause both high concentration (by definition) and high R&D spending. So concentration itself might not be the real driver – size is.</p>
+                        <p>🔵 Collinearity = concentration and size are so closely related that you cannot separate their effects statistically.</p>
+                        <p>🔴 Product differentiation possibilities – industries where you can differentiate products (like cars or phones) may naturally have both higher concentration and more innovation, but again, concentration may not be the cause.</p>
+                        <p>Nothing can be said in either way about the relationship.</p>
+                        <p>🟠 The honest answer: We don't know for sure.</p>
+                        <p>🟣 Evidence is mixed, theory gives conflicting predictions, and measurement is difficult.</p>
+                        <p>🔵 This is unlike the concentration-profit relationship, where theory and most evidence point to a positive link.</p>
+                        <p>It is open for further empirical verification.</p>
+                        <p>🔴 Open = ready for new research.</p>
+                        <p>🟡 Empirical verification = testing with real-world data.</p>
+                        <p>🟣 Future researchers (maybe you!) could help settle this question.</p>
+                    </div>
+
+                    <div class="research-box">
+                        <p><strong>🔬 Research ? ? ? ? ?</strong></p>
+                        <p>Possible research topics: Does concentration help or hurt innovation in emerging vs. mature industries? How does the effect differ for product innovation vs. process innovation? Do patent laws change the relationship?</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 16 - Concentration and Stability -->
+            <div class="slide" data-index="15">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 16</div>
+                    <div class="slide-title">Concentration and Market Stability</div>
+                    
+                    <div class="content-text">
+                        <p>Concentration and other aspects of market performance: stability in the business, which may be judged either by persistent profit rates or sales volume or market share, is one of the indicators of performances.</p>
+                        <p>🔵 Stability means things don't change wildly from year to year – steady profits, steady sales, steady market share.</p>
+                        <p>🟠 Persistent profit rates = the same firms earn high profits year after year without new competitors stealing them away.</p>
+                        <p>🔴 Sales volume or market share stability = the ranking of firms (who is #1, #2, #3) stays the same over time.</p>
+                        <p>🟣 All of these are signs that the market is not very competitive – because competition creates churn.</p>
+                        <p>Greater the market performance of a firm, the more we expect its stability.</p>
+                        <p>🟡 Market performance here means profitability, growth, efficiency, etc.</p>
+                        <p>🔵 If a firm is performing well, it likely has market power, which protects it from sudden disruption.</p>
+                        <p>🟠 Stable environment → firm can plan long-term → better performance. It's a two-way relationship.</p>
+                        <p>Uncertainty faced by the firm may be smaller.</p>
+                        <p>🔴 In concentrated markets with few powerful firms, unexpected events (new entry, price wars, technological surprises) are less common.</p>
+                        <p>🟣 Less uncertainty means easier decision-making, more predictable profits, and less risk of failure.</p>
+                        <p>🔵 This stability is a benefit for the incumbents but a problem for consumers (less choice, higher prices).</p>
+                        <p>Further, if there is high concentration, in the market the existing few firms may maintain their size ranking to keep the leadership with them.</p>
+                        <p>🟠 Size ranking = which firm is largest, second largest, third largest, etc.</p>
+                        <p>🔴 In concentrated markets (oligopoly), the top firms often stay on top for decades because barriers to entry protect them.</p>
+                        <p>🟣 They may cooperate tacitly (without explicit agreement) to avoid price wars that could reshuffle the ranking.</p>
+                        <p>If the size ranking of the firms, which is defined as 'turnover', is changing this implies that the competitive forces are in action in the market.</p>
+                        <p>🔵 Turnover here means the order of firms by size, not the accounting term (sales revenue).</p>
+                        <p>🟡 Example: In 2020, Firm A is #1, Firm B is #2. In 2025, Firm B becomes #1 and Firm A becomes #2 – that's turnover.</p>
+                        <p>🔴 High turnover = intense competition, new firms rising, old firms falling.</p>
+                        <p>🟣 Low turnover (stable ranking) = concentration, market power, possibly collusion.</p>
+                        <p>Lack of such changes means lack of competition and a possible tacit or alright collusion between competitors and hence a perpetuation of the market concentration which ensures stability for the few oligopolistic firms.</p>
+                        <p>🟠 "Alright collusion" is likely a typo – should be "outright collusion" (explicit cheating together) or "tacit collusion" (silent, unspoken cooperation).</p>
+                        <p>🔵 Perpetuation = the situation continues year after year without change.</p>
+                        <p>🔴 Stable ranking = the same few firms dominate forever → high concentration persists.</p>
+                        <p>🟣 This stability benefits the oligopolistic firms (higher profits, less risk) but harms consumers and potential new entrants.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 17 - Determinants of Concentration (Introduction) -->
+            <div class="slide" data-index="16">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 17</div>
+                    <div class="slide-title">Determinants of Concentration: Two Approaches</div>
+                    
+                    <div class="content-text">
+                        <p>Determinants of Concentration – Why concentration is high in some industries but not in others?</p>
+                        <p>🔵 This is a fundamental question in industrial economics.</p>
+                        <p>🟠 Some industries (like commercial aircraft) have 2–3 firms. Others (like restaurants) have thousands. Why?</p>
+                        <p>🔴 The answer lies in technology, costs, market size, and history.</p>
+                        <p>Two approaches have generally been used as an explanation of market concentration.</p>
+                        <p>🟣 First approach: Deterministic (causal, structural factors like economies of scale).</p>
+                        <p>🟡 Second approach: Stochastic (random processes, luck, chance events).</p>
+                        <p>🔵 The slide says the course focuses only on the first approach.</p>
+                        <p><strong>The Deterministic Approach</strong> – <strong>The Stochastic Approach</strong></p>
+                        <p>🔴 Deterministic = concentration is caused by specific, identifiable economic factors (like cost advantages of large firms).</p>
+                        <p>🟠 Stochastic = concentration is the result of random events (some firms get lucky, some unlucky) and follows statistical laws (like Gibrat's Law).</p>
+                        <p>🟣 This course limits itself to the first of the two approaches.</p>
+                        <p>🔵 Only the deterministic approach will be taught here.</p>
+                        <p>🟡 Stochastic approach (random growth models) is more advanced and often covered in graduate-level courses.</p>
+                        <p>🔴 So we focus on scale economies, technology, and cost structures as the drivers of concentration.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 18 - Scale Economies and LAC -->
+            <div class="slide" data-index="17">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 18</div>
+                    <div class="slide-title">Scale Economies and Long-Run Average Cost (LAC)</div>
+                    
+                    <div class="content-text">
+                        <p>The Deterministic Approach (Scale-Economies) – Concentrated market structure could come from persistent scale economies.</p>
+                        <p>🔵 Scale economies = producing more units lowers the average cost per unit.</p>
+                        <p>🟠 Persistent = these cost advantages exist across a wide range of output levels.</p>
+                        <p>🔴 If large firms have much lower costs than small firms, the market will naturally become concentrated (small firms cannot compete).</p>
+                        <p>Scale economies permit relatively large producers to manufacture and market their product at lower average cost per unit than relatively small producers.</p>
+                        <p>🟣 Big firms can spread fixed costs (factories, R&D, advertising) over more units → lower cost per unit.</p>
+                        <p>🟡 Example: A car factory costs $1 billion to build. If you make 1 million cars, cost per car = $1,000. If you make only 1,000 cars, cost per car = $1 million – impossible to compete.</p>
+                        <p>🔵 This cost advantage drives small firms out and keeps concentration high.</p>
+                        <p>By definition, economies of scale constitute the relationship between: Size of the firm & its costs of production.</p>
+                        <p>🔴 Relationship = as firm size (output) increases, average cost typically falls, then flattens, then may rise.</p>
+                        <p>🟠 The shape of this relationship determines how many firms can survive in the market.</p>
+                        <p>🟣 If costs keep falling as output grows, one firm will eventually dominate (natural monopoly).</p>
+                        <p>This relationship may be explained (symbolized) by the long-run average cost curve (LAC), representing the least possible cost for every unit of output.</p>
+                        <p>🔵 Long-Run Average Cost (LAC) = the lowest average cost achievable for each output level when the firm can adjust all inputs (build new factories, hire more managers, etc.).</p>
+                        <p>🟡 "Least possible cost" means the firm is assumed to be efficient – no waste.</p>
+                        <p>🔴 The shape of the LAC curve determines the optimal size of a firm and therefore market concentration.</p>
+                        <p>We can identify various relationships between average cost and level of output as: Constant Cost Case</p>
+                        <p>🟣 The slide introduces four different shapes of the LAC curve, starting with Constant Cost.</p>
+                        <p>🟡 Each shape leads to a different market structure.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 19 - LAC Curve Shapes (Constant Cost & Rapid Fall) -->
+            <div class="slide" data-index="18">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 19</div>
+                    <div class="slide-title">LAC Curve Shapes: Constant Cost & Rapid Fall</div>
+                    
+                    <div class="content-text">
+                        <p><strong>Constant Cost Case</strong> – In this case no cost advantages or disadvantages are associated with large-scale production.</p>
+                        <p>🔵 Constant cost = average cost is the same whether you produce 1 unit or 1 million units.</p>
+                        <p>🟠 No advantage to being big; no disadvantage to being small.</p>
+                        <p>🔴 Example: Simple handcrafts, some services, basic agriculture (up to a point).</p>
+                        <p>Thus, long-run unit production costs are independent of the rate of output.</p>
+                        <p>🟣 Independent = output level does not affect cost per unit.</p>
+                        <p>🟡 LAC curve is a flat horizontal line.</p>
+                        <p>🔵 A small firm and a large firm have the same average cost – so size doesn't matter for cost efficiency.</p>
+                        <p>In this case, the market structure is indeterminate.</p>
+                        <p>🔴 Indeterminate = we cannot predict whether the market will be concentrated or competitive from cost conditions alone.</p>
+                        <p>🟠 Other factors (history, regulation, random chance) will determine concentration.</p>
+                        <p>🟣 Example: Many small bakeries can coexist with a few large industrial bakeries if costs are similar.</p>
+                        <p><strong>Rapid fall in Unit Production Costs</strong> – In some cases, unit production costs fall rapidly and the economies of size are not exhausted until a very large level of output is attained.</p>
+                        <p>🟠 Rapid fall = steeply downward-sloping LAC curve.</p>
+                        <p>🔵 "Not exhausted" = cost keeps dropping as output increases – there is no minimum efficient scale (MES) within the market size.</p>
+                        <p>🟣 The bigger you get, the cheaper your costs – forever.</p>
+                        <p>This is the case of natural monopoly. Because of important scale economies, a single firm can supply the entire market demand.</p>
+                        <p>🔴 Natural monopoly = one firm can produce the entire market's needed output at lower average cost than two or more firms could.</p>
+                        <p>🟡 Example: Water utilities, electricity grids, railroads, some software platforms.</p>
+                        <p>🔵 It is "natural" because competition would be wasteful (duplicating expensive infrastructure).</p>
+                        <p>🟣 Government often regulates natural monopolies or runs them as state-owned enterprises.</p>
+                        <p>The market structure is obviously a monopoly structure.</p>
+                        <p>🟠 Obviously = if costs keep falling, the largest firm will undercut all others and become the only survivor.</p>
+                        <p>🔴 No other structure is possible in the long run without government intervention.</p>
+                        <p>🟣 So concentration is extremely high (one firm, 100% market share) by economic logic.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 20 - LAC Curve Shapes (Rapid Rise & Constant Range) -->
+            <div class="slide" data-index="19">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 20</div>
+                    <div class="slide-title">LAC Curve Shapes: Rapid Rise & Constant Range</div>
+                    
+                    <div class="content-text">
+                        <p><strong>Rapid Rise in Unit Production Costs</strong> – In some circumstances, the LAC rapidly rises. This is the mirror image of natural monopoly.</p>
+                        <p>🔵 Rapid rise = average cost increases sharply as output grows.</p>
+                        <p>🟠 Mirror image = opposite of natural monopoly. Instead of falling costs, costs rise quickly.</p>
+                        <p>🔴 This creates a natural limit on firm size.</p>
+                        <p>Economies of scale are negligible and diseconomies are encountered at relatively small rates of output.</p>
+                        <p>🟣 Negligible = any cost advantages from being large are very small or zero.</p>
+                        <p>🟡 Diseconomies = cost disadvantages from being large (bureaucracy, coordination problems, communication failures).</p>
+                        <p>🔵 These diseconomies kick in at small output levels, keeping firms small.</p>
+                        <p>A typical firm would operate on a modest scale & the market structure is competitive.</p>
+                        <p>🔴 Modest scale = small size is efficient; big firms are inefficient.</p>
+                        <p>🟠 Competitive market structure = many small firms, none with significant market power.</p>
+                        <p>🟣 Example: Hair salons, local plumbing, small-scale farming, many retail shops.</p>
+                        <p>There would be a large number of small firms in the market.</p>
+                        <p>🔵 Large number because each firm is small and there is room for many.</p>
+                        <p>🟡 No firm can grow large without costs rising too much.</p>
+                        <p>🔴 Concentration is very low – the opposite of a concentrated market.</p>
+                        <p><strong>Constant Range of Minimum LAC Curve:</strong> This one represents a situation in which a small rate of output enables the firm to take advantage of economies of scale. That means diseconomies do not occur until the output rate is quite large.</p>
+                        <p>🟣 This is the most common real-world case.</p>
+                        <p>🟡 Small output → economies of scale (costs fall as you grow).</p>
+                        <p>🔵 But after a certain point, costs flatten out (constant returns), and only at very large output do diseconomies appear.</p>
+                        <p>🔴 So there is a wide range of efficient firm sizes.</p>
+                        <p>Here, one might observe a mixture of a firm size.</p>
+                        <p>🟠 Mixture = both small and large firms can coexist profitably.</p>
+                        <p>🔵 Small firms may serve local niches; large firms may serve mass markets.</p>
+                        <p>🟣 Both have similar average costs as long as they operate within the constant-cost range.</p>
+                        <p>In this case both large and small firms can co-exist.</p>
+                        <p>🔴 Co-exist = no single size dominates; market concentration is moderate.</p>
+                        <p>🟡 Example: Automobile manufacturing (some large global firms, some small specialty makers), publishing (large houses and small independent presses).</p>
+                        <p>🔵 The LAC curve is U-shaped, with a flat bottom. Any firm within that flat bottom is equally efficient.</p>
+                        <p>🟣 The flat range is the "minimum efficient scale" (MES) region.</p>
+                        <p>🟡 Any firm size within that range is equally competitive.</p>
+                        <p>🔴 Therefore, market concentration is not determined by cost alone – other factors (brands, regulation, history) matter.</p>
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📊 Summary of LAC Shapes & Market Structure:</strong></p>
+                        <table>
+                            <tr><th>LAC Shape</th><th>Market Structure</th><th>Concentration Level</th></tr>
+                            <tr><td>Constant Cost (Flat)</td><td>Indeterminate</td><td>Varies</td></tr>
+                            <tr><td>Rapid Fall (Steep down)</td><td>Natural Monopoly</td><td>Very High</td></tr>
+                            <tr><td>Rapid Rise (Steep up)</td><td>Perfect Competition</td><td>Very Low</td></tr>
+                            <tr><td>Constant Range (U-shaped)</td><td>Mixed / Oligopoly</td><td>Moderate</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="indicators" id="indicators"></div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressBar = document.getElementById('progressBar');
+        const indicatorsContainer = document.getElementById('indicators');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Create indicators
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('indicator');
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.indicator');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+            
+            indicators.forEach((ind, index) => {
+                ind.classList.toggle('active', index === currentSlide);
+            });
+            
+            slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+        }
+
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateSlide();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

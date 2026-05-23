@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Chapter 4 | Market Power | Economics Presentation</title>
+    
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a2a 0%, #1a1a4a 50%, #0a0a2a 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Particles */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Floating Orbs Animation */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.25;
+            pointer-events: none;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #f59e0b, #d97706);
+            top: -200px;
+            left: -200px;
+        }
+
+        .orb-2 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, #8b5cf6, #7c3aed);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 3s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, #06b6d4, #0891b2);
+            top: 50%;
+            left: 70%;
+            animation-delay: 6s;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -40px) scale(1.15); }
+        }
+
+        /* Main Container */
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        /* Slides Wrapper */
+        .slides-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Individual Slide */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            overflow-y: auto;
+            padding: 50px 70px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        /* Custom Scrollbar */
+        .slide::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .slide::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 10px;
+        }
+
+        /* Slide Card */
+        .slide-card {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(5px);
+            border-radius: 40px;
+            padding: 45px 55px;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.4);
+            animation: slideContentIn 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        @keyframes slideContentIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typography */
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e1b4b, #5b21b6, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 25px;
+            border-left: 5px solid #f59e0b;
+            padding-left: 25px;
+        }
+
+        .slide-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Content styling - unified text flow */
+        .content-text {
+            line-height: 1.8;
+            color: #1e293b;
+        }
+
+        .content-text p {
+            margin-bottom: 16px;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #1e1b4b, #2d2a5e);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.3rem;
+            color: #f59e0b;
+        }
+
+        .key-point-box {
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #6366f1;
+        }
+
+        .research-box {
+            background: linear-gradient(135deg, #fce7f3, #fbcfe8);
+            padding: 20px 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #ec4899;
+        }
+
+        /* Tables */
+        .premium-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .premium-table th {
+            background: linear-gradient(135deg, #1e1b4b, #2d2a5e);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .premium-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #1e1b4b;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+            background: #f59e0b;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Indicators */
+        .indicators {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #f59e0b;
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706, #8b5cf6);
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        /* Slide Counter */
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 100;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Lists */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            padding: 8px 0 8px 28px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .bullet-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: #f59e0b;
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px 15px;
+            }
+            .slide-card {
+                padding: 25px;
+            }
+            .slide-title {
+                font-size: 1.6rem;
+            }
+            .nav-controls {
+                bottom: 15px;
+                right: 15px;
+            }
+            .indicators {
+                bottom: 15px;
+                left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-counter" id="slideCounter">1 / 9</div>
+
+    <div class="presentation-container">
+        <div class="slides-wrapper" id="slidesWrapper">
+            
+            <!-- TITLE SLIDE - Chapter 4 Title Slide -->
+            <div class="slide" data-index="0">
+                <div class="slide-card">
+                    <div class="slide-number">Chapter 4</div>
+                    <div class="slide-title">MEASUREMENT, DETERMINANT, PRONE AND CONS OF MARKET POWER</div>
+                    
+                    <div class="content-text">
+                        <p>🔵 This chapter focuses on market power – the ability of a firm to raise prices above competitive levels.</p>
+                        <p>🟠 "Measurement" means how we quantify market power (e.g., Lerner Index, price-cost margins).</p>
+                        <p>🔴 "Determinant" means what causes market power (e.g., entry barriers, product differentiation).</p>
+                        <p>🟣 "Prone" likely means vulnerability or tendency toward market power (maybe a typo for "probe" or "problems").</p>
+                        <p>🟡 "Cons" means disadvantages or negative consequences of market power for society.</p>
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📌 Chapter Overview:</strong></p>
+                        <p>This chapter covers: (1) How to measure market power, (2) What determines market power, (3) Factors that make markets prone to market power, and (4) The negative consequences of market power for consumers and society.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 1 - Introduction and Brief Review of Determinants of Market Structure -->
+            <div class="slide" data-index="1">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 1</div>
+                    <div class="slide-title">Introduction and Brief Review of Determinants of Market Structure</div>
+                    
+                    <div class="content-text">
+                        <p>Introduction; Brief Review of Determinants of Market Structure</p>
+                        <p>🔵 This slide sets the stage – before measuring market power, we need to understand what determines market structure.</p>
+                        <p>🟠 "Brief review" means quickly summarizing concepts from Chapter 3 (concentration, barriers, etc.).</p>
+                        <p>🔴 Determinants = the key factors that shape whether a market is competitive, oligopolistic, or monopolistic.</p>
+                        <p>Definition of market structure – It is the pattern or form or manner in which the different constituent parts (i.e. sellers and buyers) of that body are arranged/linked together.</p>
+                        <p>🟣 "Pattern or form or manner" means the way a market is organized – like a blueprint.</p>
+                        <p>🟡 Constituent parts = the players in the market: sellers (firms) and buyers (consumers or other businesses).</p>
+                        <p>🔵 "Arranged or linked together" describes relationships: Who sells to whom? How many sellers? How many buyers? How do they interact?</p>
+                        <p>It is the characteristics of the organisation and composition of a market that exercises a strategic influence on the nature of competition and pricing within the market.</p>
+                        <p>🔴 Characteristics = features like number of firms, product differences, entry barriers.</p>
+                        <p>🟠 Organisation and composition = how the market is structured (e.g., one seller vs. many).</p>
+                        <p>🟣 "Strategic influence" means these features actively shape how firms compete and set prices – they are not neutral.</p>
+                        <p>It is the result of actions and interactions of individuals and organizations: firms, other business organizations & public bodies.</p>
+                        <p>🔵 Market structure is not random – it emerges from what people and organizations do.</p>
+                        <p>🟡 Actions = building factories, setting prices, merging, advertising.</p>
+                        <p>🔴 Interactions = competition, cooperation, negotiation, lobbying.</p>
+                        <p>🟣 Public bodies = governments, regulators, courts – they pass laws, grant patents, enforce antitrust.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2 - Determinants of Market Structure (Overview) -->
+            <div class="slide" data-index="2">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 2</div>
+                    <div class="slide-title">Determinants of Market Structure (Overview)</div>
+                    
+                    <div class="content-text">
+                        <p>Determinants of market structure – Market Concentration: number of buyers and sellers of a specific market/industry and size/power/structure. (As discussed in the earlier chapters)</p>
+                        <p>🔵 This is the first determinant – from Chapter 3.</p>
+                        <p>🟠 Number of buyers and sellers: few sellers → oligopoly; many sellers → competition.</p>
+                        <p>🔴 Size/power/structure: not just count, but how big each firm is and how much power they have.</p>
+                        <p>🟣 "As discussed in earlier chapters" means this is a review, not new material.</p>
+                        <p>The degree of product differentiation: It indicates the extent to which a seller has some degree of independence (i.e. some market power) in pricing and other marketing decisions. (This will be addressed in the upcoming chapters)</p>
+                        <p>🔵 Product differentiation = making your product seem different from competitors (real or imaginary differences).</p>
+                        <p>🟠 More differentiation → more independence in pricing (because customers see fewer substitutes).</p>
+                        <p>🔴 That independence is market power – you can raise prices without losing all customers.</p>
+                        <p>🟣 "Upcoming chapters" means this will be detailed later – for now, just an introduction.</p>
+                        <p>The Condition of Barriers to Entry & Exit to/from the Market</p>
+                        <p>🔵 Barriers to entry = obstacles that make it hard for new firms to start competing.</p>
+                        <p>🟠 Barriers to exit = obstacles that make it hard for firms to leave the market (e.g., specialized equipment that can't be sold).</p>
+                        <p>🔴 High entry barriers protect existing firms and keep concentration high.</p>
+                        <p>🟣 Low exit barriers make markets more flexible but can also encourage risky entry.</p>
+                        <p>The degree of vertical integration with suppliers</p>
+                        <p>🔵 Vertical integration = a firm owns its suppliers (backward integration) or its distributors (forward integration).</p>
+                        <p>🟠 Example: A car company that owns a steel plant (backward) and its own dealerships (forward).</p>
+                        <p>🔴 More vertical integration can increase market power by controlling key inputs or distribution channels.</p>
+                        <p>🟣 It also raises barriers to entry because new firms must either integrate or pay higher prices to independent suppliers.</p>
+                        <p>Economies of Scale; and so, on</p>
+                        <p>🔵 Economies of scale = cost per unit falls as output increases.</p>
+                        <p>🟠 If large firms have much lower costs, small firms cannot compete → high concentration.</p>
+                        <p>🔴 "And so on" means there are other determinants not listed here (technology, regulation, history, etc.).</p>
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📊 Summary of Determinants:</strong></p>
+                        <p>1. Market Concentration | 2. Product Differentiation | 3. Entry/Exit Barriers | 4. Vertical Integration | 5. Economies of Scale</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3 - Entry Barriers (Introduction) -->
+            <div class="slide" data-index="3">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 3</div>
+                    <div class="slide-title">Entry Barriers (Introduction)</div>
+                    
+                    <div class="content-text">
+                        <p>Entry Barriers – An entry condition shows the relative ease with which new firms can join the category of sellers (i.e. firms) in the market.</p>
+                        <p>🔵 Entry condition = how hard or easy it is to become a new competitor.</p>
+                        <p>🟠 Relative ease = compared to other industries or compared to a benchmark (like perfect competition).</p>
+                        <p>🔴 "Join the category of sellers" simply means become one of the firms operating in that market.</p>
+                        <p>Without entry barriers then even the most complete monopoly is open to competition from new entrants.</p>
+                        <p>🟣 Even a 100% monopoly (one firm) would not last long if anyone can enter freely.</p>
+                        <p>🟡 Example: A single coffee shop in a town with no barriers – the next day, ten more coffee shops open.</p>
+                        <p>🔵 So monopoly without entry barriers is temporary – competition will eventually destroy it.</p>
+                        <p>🔴 This is why barriers are essential for sustained market power.</p>
+                        <p>Concentration must be considered in relationship to level of barriers to entry and exit.</p>
+                        <p>🟠 Concentration alone does not tell the whole story.</p>
+                        <p>🔵 A market with 2 firms (high concentration) but zero entry barriers may behave competitively because new firms can enter anytime.</p>
+                        <p>🟣 A market with 10 firms (moderate concentration) but very high entry barriers may behave like a monopoly.</p>
+                        <p>🔴 So always look at concentration + barriers together.</p>
+                        <p>High concentration but with low entry and exit barriers may result in close to competitive pricing due to threat of entry.</p>
+                        <p>🟡 Threat of entry = potential new competitors keep existing firms honest.</p>
+                        <p>🔵 Even if only 2 firms exist today, if a third could easily open tomorrow, the existing firms may keep prices low to discourage that entry.</p>
+                        <p>🔴 This is called "contestable market theory" – the threat matters more than the actual number of firms.</p>
+                        <p>🟣 Result = prices close to competitive levels, even with high concentration.</p>
+                        <p>In actual fact, more concentrated industries are marked by significant barriers to entry and exit.</p>
+                        <p>🟠 In real-world data, high concentration and high barriers usually go together.</p>
+                        <p>🔵 It is rare to find a highly concentrated market with easy entry – because easy entry would eventually reduce concentration.</p>
+                        <p>🔴 So the theory of contestable markets is more an exception than the rule.</p>
+                        <p>🟣 "Marked by" means characterized by – barriers are a defining feature of concentrated industries.</p>
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📌 Key Insight:</strong></p>
+                        <p>Concentration + Entry Barriers = True Market Power. A market with high concentration but low barriers may still be competitive due to the THREAT of entry.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4 - Types of Barriers to Entry -->
+            <div class="slide" data-index="4">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 4</div>
+                    <div class="slide-title">Types of Barriers to Entry</div>
+                    
+                    <div class="content-text">
+                        <p>Types of Barriers to Entry – Entry conditions help explain the number and size distribution of firms that operate in a market.</p>
+                        <p>🔵 Entry conditions = the specific obstacles or facilitators for new firms.</p>
+                        <p>🟠 They explain: Why are there only 3 firms? Why are they all large? Why no small firms?</p>
+                        <p>🔴 Without understanding entry barriers, you cannot fully explain market structure.</p>
+                        <p>So, entry conditions affect conduct and performance in their own right.</p>
+                        <p>🟣 "In their own right" means independently, not just through concentration.</p>
+                        <p>🟡 Example: Even if concentration is moderate, high entry barriers still allow firms to behave non-competitively (high prices, low output).</p>
+                        <p>🔵 Conduct = pricing, advertising, R&D. Performance = profits, innovation, efficiency.</p>
+                        <p>🔴 So entry barriers are a direct cause of market power, separate from concentration.</p>
+                        <p>Types of entry Barriers may include: Government policies; Economics of Scale & Natural Monopolies; Large Initial Capital Requirement; Market/business strategies of firms with the aim of deterring new entry.</p>
+                        <p>🔵 This is a list – four main categories of entry barriers.</p>
+                        <p>🟠 Government policies: licenses, patents, regulations, tariffs.</p>
+                        <p>🔴 Economies of scale & natural monopolies: large firms have cost advantages.</p>
+                        <p>🟣 Large initial capital requirement: need huge money to start (e.g., semiconductor factory).</p>
+                        <p>🟡 Business strategies: actions by existing firms to block entry (predatory pricing, advertising blitzes, etc.).</p>
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📊 Four Main Types of Entry Barriers:</strong></p>
+                        <p>1. Government Policies (licenses, patents, regulations)<br>
+                        2. Economies of Scale & Natural Monopolies<br>
+                        3. Large Initial Capital Requirements<br>
+                        4. Business Strategies (predatory pricing, product proliferation, etc.)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5 - Government Policies & Practices as Barriers -->
+            <div class="slide" data-index="5">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 5</div>
+                    <div class="slide-title">Government Policies & Practices as Barriers</div>
+                    
+                    <div class="content-text">
+                        <p>Government Policies & Practices – Monopolies are often established by governments.</p>
+                        <p>🔵 Governments can create monopolies intentionally.</p>
+                        <p>🟠 Examples: State-owned oil companies, national postal services, state lotteries.</p>
+                        <p>🔴 Sometimes for public good (e.g., natural monopoly regulation); sometimes for revenue (taxation through monopoly prices).</p>
+                        <p>🟣 These are called "legal monopolies" or "de jure monopolies."</p>
+                        <p>E.g. Governments grant monopolies or exclusive franchise for electric, telecommunication, water and other utility services.</p>
+                        <p>🟡 Exclusive franchise = only one company is allowed to operate in a region.</p>
+                        <p>🔵 Why? Because duplicating utility infrastructure (pipes, wires, towers) would be wasteful.</p>
+                        <p>🔴 So government grants a monopoly but often regulates prices to protect consumers.</p>
+                        <p>🟣 This is the natural monopoly justification.</p>
+                        <p>Governments grant patents: Meant to encourage inventions & Innovations by protecting innovators & inventors.</p>
+                        <p>🟠 Patents = a temporary legal monopoly on an invention (usually 20 years from filing date, though slide says 17 years – older standard).</p>
+                        <p>🔵 Purpose: Reward innovation by letting inventors charge high prices without competition.</p>
+                        <p>🔴 Without patents, anyone could copy a new drug or technology immediately – no incentive to invest in R&D.</p>
+                        <p>🟣 So patents create market concentration intentionally, as a trade-off.</p>
+                        <p>Governments grant inventors exclusive right to use their discoveries for certain period of time (e.g. 17 years for patents) patents increase market concentration & reduce competition.</p>
+                        <p>🔵 Exclusive right = only the patent holder can make, use, or sell the invention.</p>
+                        <p>🟡 For the patent duration, the market becomes more concentrated (often a monopoly for that product).</p>
+                        <p>🔴 Competition is reduced by law – but this is seen as acceptable to encourage innovation.</p>
+                        <p>🟣 After the patent expires, competition returns (e.g., generic drugs).</p>
+                        <p>Government regulations in the form of licensing requirements restrict entry.</p>
+                        <p>🟠 Licensing = you need government permission to do business (a license, certificate, or permit).</p>
+                        <p>🔵 Examples: Medical license to be a doctor, bar exam to be a lawyer, liquor license to sell alcohol.</p>
+                        <p>🔴 These requirements limit the number of firms, creating concentration and market power for licensed insiders.</p>
+                        <p>🟣 The justification is consumer protection (quality, safety, competence), but the effect is higher prices.</p>
+                        <p>E.g. Licensing requirements for lawyers, accountants, medical doctors, etc. are aimed at protecting consumers against incompetent practitioners.</p>
+                        <p>🟡 This is the public interest argument: unqualified professionals could harm customers.</p>
+                        <p>🔵 Licensing exams, education requirements, and continuing education are meant to ensure minimum quality.</p>
+                        <p>🔴 However, licensing also reduces competition and raises prices – sometimes far above the quality benefits.</p>
+                        <p>🟣 Economists debate whether licensing helps consumers or mainly benefits existing professionals.</p>
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📌 Government-Created Barriers:</strong></p>
+                        <p>• Exclusive franchises (utilities)<br>
+                        • Patents (temporary monopolies for innovation)<br>
+                        • Licensing requirements (medical, legal, etc.)</p>
+                        <p>These create concentration by law, not by market forces.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 6 - Business Strategies Aimed at Deterring Entry -->
+            <div class="slide" data-index="6">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 6</div>
+                    <div class="slide-title">Business Strategies Aimed at Deterring Entry</div>
+                    
+                    <div class="content-text">
+                        <p>Business Strategies Aimed at Deterring Entry – Pricing strategies: predatory pricing and limit pricing</p>
+                        <p>🔵 Existing firms can use pricing as a weapon to block new entrants.</p>
+                        <p>🟠 Predatory pricing = temporarily lowering prices below cost to drive out a new competitor, then raising prices later.</p>
+                        <p>🔴 Limit pricing = setting prices just low enough to make entry unprofitable, but not so low that the incumbent loses money.</p>
+                        <p>🟣 Both are illegal in many countries (antitrust violations), but hard to prove.</p>
+                        <p>Single Ownership of an Essential Input</p>
+                        <p>🟡 If one firm owns the only source of a key raw material, no new firm can enter without paying that firm.</p>
+                        <p>🔵 Example: De Beers historically owned most diamond mines – controlling supply to block competitors.</p>
+                        <p>🔴 This creates a natural barrier: you cannot compete if you cannot get the essential ingredient.</p>
+                        <p>R&D Investment; Will be discussed in due time of the course.</p>
+                        <p>🟠 R&D investment can be a barrier because large firms can outspend small potential entrants.</p>
+                        <p>🔵 Example: Pharmaceutical companies spend billions on drug development – a new firm cannot match that.</p>
+                        <p>🔴 "Will be discussed in due time" means later chapters will cover this in detail.</p>
+                        <p>Product/Brand Proliferation/Differentiation</p>
+                        <p>🟣 Product proliferation = flooding the market with many varieties, sizes, flavors, models.</p>
+                        <p>🔵 Example: A cereal company sells 30 different cereals – shelf space is full. A new cereal brand cannot find retail space.</p>
+                        <p>🟡 Brand differentiation = making consumers loyal to your brand through advertising and quality.</p>
+                        <p>🔴 Result: New entrants must spend huge amounts to overcome brand loyalty – a strong barrier.</p>
+                        <p>Plant Location Strategy</p>
+                        <p>🔵 A firm can locate factories or stores in strategic positions to block competitors.</p>
+                        <p>🟠 Example: A gas station at every major intersection – no room for a competitor to build nearby.</p>
+                        <p>🔴 Or locating close to raw materials, ports, or highways – new entrants cannot get equally good locations.</p>
+                        <p>Advertising/ promotion</p>
+                        <p>🟣 Heavy advertising creates brand recognition and customer loyalty.</p>
+                        <p>🟡 A new entrant must match that advertising spending just to be noticed – which is very expensive.</p>
+                        <p>🔵 Example: Coca-Cola and Pepsi spend billions on ads – a new cola brand would need similar billions to compete.</p>
+                        <p>Excess Capacity – Note that this determinant of entry barrier is an element of business strategy/conduct.</p>
+                        <p>🔵 Excess capacity = having factories or equipment that are not fully used.</p>
+                        <p>🟠 Threat: If a new firm enters, the incumbent can instantly increase production (using idle capacity) and flood the market, dropping prices.</p>
+                        <p>🔴 Knowing this threat, potential entrants may stay out.</p>
+                        <p>🟣 So excess capacity is a strategic barrier – a signal that says "don't try."</p>
+                        <p>So, entry barrier can be considered as determinant of market structure or a business strategy.</p>
+                        <p>🟡 This is an important insight: entry barriers are both Determinants of market structure (exogenous, given by technology or law) and Business strategies (endogenous, chosen by firms to protect their power).</p>
+                        <p>🔵 So market structure and business conduct are intertwined – they cause each other.</p>
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📊 Business Strategy Barriers:</strong></p>
+                        <p>• Predatory/Limit Pricing | • Control of essential inputs | • R&D investment<br>
+                        • Product proliferation | • Strategic location | • Heavy advertising | • Excess capacity</p>
+                        <p>These are CHOICES firms make to block competition.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7 - Economies of Scale (Detailed) -->
+            <div class="slide" data-index="7">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 7</div>
+                    <div class="slide-title">Economies of Scale (Detailed)</div>
+                    
+                    <div class="content-text">
+                        <p>Economies of Scale – Two types of interest on costs: The first is concerning 'Opportunity Costs' that arises from their concern for the efficiency of allocation of resources.</p>
+                        <p>🔵 Opportunity cost = the value of the next best alternative given up when you use a resource.</p>
+                        <p>🟠 Efficiency of allocation of resources = using resources where they create the most value for society.</p>
+                        <p>🔴 Economies of scale affect opportunity costs because large-scale production might use resources differently than small-scale production.</p>
+                        <p>🟣 This is a more advanced point – connecting scale economies to welfare economics.</p>
+                        <p>Cost of production and scale of operation (economies of scale) as its determinant: Scale determines costs & costs determine prices, & prices determine market share, and all these together determine the profitability of the firm.</p>
+                        <p>🟡 This is a causal chain:</p>
+                        <p>Scale (how big you produce) → determines costs per unit.</p>
+                        <p>Costs → determine prices (firms set price above cost).</p>
+                        <p>Prices → determine market share (lower price wins more customers).</p>
+                        <p>All together → determine profitability (revenue minus cost).</p>
+                        <p>🔵 So scale economies are the fundamental driver of market outcomes.</p>
+                        <p>Horizontal LAC: Indeterminate market structure – There is no cost advantage (or disadvantage) associated with any scale of operation.</p>
+                        <p>🔴 Horizontal LAC = flat long-run average cost curve.</p>
+                        <p>🟠 No cost advantage = small and large firms have the same cost per unit.</p>
+                        <p>🟣 No cost disadvantage = being big does not hurt you either.</p>
+                        <p>🔵 So cost conditions do not push toward any particular market structure.</p>
+                        <p>Market structure is indeterminate; there is no reason for firms to exist.</p>
+                        <p>🟡 "No reason for firms to exist" is a bit strong – it means cost conditions alone do not explain why firms are large or small.</p>
+                        <p>🔴 In perfect competition with constant costs, firms are price-takers and earn zero economic profit.</p>
+                        <p>🟣 Other factors (transaction costs, management, innovation) determine firm size – not just production costs.</p>
+                    </div>
+
+                    <div class="formula-box">
+                        Scale → Costs → Prices → Market Share → Profitability
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 8 - U-Shaped LAC Cases and Final Summary -->
+            <div class="slide" data-index="8">
+                <div class="slide-card">
+                    <div class="slide-number">Slide 8</div>
+                    <div class="slide-title">U-Shaped LAC Cases and Final Summary</div>
+                    
+                    <div class="content-text">
+                        <p>Cont'd – U-Shaped LAC that Displays Natural Monopoly/High Concentration</p>
+                        <p>🔵 U-shaped LAC = costs fall initially (economies), then flatten (constant returns), then rise (diseconomies).</p>
+                        <p>🟠 But if the falling part continues until the entire market demand is met → natural monopoly.</p>
+                        <p>🔴 Example: One firm can supply the whole market at lower cost than two firms could.</p>
+                        <p>🟣 So concentration is forced to be high – only one firm can survive efficiently.</p>
+                        <p>U-Shaped LAC that Displays Least Concentration; There is no scale advantage in this industry.</p>
+                        <p>🟡 Least concentration = many small firms, competitive market.</p>
+                        <p>🔵 No scale advantage = costs do not fall with size; small firms are as efficient as large ones.</p>
+                        <p>🔴 In fact, diseconomies may appear quickly, so small is efficient.</p>
+                        <p>As a general, many small investors can afford to join in such an industry.</p>
+                        <p>🟣 Low capital requirements → many small investors can enter.</p>
+                        <p>🟠 Examples: Hair salons, small retail shops, freelance services.</p>
+                        <p>🔵 Result: Low concentration, high competition, low market power.</p>
+                        <p>"Small is beautiful": Plastic, hair dressing/barberry/; jewelry</p>
+                        <p>🔴 "Small is beautiful" is a phrase from economist E.F. Schumacher – meaning small scale can be efficient and humane.</p>
+                        <p>🟡 Examples given: Plastic products (small molding shops), hairdressing, jewelry making.</p>
+                        <p>🔵 These industries have no significant scale economies – small firms thrive.</p>
+                        <p>Long run Average Cost Curve that Displays Moderate Concentration – Moderate concentration: E.g. Garmenting, leather products/shoes manufacturing.</p>
+                        <p>🟣 Moderate concentration = a mix of small, medium, and large firms coexist.</p>
+                        <p>🔵 The LAC curve falls initially, then has a long flat range (constant returns), then rises slowly.</p>
+                        <p>🟡 Examples: Garment manufacturing, leather products, shoes – some large factories, many small workshops.</p>
+                        <p>🔴 Neither very concentrated nor very competitive – somewhere in the middle (oligopoly or monopolistic competition).</p>
+                        <p>In general, different factors determine market structure.</p>
+                        <p>🔵 No single factor (like scale economies) determines structure alone.</p>
+                        <p>🟠 It is the combination of: concentration, product differentiation, entry barriers, vertical integration, and government policies.</p>
+                        <p>🔴 Each industry is shaped by a unique mix of these factors.</p>
+                        <p>If indeed market structure remains important in the causal relationship between the three I-O variables, i.e. market structure determines conduct and performance of firms, then we need to flash out each of the determinants of market structure.</p>
+                        <p>🟣 I-O variables = Structure – Conduct – Performance (the SCP paradigm).</p>
+                        <p>🟡 "If indeed" introduces a conditional statement: assuming structure matters (which many economists believe), then we must study each determinant carefully.</p>
+                        <p>🔵 "Flash out" is a typo – should be "flesh out" meaning to explain in detail.</p>
+                        <p>🔴 So the chapter ends by reminding us why determinants matter: because structure drives conduct and performance.</p>
+                    </div>
+
+                    <div class="key-point-box">
+                        <p><strong>📊 Summary of LAC Shapes & Market Concentration:</strong></p>
+                        <table>
+                            <tr><th>LAC Shape</th><th>Market Structure</th><th>Concentration Level</th><th>Examples</th></tr>
+                            <tr><td>Horizontal (Flat)</td><td>Indeterminate</td><td>Varies</td><td>Handicrafts, some services</td></tr>
+                            <tr><td>Rapid Fall (Steep down)</td><td>Natural Monopoly</td><td>Very High</td><td>Utilities, infrastructure</td></tr>
+                            <tr><td>U-shaped (Quick rise)</td><td>Perfect Competition</td><td>Very Low</td><td>Hair salons, jewelry</td></tr>
+                            <tr><td>U-shaped (Flat range)</td><td>Mixed/Oligopoly</td><td>Moderate</td><td>Garments, shoes, leather</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="research-box">
+                        <p><strong>📌 Chapter 4 Key Takeaway:</strong></p>
+                        <p>Market structure is determined by: (1) Concentration, (2) Product differentiation, (3) Entry barriers, (4) Vertical integration, (5) Economies of scale. No single factor determines structure alone – each industry has a unique mix.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-controls">
+        <button class="nav-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="nav-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="indicators" id="indicators"></div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressBar = document.getElementById('progressBar');
+        const indicatorsContainer = document.getElementById('indicators');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Create indicators
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('div');
+            indicator.classList.add('indicator');
+            indicator.addEventListener('click', () => goToSlide(i));
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.indicator');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentSlide);
+            });
+            
+            indicators.forEach((ind, index) => {
+                ind.classList.toggle('active', index === currentSlide);
+            });
+            
+            slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+        }
+
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateSlide();
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>
